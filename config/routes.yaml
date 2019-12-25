@@ -1,0 +1,12 @@
+# Projects
+projects_api_get_collection:
+    path: /api/projects
+    controller: App\Projects\Presentation\Api\Controller\GetProjectsController
+    methods:  [GET]
+
+projects_api_post:
+    path: /api/projects
+    controller: App\Projects\Presentation\Api\Controller\PostProjectController
+    methods:  [POST]
+
+# Issues
