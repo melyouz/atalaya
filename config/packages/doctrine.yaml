@@ -1,0 +1,24 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+
+        # IMPORTANT: You MUST configure your server version,
+        # either here or in the DATABASE_URL env var (see .env file)
+        #server_version: '5.7'
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            Projects:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Projects/Domain/Model'
+                prefix: 'App\Projects\Domain\Model'
+                alias: Projects
+            #Issues:
+            #    is_bundle: false
+            #    type: annotation
+                #    dir: '%kernel.project_dir%/src/Issues/Domain/Model'
+                #   prefix: 'App\Issues\Domain\Model'
+                # alias: Issues

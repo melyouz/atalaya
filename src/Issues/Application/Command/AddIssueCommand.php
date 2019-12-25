@@ -1,0 +1,86 @@
+<?php
+
+namespace App\Issues\Application\Command;
+
+use App\Issues\Domain\Model\Exception;
+use App\Issues\Domain\Model\ExceptionClass;
+use App\Issues\Domain\Model\ExceptionMessage;
+use App\Issues\Domain\Model\IssueId;
+use App\Issues\Domain\Model\Request;
+use App\Issues\Domain\Model\RequestMethod;
+use App\Issues\Domain\Model\RequestUrl;
+use App\Projects\Domain\Model\ProjectId;
+use App\Shared\Application\Command\CommandInterface;
+
+class AddIssueCommand implements CommandInterface
+{
+    /**
+     * @var IssueId
+     */
+    private IssueId $id;
+    /**
+     * @var ProjectId
+     */
+    private ProjectId $projectId;
+    /**
+     * @var Request
+     */
+    private Request $request;
+    /**
+     * @var Exception
+     */
+    private Exception $exception;
+    /**
+     * @var array
+     */
+    private array $tags;
+
+    public function __construct(string $id, string $projectId, string $exceptionClass, string $exceptionMessage, string $requestMethod, string $requestUrl, array $requestHeaders, array $tags)
+    {
+        $this->id = IssueId::fromString($id);
+        $this->projectId = ProjectId::fromString($projectId);
+        $this->request = Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->exception = Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->tags = $tags;
+    }
+
+    /**
+     * @return IssueId
+     */
+    public function getId(): IssueId
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return ProjectId
+     */
+    public function getProjectId(): ProjectId
+    {
+        return $this->projectId;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest(): Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * @return Exception
+     */
+    public function getException(): Exception
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags(): array
+    {
+        return $this->tags;
+    }
+}
