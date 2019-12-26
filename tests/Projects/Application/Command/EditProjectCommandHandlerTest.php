@@ -27,7 +27,7 @@ class EditProjectCommandHandlerTest extends TestCase
 {
     public function testEditProject()
     {
-        $id = uuid_create(UUID_TYPE_RANDOM);
+        $id = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
         $name = 'Cool project';
         $url = 'https://coolproject.dev';
         $newName = 'Cool project - modified';

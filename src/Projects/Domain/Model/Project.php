@@ -15,13 +15,38 @@ declare(strict_types=1);
 namespace App\Projects\Domain\Model;
 
 use App\Projects\Domain\Exception\ProjectAlreadyArchivedException;
+use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity()
+ */
 class Project
 {
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="string", length=36)
+     * @var string
+     */
     private string $id;
+
+    /**
+     * @ORM\Column(type="string", length=80)
+     * @var string
+     */
     private string $name;
+
+    /**
+     * @ORM\Column(type="string", length=80)
+     * @var string
+     */
     private string $url;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTimeImmutable
+     */
     private ?DateTimeImmutable $archivedAt;
 
     private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url)
@@ -67,6 +92,10 @@ class Project
 
     public function recover(): void
     {
+        if (!$this->isArchived()) {
+            throw new ProjectNotArchivedYetException();
+        }
+
         $this->archivedAt = null;
     }
 

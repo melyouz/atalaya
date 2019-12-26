@@ -16,11 +16,11 @@ namespace App\Shared\Domain\Model;
 
 use Assert\Assertion;
 
-abstract class Uuid extends AbstractValueObject
+class Uuid extends AbstractStringValueObject
 {
-    private string $value;
+    protected string $value;
 
-    private function __construct(string $value)
+    protected function __construct(string $value)
     {
         $this->value = $value;
     }
@@ -31,10 +31,5 @@ abstract class Uuid extends AbstractValueObject
         Assertion::uuid($value);
 
         return new static($value);
-    }
-
-    public function value(): string
-    {
-        return $this->value;
     }
 }

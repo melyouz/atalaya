@@ -14,25 +14,15 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
-use App\Shared\Domain\Model\AbstractValueObject;
+use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class TagValue extends AbstractValueObject
+class TagValue extends AbstractStringValueObject
 {
-    private string $value;
-
-    private function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-
     public static function fromString(string $value): self
     {
-        return new self($value);
-    }
+        Assertion::maxLength($value, self::MAX_LENGTH);
 
-    public function value(): string
-    {
-        return $this->value;
+        return new self($value);
     }
 }

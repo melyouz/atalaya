@@ -14,10 +14,29 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Embeddable()
+ */
 class Request
 {
+    /**
+     * @ORM\Column(type="string", length=6)
+     * @var string
+     */
     private string $method;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
     private string $url;
+
+    /**
+     * @ORM\Column(type="json")
+     * @var array
+     */
     private array $headers = [];
 
     private function __construct(RequestMethod $method, RequestUrl $url)

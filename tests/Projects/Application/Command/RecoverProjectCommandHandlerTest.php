@@ -27,7 +27,7 @@ class RecoverProjectCommandHandlerTest extends TestCase
 {
     public function testRecoverProject()
     {
-        $id = uuid_create(UUID_TYPE_RANDOM);
+        $id = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
         $name = 'Cool project';
         $url = 'https://coolproject.dev';
 
@@ -35,6 +35,7 @@ class RecoverProjectCommandHandlerTest extends TestCase
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
 
         $project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url));
+        $project->archive();
         $repoMock->expects($this->once())
             ->method('get')
             ->with(ProjectId::fromString($id))

@@ -14,9 +14,23 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Embeddable()
+ */
 class Exception
 {
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
     private string $class;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
     private string $message;
 
     private function __construct(ExceptionClass $class, ExceptionMessage $message)
