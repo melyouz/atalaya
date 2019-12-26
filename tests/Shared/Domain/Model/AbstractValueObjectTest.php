@@ -13,14 +13,14 @@
 namespace Tests\Shared\Domain\Model;
 
 
-use App\Shared\Domain\Model\AbstractValueObject;
+use App\Shared\Domain\Model\AbstractStringValueObject;
 use PHPUnit\Framework\TestCase;
 
-class AbstractValueObjectTest extends TestCase
+class AbstractStringValueObjectTest extends TestCase
 {
     public function testToString(): void
     {
-        $valueObjectMock = $this->getMockForAbstractClass(AbstractValueObject::class);
+        $valueObjectMock = $this->getMockForAbstractClass(AbstractStringValueObject::class, [], '', false, true, true, ['value']);
         $valueObjectMock->expects($this->any())
             ->method('value')
             ->willReturn('test-value');
@@ -30,17 +30,17 @@ class AbstractValueObjectTest extends TestCase
 
     public function testSameValueAs(): void
     {
-        $valueObjectMock1 = $this->getMockForAbstractClass(AbstractValueObject::class);
+        $valueObjectMock1 = $this->getMockForAbstractClass(AbstractStringValueObject::class, [], '', false, true, true, ['value']);
         $valueObjectMock1->expects($this->any())
             ->method('value')
             ->willReturn('test-value');
 
-        $valueObjectMock2 = $this->getMockForAbstractClass(AbstractValueObject::class);
+        $valueObjectMock2 = $this->getMockForAbstractClass(AbstractStringValueObject::class, [], '', false, true, true, ['value']);
         $valueObjectMock2->expects($this->any())
             ->method('value')
             ->willReturn('test-value');
 
-        $valueObjectMock3 = $this->getMockForAbstractClass(AbstractValueObject::class);
+        $valueObjectMock3 = $this->getMockForAbstractClass(AbstractStringValueObject::class, [], '', false, true, true, ['value']);
         $valueObjectMock3->expects($this->any())
             ->method('value')
             ->willReturn('test-value-different');

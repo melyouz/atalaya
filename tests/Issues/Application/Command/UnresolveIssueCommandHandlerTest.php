@@ -14,8 +14,9 @@ declare(strict_types=1);
 
 namespace Tests\Issues\Application\Command;
 
-use App\Issues\Application\Command\AddIssueCommand;
-use App\Issues\Application\Command\AddIssueCommandHandler;
+use App\Issues\Application\Command\UnresolveIssueCommand;
+use App\Issues\Application\Command\UnresolveIssueCommandHandler;
+use App\Issues\Domain\Exception\IssueNotResolvedYetException;
 use App\Issues\Domain\Model\Exception;
 use App\Issues\Domain\Model\ExceptionClass;
 use App\Issues\Domain\Model\ExceptionMessage;
@@ -28,9 +29,13 @@ use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Projects\Domain\Model\ProjectId;
 use PHPUnit\Framework\TestCase;
 
-class AddIssueCommandHandlerTest extends TestCase
+class UnresolveIssueCommandHandlerTest extends TestCase
 {
-    public function testAddIssue()
+    private Issue $issue;
+    private UnresolveIssueCommand $command;
+    private UnresolveIssueCommandHandler $handler;
+
+    protected function setUp()
     {
         $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
         $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
@@ -66,20 +71,33 @@ class AddIssueCommandHandlerTest extends TestCase
             'level' => 'error',
         ];
 
-        $command = new AddIssueCommand($id, $projectId, $exceptionClass, $exceptionMessage, $requestMethod, $requestUrl, $requestHeaders, $tags);
-        $expectedIssue = Issue::create(IssueId::fromString($id),
+        $this->issue = Issue::create(IssueId::fromString($id),
             ProjectId::fromString($projectId),
             Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders),
             Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage))
             , $tags
         );
 
+        $this->command = new UnresolveIssueCommand($id);
         $repoMock = $this->createMock(IssueRepositoryInterface::class);
         $repoMock->expects($this->once())
-            ->method('save')
-            ->with($expectedIssue);
+            ->method('get')
+            ->with(IssueId::fromString($id))
+            ->willReturn($this->issue);
 
-        $handler = new AddIssueCommandHandler($repoMock);
-        $handler->__invoke($command);
+        $this->handler = new UnresolveIssueCommandHandler($repoMock);
+    }
+
+    public function testUnresolveIssue()
+    {
+        $this->issue->resolve();
+        $this->handler->__invoke($this->command);
+        $this->assertFalse($this->issue->isResolved());
+    }
+
+    public function testIssueCannotBeUnresolvedWhenNotResolved()
+    {
+        $this->expectException(IssueNotResolvedYetException::class);
+        $this->handler->__invoke($this->command);
     }
 }

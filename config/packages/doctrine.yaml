@@ -16,9 +16,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Projects/Domain/Model'
                 prefix: 'App\Projects\Domain\Model'
                 alias: Projects
-            #Issues:
-            #    is_bundle: false
-            #    type: annotation
-                #    dir: '%kernel.project_dir%/src/Issues/Domain/Model'
-                #   prefix: 'App\Issues\Domain\Model'
-                # alias: Issues
+            Issues:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Issues/Domain/Model'
+                prefix: 'App\Issues\Domain\Model'
+                alias: Issues

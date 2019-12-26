@@ -14,22 +14,43 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity()
+ */
 class Tag
 {
-    private string $issueId;
+    /**
+     * @ORM\Id()
+     * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue", inversedBy="tags")
+     * @var Issue
+     */
+    private Issue $issue;
+
+    /**
+     * @ORM\Id()
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
     private string $name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
     private string $value;
 
-    private function __construct(IssueId $issueId, TagName $name, TagValue $value)
+    private function __construct(Issue $issue, TagName $name, TagValue $value)
     {
-        $this->issueId = $issueId->value();
+        $this->issue = $issue;
         $this->name = $name->value();
         $this->value = $value->value();
     }
 
-    public static function create(IssueId $issueId, TagName $name, TagValue $value)
+    public static function create(Issue $issue, TagName $name, TagValue $value)
     {
-        return new self($issueId, $name, $value);
+        return new self($issue, $name, $value);
     }
 
     public function getName(): TagName
@@ -41,30 +62,4 @@ class Tag
     {
         return TagValue::fromString($this->value);
     }
-
-    /**
-     * url https://localhost:8000/hello-there
-     *
-     * browser Chrome 78.0.3904
-     * browser.name Chrome
-     * browser.version 78.0.3904
-     *
-     * runtime php 7.3.4
-     * runtime.name php
-     * runtime.version 7.3.4
-     *
-     * os Windows NT 10.0
-     * os.name Windows NT
-     * os.version 10.0 (build 18363 (Windows 10))
-     * os.kernel_version Windows NT HOSTNAME 10.0 build 18363 (Windows 10) AMD64
-     *
-     * client_os.name Windows 10
-     * client_os.version
-     *
-     * environment dev
-     *
-     * server_name SERVERNAME
-     *
-     * level error
-     */
 }

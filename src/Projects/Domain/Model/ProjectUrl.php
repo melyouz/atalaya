@@ -14,29 +14,19 @@ declare(strict_types=1);
 
 namespace App\Projects\Domain\Model;
 
-use App\Shared\Domain\Model\AbstractValueObject;
+use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class ProjectUrl extends AbstractValueObject
+class ProjectUrl extends AbstractStringValueObject
 {
-    private string $value;
-
-    private function __construct(string $value)
-    {
-        $this->value = $value;
-    }
+    const MAX_LENGTH = 80;
 
     public static function fromString(string $value): self
     {
         Assertion::notBlank($value);
         Assertion::url($value);
-        Assertion::maxLength($value, 80);
+        Assertion::maxLength($value, self::MAX_LENGTH);
 
         return new self($value);
-    }
-
-    public function value(): string
-    {
-        return $this->value;
     }
 }

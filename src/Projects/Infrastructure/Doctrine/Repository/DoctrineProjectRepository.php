@@ -42,5 +42,6 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
     public function save(Project $project): void
     {
         $this->em->persist($project);
+        $this->em->flush();
     }
 }

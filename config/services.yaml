@@ -12,6 +12,7 @@ services:
             - '../src/**/Application/Command/*Command.php'
             - '../src/**/Presentation/**/Action/*Action.php'
             - '../src/**/Exception/*'
+            - '../migrations'
 
     App\Projects\Presentation\Api\Controller\:
         resource: '../src/Projects/Presentation/Api/Controller/*'
