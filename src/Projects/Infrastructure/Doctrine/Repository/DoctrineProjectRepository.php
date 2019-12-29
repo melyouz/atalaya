@@ -16,6 +16,7 @@ use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
+use App\Users\Domain\Model\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
@@ -30,6 +31,9 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
         $this->repo = $entityManager->getRepository(Project::class);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get(ProjectId $id): Project
     {
         if (!$project = $this->repo->find($id->value())) {
@@ -39,6 +43,17 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
         return $project;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function findAllByUserId(UserId $userId): array
+    {
+        return $this->repo->findBy(['userId' => $userId->value()]);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function save(Project $project): void
     {
         $this->em->persist($project);

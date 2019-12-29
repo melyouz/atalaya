@@ -29,7 +29,7 @@ class CreateProjectCommandHandler implements CommandHandlerInterface
 
     public function __invoke(CreateProjectCommand $command)
     {
-        $project = Project::create($command->getId(), $command->getName(), $command->getUrl());
+        $project = Project::create($command->getId(), $command->getName(), $command->getUrl(), $command->getUserId());
 
         $this->projectRepo->save($project);
     }

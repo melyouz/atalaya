@@ -18,6 +18,7 @@ use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
 use App\Projects\Domain\Model\ProjectUrl;
 use App\Shared\Application\Command\CommandInterface;
+use App\Users\Domain\Model\UserId;
 
 class CreateProjectCommand implements CommandInterface
 {
@@ -34,11 +35,17 @@ class CreateProjectCommand implements CommandInterface
      */
     private ProjectUrl $url;
 
-    public function __construct(string $id, string $name, string $url)
+    /**
+     * @var UserId
+     */
+    private UserId $userId;
+
+    public function __construct(string $id, string $name, string $url, string $userId)
     {
         $this->id = ProjectId::fromString($id);
         $this->name = ProjectName::fromString($name);
         $this->url = ProjectUrl::fromString($url);
+        $this->userId = UserId::fromString($userId);
     }
 
     /**
@@ -63,5 +70,13 @@ class CreateProjectCommand implements CommandInterface
     public function getUrl(): ProjectUrl
     {
         return $this->url;
+    }
+
+    /**
+     * @return UserId
+     */
+    public function getUserId(): UserId
+    {
+        return $this->userId;
     }
 }
