@@ -44,10 +44,10 @@ class Project
     private string $url;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable
      */
-    private ?DateTimeImmutable $archivedAt;
+    private ?DateTimeImmutable $archivedAt = null;
 
     private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url)
     {
@@ -59,26 +59,6 @@ class Project
     public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url): self
     {
         return new self($id, $name, $url);
-    }
-
-    public function getId(): ProjectId
-    {
-        return ProjectId::fromString($this->id);
-    }
-
-    public function getName(): ProjectName
-    {
-        return ProjectName::fromString($this->name);
-    }
-
-    public function getUrl(): ProjectUrl
-    {
-        return ProjectUrl::fromString($this->url);
-    }
-
-    public function isArchived(): bool
-    {
-        return !empty($this->archivedAt);
     }
 
     public function archive(): void
@@ -107,5 +87,25 @@ class Project
     public function changeUrl(ProjectUrl $newUrl): void
     {
         $this->url = $newUrl->value();
+    }
+
+    public function getId(): ProjectId
+    {
+        return ProjectId::fromString($this->id);
+    }
+
+    public function getName(): ProjectName
+    {
+        return ProjectName::fromString($this->name);
+    }
+
+    public function getUrl(): ProjectUrl
+    {
+        return ProjectUrl::fromString($this->url);
+    }
+
+    public function isArchived(): bool
+    {
+        return !empty($this->archivedAt);
     }
 }

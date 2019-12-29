@@ -22,3 +22,9 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Issues/Domain/Model'
                 prefix: 'App\Issues\Domain\Model'
                 alias: Issues
+            Users:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Users/Domain/Model'
+                prefix: 'App\Users\Domain\Model'
+                alias: Users
