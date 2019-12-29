@@ -61,6 +61,12 @@ class UserTest extends TestCase
         $this->assertEquals('WhateverEncodedPassword', $this->user->getPassword()->value());
     }
 
+    public function testRegisteredUserPasswordCannotBeSetTwice(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->user->setPassword(UserEncodedPassword::fromString('TestPassword'));
+    }
+
     public function testRegisteredUserHasDefaultRole(): void
     {
         $this->assertCount(1, $this->user->getRoles());

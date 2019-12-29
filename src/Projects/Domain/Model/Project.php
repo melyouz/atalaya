@@ -16,6 +16,7 @@ namespace App\Projects\Domain\Model;
 
 use App\Projects\Domain\Exception\ProjectAlreadyArchivedException;
 use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
+use App\Users\Domain\Model\UserId;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -49,16 +50,23 @@ class Project
      */
     private ?DateTimeImmutable $archivedAt = null;
 
-    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url)
+    /**
+     * @ORM\Column(type="string", length=36)
+     * @var string
+     */
+    private string $userId;
+
+    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, UserId $userId)
     {
         $this->id = $id->value();
         $this->name = $name->value();
         $this->url = $url->value();
+        $this->userId = $userId->value();
     }
 
-    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url): self
+    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, UserId $userId): self
     {
-        return new self($id, $name, $url);
+        return new self($id, $name, $url, $userId);
     }
 
     public function archive(): void

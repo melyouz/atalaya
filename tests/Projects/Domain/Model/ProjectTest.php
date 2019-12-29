@@ -16,6 +16,7 @@ use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
 use App\Projects\Domain\Model\ProjectUrl;
+use App\Users\Domain\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
 class ProjectTest extends TestCase
@@ -27,7 +28,8 @@ class ProjectTest extends TestCase
         $this->project = Project::create(
             ProjectId::fromString('9f6150ab-29b0-4523-8421-644f42487e47'),
             ProjectName::fromString('Awesome project'),
-            ProjectUrl::fromString('https://awesome-project.dev')
+            ProjectUrl::fromString('https://awesome-project.dev'),
+            UserId::fromString('3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f')
         );
     }
 
