@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace App\Users\Domain\Model;
 
 use App\Shared\Domain\Model\AbstractStringValueObject;
-use App\Shared\Domain\Model\ValueObjectInterface;
 use Assert\Assertion;
 
 class UserPlainPassword extends AbstractStringValueObject

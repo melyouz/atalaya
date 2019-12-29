@@ -38,6 +38,7 @@ class Exception
         $this->class = $class->value();
         $this->message = $message->value();
     }
+
     public static function create(ExceptionClass $class, ExceptionMessage $message)
     {
         return new self($class, $message);

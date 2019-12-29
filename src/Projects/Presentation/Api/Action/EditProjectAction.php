@@ -13,10 +13,10 @@
 declare(strict_types=1);
 
 namespace App\Projects\Presentation\Api\Action;
-use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Projects\Application\Command\EditProjectCommand;
 use App\Shared\Presentation\Http\Validation\ActionInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class EditProjectAction implements ActionInterface
 {

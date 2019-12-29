@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace App\Users\Domain\Repository;
 
-use App\Projects\Domain\Exception\ProjectNotFoundException;
-use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserEmail;

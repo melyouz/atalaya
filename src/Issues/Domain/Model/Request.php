@@ -47,7 +47,7 @@ class Request
 
     public static function create(RequestMethod $method, RequestUrl $url, array $headers = [])
     {
-        $request =  new self($method, $url);
+        $request = new self($method, $url);
         $request->addHeadersFromArray($headers);
 
         return $request;

@@ -20,7 +20,7 @@ use App\Users\Domain\Model\UserPlainPassword;
 interface UserPasswordEncoderInterface
 {
     /**
-     * @param User   $user
+     * @param User $user
      * @param UserPlainPassword $plainPassword
      *
      * @return string
