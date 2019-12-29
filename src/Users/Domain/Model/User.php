@@ -91,18 +91,6 @@ class User
     }
 
     /**
-     * @param UserEncodedPassword $password
-     */
-    public function setPassword(UserEncodedPassword $password): void
-    {
-        if (!empty($this->password)) {
-            throw new \InvalidArgumentException(sprintf('Password already set. Use User::changePassword() to change it.'));
-        }
-
-        $this->password = $password->value();
-    }
-
-    /**
      * @param UserName $name
      */
     public function changeName(UserName $name): void
@@ -135,6 +123,14 @@ class User
         $this->disabledAt = new DateTimeImmutable();
     }
 
+    /**
+     * @return bool
+     */
+    public function isDisabled(): bool
+    {
+        return !empty($this->disabledAt);
+    }
+
     public function recover(): void
     {
         if (!$this->isDisabled()) {
@@ -152,12 +148,43 @@ class User
         $this->addRole(self::ROLE_ADMIN);
     }
 
+    private function addRole(string $roleToAdd): void
+    {
+        if ($this->hasRole($roleToAdd)) {
+            throw UserRoleAlreadyAssignedException::fromRole($roleToAdd);
+        }
+
+        $this->roles[] = $roleToAdd;
+    }
+
+    /**
+     * @param string $role
+     * @return bool
+     */
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles);
+    }
+
     /**
      * @throws UserRoleNotAssignedException
      */
     public function demoteFromAdmin(): void
     {
         $this->removeRole(self::ROLE_ADMIN);
+    }
+
+    private function removeRole(string $roleToRemove): void
+    {
+        if (!$this->hasRole($roleToRemove)) {
+            throw UserRoleNotAssignedException::fromRole($roleToRemove);
+        }
+
+        $newRoles = array_filter($this->roles, function ($role) use ($roleToRemove) {
+            return $role !== $roleToRemove;
+        });
+
+        $this->roles = $newRoles;
     }
 
     /**
@@ -193,6 +220,18 @@ class User
     }
 
     /**
+     * @param UserEncodedPassword $password
+     */
+    public function setPassword(UserEncodedPassword $password): void
+    {
+        if (!empty($this->password)) {
+            throw new \InvalidArgumentException(sprintf('Password already set. Use User::changePassword() to change it.'));
+        }
+
+        $this->password = $password->value();
+    }
+
+    /**
      * @return array
      */
     public function getRoles(): array
@@ -201,49 +240,10 @@ class User
     }
 
     /**
-     * @param string $role
-     * @return bool
-     */
-    public function hasRole(string $role): bool
-    {
-        return in_array($role, $this->roles);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isDisabled(): bool
-    {
-        return !empty($this->disabledAt);
-    }
-
-    /**
      * @return bool
      */
     public function isAdmin(): bool
     {
         return $this->hasRole(self::ROLE_ADMIN);
-    }
-
-    private function addRole(string $roleToAdd): void
-    {
-        if ($this->hasRole($roleToAdd)) {
-            throw UserRoleAlreadyAssignedException::fromRole($roleToAdd);
-        }
-
-        $this->roles[] = $roleToAdd;
-    }
-
-    private function removeRole(string $roleToRemove): void
-    {
-        if (!$this->hasRole($roleToRemove)) {
-            throw UserRoleNotAssignedException::fromRole($roleToRemove);
-        }
-
-        $newRoles = array_filter($this->roles, function($role) use ($roleToRemove) {
-            return $role !== $roleToRemove;
-        });
-
-        $this->roles = $newRoles;
     }
 }

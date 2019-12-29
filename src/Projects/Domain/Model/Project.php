@@ -70,6 +70,11 @@ class Project
         $this->archivedAt = new DateTimeImmutable();
     }
 
+    public function isArchived(): bool
+    {
+        return !empty($this->archivedAt);
+    }
+
     public function recover(): void
     {
         if (!$this->isArchived()) {
@@ -102,10 +107,5 @@ class Project
     public function getUrl(): ProjectUrl
     {
         return ProjectUrl::fromString($this->url);
-    }
-
-    public function isArchived(): bool
-    {
-        return !empty($this->archivedAt);
     }
 }

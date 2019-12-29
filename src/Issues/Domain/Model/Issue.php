@@ -81,6 +81,24 @@ class Issue
         return $newIssue;
     }
 
+    public function addTagsFromArray(array $tags): void
+    {
+        if (empty($tags)) {
+            return;
+        }
+
+        foreach ($tags as $tagName => $tagValue) {
+            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+        }
+    }
+
+    public function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
     public function resolve(): void
     {
         if ($this->isResolved()) {
@@ -88,6 +106,11 @@ class Issue
         }
 
         $this->resolvedAt = new DateTimeImmutable();
+    }
+
+    public function isResolved(): bool
+    {
+        return !empty($this->resolvedAt);
     }
 
     public function unresolve(): void
@@ -117,28 +140,5 @@ class Issue
     public function getTags(): array
     {
         return $this->tags->toArray();
-    }
-
-    public function addTagsFromArray(array $tags): void
-    {
-        if (empty($tags)) {
-            return;
-        }
-
-        foreach($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
-        }
-    }
-
-    public function addTag(Tag $tag): void
-    {
-        if(!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
-    }
-
-    public function isResolved(): bool
-    {
-        return !empty($this->resolvedAt);
     }
 }
