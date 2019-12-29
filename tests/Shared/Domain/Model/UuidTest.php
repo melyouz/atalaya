@@ -12,12 +12,11 @@
 
 namespace Tests\Projects\Domain\Model;
 
-
-use App\Projects\Domain\Model\ProjectId;
+use App\Shared\Domain\Model\Uuid;
 use Assert\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class ProjectIdTest extends TestCase
+class UuidTest extends TestCase
 {
     /**
      * @dataProvider nonUuidProvider
@@ -26,7 +25,7 @@ class ProjectIdTest extends TestCase
     public function testNonUuidProjectIdShouldFail(string $fakeUuid): void
     {
         $this->expectException(InvalidArgumentException::class);
-        ProjectId::fromString($fakeUuid);
+        Uuid::fromString($fakeUuid);
     }
 
     /**
@@ -35,7 +34,7 @@ class ProjectIdTest extends TestCase
      */
     public function testUuidProjectIdShouldPass(string $uuid): void
     {
-        $projectId = ProjectId::fromString($uuid);
+        $projectId = Uuid::fromString($uuid);
         $this->assertEquals($uuid, $projectId->value());
     }
 

@@ -11,7 +11,7 @@ final class Version20191226151613 extends AbstractMigration
 {
     public function getDescription() : string
     {
-        return '';
+        return 'Create issue and tag tables';
     }
 
     public function up(Schema $schema) : void

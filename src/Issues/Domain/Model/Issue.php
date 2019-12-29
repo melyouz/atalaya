@@ -59,7 +59,7 @@ class Issue
     private Collection $tags;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable
      */
     private ?DateTimeImmutable $resolvedAt;
@@ -79,6 +79,24 @@ class Issue
         $newIssue->addTagsFromArray($tags);
 
         return $newIssue;
+    }
+
+    public function resolve(): void
+    {
+        if ($this->isResolved()) {
+            throw new IssueAlreadyResolvedException();
+        }
+
+        $this->resolvedAt = new DateTimeImmutable();
+    }
+
+    public function unresolve(): void
+    {
+        if (!$this->isResolved()) {
+            throw new IssueNotResolvedYetException();
+        }
+
+        $this->resolvedAt = null;
     }
 
     public function getId(): IssueId
@@ -122,23 +140,5 @@ class Issue
     public function isResolved(): bool
     {
         return !empty($this->resolvedAt);
-    }
-
-    public function resolve(): void
-    {
-        if ($this->isResolved()) {
-            throw new IssueAlreadyResolvedException();
-        }
-
-        $this->resolvedAt = new DateTimeImmutable();
-    }
-
-    public function unresolve(): void
-    {
-        if (!$this->isResolved()) {
-            throw new IssueNotResolvedYetException();
-        }
-
-        $this->resolvedAt = null;
     }
 }

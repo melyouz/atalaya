@@ -34,7 +34,7 @@ class Request
     private string $url;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="array")
      * @var array
      */
     private array $headers = [];
