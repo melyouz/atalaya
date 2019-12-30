@@ -14,10 +14,12 @@ declare(strict_types=1);
 
 namespace Tests\Projects\Application\Command;
 
+use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
 use App\Users\Domain\Model\UserEncodedPassword;
 use App\Users\Domain\Model\UserId;
@@ -34,7 +36,7 @@ class RegisterUserCommandHandlerTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $plainPassword = 'WhateverPlainPassword';
         $encodedPassword = 'WhateverEncodedPassword';
-        $userWithoutPassword = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email));
+        $userWithoutPassword = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
 
         $command = new RegisterUserCommand($id, $name, $email, $plainPassword);
 
@@ -51,7 +53,12 @@ class RegisterUserCommandHandlerTest extends TestCase
             ->method('save')
             ->with($userWithPassword);
 
-        $handler = new RegisterUserCommandHandler($repoMock, $userPasswordEncoderMock);
+        $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
+        $tokenGeneratorMock->expects($this->once())
+            ->method('randomToken')
+            ->willReturn('someRandomToken');
+
+        $handler = new RegisterUserCommandHandler($repoMock, $userPasswordEncoderMock, $tokenGeneratorMock);
         $handler->__invoke($command);
     }
 }

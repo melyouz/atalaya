@@ -19,6 +19,7 @@ use App\Users\Application\Command\DemoteUserFromAdminCommandHandler;
 use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
 use App\Users\Domain\Model\UserEncodedPassword;
 use App\Users\Domain\Model\UserId;
@@ -39,7 +40,7 @@ class DemoteUserFromAdminCommandHandlerTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $encodedPassword = 'WhateverEncodedPassword';
 
-        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email));
+        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
         $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
         $this->command = new DemoteUserFromAdminCommand($id);
         $repoMock = $this->createMock(UserRepositoryInterface::class);

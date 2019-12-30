@@ -67,27 +67,36 @@ class User
     private ?DateTimeImmutable $disabledAt;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string|null
+     */
+    private ?string $confirmationToken;
+
+    /**
      * User constructor.
      * @param UserId $id
      * @param UserName $name
      * @param UserEmail $email
+     * @param UserConfirmationToken $confirmationToken
      */
-    private function __construct(UserId $id, UserName $name, UserEmail $email)
+    private function __construct(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken)
     {
         $this->id = $id->value();
         $this->name = $name->value();
         $this->email = $email->value();
+        $this->confirmationToken = $confirmationToken->value();
     }
 
     /**
      * @param UserId $id
      * @param UserName $name
      * @param UserEmail $email
+     * @param UserConfirmationToken $confirmationToken
      * @return $this
      */
-    public static function register(UserId $id, UserName $name, UserEmail $email): self
+    public static function register(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken): self
     {
-        return new self($id, $name, $email);
+        return new self($id, $name, $email, $confirmationToken);
     }
 
     /**
@@ -138,6 +147,19 @@ class User
         }
 
         $this->disabledAt = null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmed(): bool
+    {
+        return empty($this->confirmationToken);
+    }
+
+    public function confirm(): void
+    {
+        $this->confirmationToken = null;
     }
 
     /**
