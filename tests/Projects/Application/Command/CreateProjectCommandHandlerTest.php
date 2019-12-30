@@ -39,12 +39,12 @@ class CreateProjectCommandHandlerTest extends TestCase
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('save')
-            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('RandomToken'), UserId::fromString($userId)));
+            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), UserId::fromString($userId)));
 
         $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
         $tokenGeneratorMock->expects($this->once())
             ->method('md5RandomToken')
-            ->willReturn('RandomToken');
+            ->willReturn('d15e6e18cd0a8ef2672e0f392368cc56');
 
         $handler = new CreateProjectCommandHandler($repoMock, $tokenGeneratorMock);
         $handler->__invoke($command);

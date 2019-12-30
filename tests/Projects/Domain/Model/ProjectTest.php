@@ -30,7 +30,7 @@ class ProjectTest extends TestCase
             ProjectId::fromString('9f6150ab-29b0-4523-8421-644f42487e47'),
             ProjectName::fromString('Awesome project'),
             ProjectUrl::fromString('https://awesome-project.dev'),
-            ProjectToken::fromString('RandomToken'),
+            ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'),
             UserId::fromString('3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f')
         );
     }
