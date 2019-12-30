@@ -1,0 +1,35 @@
+<?php
+/**
+ *
+ * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
+ *
+ * @link      https://github.com/ayrad
+ *
+ * @licence   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ */
+
+namespace Tests\Shared\Infrastructure\Symfony\Bus;
+
+use App\Shared\Application\Command\CommandInterface;
+use App\Shared\Infrastructure\Symfony\Bus\CommandBus;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+class CommandBusTest extends TestCase
+{
+    public function testDispatch(): void
+    {
+        $commandMock = $this->createMock(CommandInterface::class);
+        $symfonyMessageBusMock = $this->createMock(MessageBusInterface::class);
+        $symfonyMessageBusMock->expects($this->once())
+            ->method('dispatch')
+            ->with($commandMock)
+            ->willReturn(new Envelope($commandMock));
+
+        $commandBus = new CommandBus($symfonyMessageBusMock);
+        $commandBus->dispatch($commandMock);
+    }
+}
