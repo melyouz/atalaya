@@ -18,6 +18,7 @@ use App\Users\Application\Command\EditUserCommand;
 use App\Users\Application\Command\EditUserCommandHandler;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
 use App\Users\Domain\Model\UserEncodedPassword;
 use App\Users\Domain\Model\UserId;
@@ -32,17 +33,16 @@ class EditUserCommandHandlerTest extends TestCase
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
         $name = 'John Doe';
         $email = 'johndoe@awesome-project.dev';
-        $plainPassword = 'WhateverPlainPassword';
         $encodedPassword = 'WhateverEncodedPassword';
         $newName = 'Jane Doe';
         $newEmail = 'janedoe@awesome-project.dev';
         $newPlainPassword = '-_-WhateverPlainPassword-_-';
         $newEncodedPassword = '-_-WhateverEncodedPassword-_-';
 
-        $user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email));
+        $user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
         $user->setPassword(UserEncodedPassword::fromString($encodedPassword));
 
-        $newUser = User::register(UserId::fromString($id), UserName::fromString($newName), UserEmail::fromString($newEmail));
+        $newUser = User::register(UserId::fromString($id), UserName::fromString($newName), UserEmail::fromString($newEmail), UserConfirmationToken::fromString('someRandomToken'));
         $newUser->setPassword(UserEncodedPassword::fromString($newEncodedPassword));
 
         $command = new EditUserCommand($id, $newName, $newEmail, $newPlainPassword);
