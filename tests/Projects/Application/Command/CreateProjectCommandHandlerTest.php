@@ -19,8 +19,10 @@ use App\Projects\Application\Command\CreateProjectCommandHandler;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Projects\Domain\Model\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
+use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Domain\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
@@ -37,9 +39,14 @@ class CreateProjectCommandHandlerTest extends TestCase
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('save')
-            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), UserId::fromString($userId)));
+            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('RandomToken'), UserId::fromString($userId)));
 
-        $handler = new CreateProjectCommandHandler($repoMock);
+        $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
+        $tokenGeneratorMock->expects($this->once())
+            ->method('md5RandomToken')
+            ->willReturn('RandomToken');
+
+        $handler = new CreateProjectCommandHandler($repoMock, $tokenGeneratorMock);
         $handler->__invoke($command);
     }
 }

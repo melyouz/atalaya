@@ -19,6 +19,7 @@ use App\Projects\Application\Command\EditProjectCommandHandler;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Projects\Domain\Model\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Users\Domain\Model\UserId;
@@ -41,11 +42,11 @@ class EditProjectCommandHandlerTest extends TestCase
         $repoMock->expects($this->once())
             ->method('get')
             ->with(ProjectId::fromString($id))
-            ->willReturn(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), UserId::fromString($userId)));
+            ->willReturn(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('RandomToken'), UserId::fromString($userId)));
 
         $repoMock->expects($this->once())
             ->method('save')
-            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($newName), ProjectUrl::fromString($newUrl), UserId::fromString($userId)));
+            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($newName), ProjectUrl::fromString($newUrl), ProjectToken::fromString('RandomToken'), UserId::fromString($userId)));
 
         $handler = new EditProjectCommandHandler($repoMock);
         $handler->__invoke($command);

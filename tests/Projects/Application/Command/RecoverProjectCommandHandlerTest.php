@@ -20,6 +20,7 @@ use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Projects\Domain\Model\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Users\Domain\Model\UserId;
@@ -38,7 +39,7 @@ class RecoverProjectCommandHandlerTest extends TestCase
         $url = 'https://coolproject.dev';
         $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
 
-        $this->project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), UserId::fromString($userId));
+        $this->project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('RandomToken'), UserId::fromString($userId));
         $this->command = new RecoverProjectCommand($id);
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
