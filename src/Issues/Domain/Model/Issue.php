@@ -16,6 +16,7 @@ namespace App\Issues\Domain\Model;
 
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
+use App\Issues\Domain\Exception\TagNotFoundException;
 use App\Projects\Domain\Model\ProjectId;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -76,27 +77,12 @@ class Issue
     public static function create(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = []): self
     {
         $newIssue = new self($id, $projectId, $request, $exception);
-        $newIssue->addTagsFromArray($tags);
+
+        if (!empty($tags)) {
+            $newIssue->addTagsFromArray($tags);
+        }
 
         return $newIssue;
-    }
-
-    public function addTagsFromArray(array $tags): void
-    {
-        if (empty($tags)) {
-            return;
-        }
-
-        foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
-        }
-    }
-
-    public function addTag(Tag $tag): void
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
     }
 
     public function resolve(): void
@@ -140,5 +126,48 @@ class Issue
     public function getTags(): array
     {
         return $this->tags->toArray();
+    }
+
+    /**
+     * @param TagName $tagName
+     * @return bool
+     */
+    public function hasTag(TagName $tagName): bool
+    {
+        $result = array_filter($this->tags->toArray(), function (Tag $tag) use ($tagName) {
+            return $tag->getName()->sameValueAs($tagName);
+        });
+
+        return count($result) > 0;
+    }
+
+    /**
+     * @param TagName $tagName
+     * @return TagValue|null
+     * @throws TagNotFoundException
+     */
+    public function getTagValue(TagName $tagName): ?TagValue
+    {
+        foreach($this->tags as $tag) {
+            if ($tag->getName()->sameValueAs($tagName)) {
+                return $tag->getValue();
+            }
+        }
+
+        throw new TagNotFoundException();
+    }
+
+    private function addTagsFromArray(array $tags): void
+    {
+        foreach ($tags as $tagName => $tagValue) {
+            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+        }
+    }
+
+    private function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
     }
 }

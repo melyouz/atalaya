@@ -48,18 +48,12 @@ class Request
     public static function create(RequestMethod $method, RequestUrl $url, array $headers = [])
     {
         $request = new self($method, $url);
-        $request->addHeadersFromArray($headers);
 
-        return $request;
-    }
-
-    public function addHeadersFromArray(array $headers)
-    {
-        if (empty($headers)) {
-            return;
+        if (!empty($headers)) {
+            $request->addHeadersFromArray($headers);
         }
 
-        $this->headers = array_merge($this->headers, $headers);
+        return $request;
     }
 
     public function getMethod(): RequestMethod
@@ -75,5 +69,10 @@ class Request
     public function getHeaders(): array
     {
         return $this->headers;
+    }
+
+    private function addHeadersFromArray(array $headers)
+    {
+        $this->headers = array_merge($this->headers, $headers);
     }
 }
