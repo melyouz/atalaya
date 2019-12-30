@@ -45,6 +45,12 @@ class Project
     private string $url;
 
     /**
+     * @ORM\Column(type="string", length=32)
+     * @var string
+     */
+    private string $token;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable
      */
@@ -56,17 +62,26 @@ class Project
      */
     private string $userId;
 
-    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, UserId $userId)
+    /**
+     * Project constructor.
+     * @param ProjectId $id
+     * @param ProjectName $name
+     * @param ProjectUrl $url
+     * @param ProjectToken $token
+     * @param UserId $userId
+     */
+    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId)
     {
         $this->id = $id->value();
         $this->name = $name->value();
         $this->url = $url->value();
+        $this->token = $token->value();
         $this->userId = $userId->value();
     }
 
-    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, UserId $userId): self
+    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId): self
     {
-        return new self($id, $name, $url, $userId);
+        return new self($id, $name, $url, $token, $userId);
     }
 
     public function archive(): void
