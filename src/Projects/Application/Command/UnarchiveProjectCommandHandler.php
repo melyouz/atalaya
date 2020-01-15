@@ -17,7 +17,7 @@ namespace App\Projects\Application\Command;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
-class RecoverProjectCommandHandler implements CommandHandlerInterface
+class UnarchiveProjectCommandHandler implements CommandHandlerInterface
 {
     private ProjectRepositoryInterface $projectRepo;
 
@@ -26,10 +26,10 @@ class RecoverProjectCommandHandler implements CommandHandlerInterface
         $this->projectRepo = $projectRepo;
     }
 
-    public function __invoke(RecoverProjectCommand $command)
+    public function __invoke(UnarchiveProjectCommand $command)
     {
         $project = $this->projectRepo->get($command->getId());
-        $project->recover();
+        $project->unarchive();
 
         $this->projectRepo->save($project);
     }

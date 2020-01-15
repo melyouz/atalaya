@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace Tests\Projects\Application\Command;
 
-use App\Projects\Application\Command\RecoverProjectCommand;
-use App\Projects\Application\Command\RecoverProjectCommandHandler;
+use App\Projects\Application\Command\UnarchiveProjectCommand;
+use App\Projects\Application\Command\UnarchiveProjectCommandHandler;
 use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
@@ -26,11 +26,11 @@ use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Users\Domain\Model\UserId;
 use PHPUnit\Framework\TestCase;
 
-class RecoverProjectCommandHandlerTest extends TestCase
+class UnarchiveProjectCommandHandlerTest extends TestCase
 {
     private Project $project;
-    private RecoverProjectCommand $command;
-    private RecoverProjectCommandHandler $handler;
+    private UnarchiveProjectCommand $command;
+    private UnarchiveProjectCommandHandler $handler;
 
     protected function setUp()
     {
@@ -40,24 +40,24 @@ class RecoverProjectCommandHandlerTest extends TestCase
         $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
 
         $this->project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), UserId::fromString($userId));
-        $this->command = new RecoverProjectCommand($id);
+        $this->command = new UnarchiveProjectCommand($id);
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('get')
             ->with(ProjectId::fromString($id))
             ->willReturn($this->project);
 
-        $this->handler = new RecoverProjectCommandHandler($repoMock);
+        $this->handler = new UnarchiveProjectCommandHandler($repoMock);
     }
 
-    public function testRecoverProject()
+    public function testUnarchiveProject()
     {
         $this->project->archive();
         $this->handler->__invoke($this->command);
         $this->assertFalse($this->project->isArchived());
     }
 
-    public function testProjectCannotBeRecoveredIfNotArchivedYet()
+    public function testProjectCannotBeUnarchivedIfNotArchivedYet()
     {
         $this->expectException(ProjectNotArchivedYetException::class);
         $this->handler->__invoke($this->command);

@@ -15,7 +15,7 @@ namespace App\Users\Application\Command;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
-class RecoverUserCommandHandler implements CommandHandlerInterface
+class EnableUserCommandHandler implements CommandHandlerInterface
 {
     /**
      * @var UserRepositoryInterface
@@ -27,10 +27,10 @@ class RecoverUserCommandHandler implements CommandHandlerInterface
         $this->userRepo = $userRepo;
     }
 
-    public function __invoke(RecoverUserCommand $command)
+    public function __invoke(EnableUserCommand $command)
     {
         $user = $this->userRepo->get($command->getId());
-        $user->recover();
+        $user->enable();
 
         $this->userRepo->save($user);
     }

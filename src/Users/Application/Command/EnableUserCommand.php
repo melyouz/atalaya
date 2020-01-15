@@ -15,7 +15,7 @@ namespace App\Users\Application\Command;
 use App\Shared\Application\Command\CommandInterface;
 use App\Users\Domain\Model\UserId;
 
-class RecoverUserCommand implements CommandInterface
+class EnableUserCommand implements CommandInterface
 {
     /**
      * @var UserId
