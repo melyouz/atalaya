@@ -140,7 +140,7 @@ class User
         return !empty($this->disabledAt);
     }
 
-    public function recover(): void
+    public function enable(): void
     {
         if (!$this->isDisabled()) {
             throw new UserNotDisabledYetException();

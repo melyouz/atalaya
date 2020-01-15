@@ -98,7 +98,7 @@ class Project
         return !empty($this->archivedAt);
     }
 
-    public function recover(): void
+    public function unarchive(): void
     {
         if (!$this->isArchived()) {
             throw new ProjectNotArchivedYetException();

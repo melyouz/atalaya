@@ -17,7 +17,7 @@ namespace App\Projects\Application\Command;
 use App\Projects\Domain\Model\ProjectId;
 use App\Shared\Application\Command\CommandInterface;
 
-class RecoverProjectCommand implements CommandInterface
+class UnarchiveProjectCommand implements CommandInterface
 {
     /**
      * @var ProjectId
