@@ -28,17 +28,17 @@ class EditProjectCommand implements CommandInterface
     /**
      * @var ProjectName
      */
-    private ProjectName $name;
+    private ?ProjectName $name;
     /**
      * @var ProjectUrl
      */
-    private ProjectUrl $url;
+    private ?ProjectUrl $url;
 
-    public function __construct(string $id, string $name, string $url)
+    public function __construct(string $id, ?string $name, ?string $url)
     {
         $this->id = ProjectId::fromString($id);
-        $this->name = ProjectName::fromString($name);
-        $this->url = ProjectUrl::fromString($url);
+        $this->name = ($name ? ProjectName::fromString($name) : null);
+        $this->url = ($url ? ProjectUrl::fromString($url) : null);
     }
 
     /**
@@ -52,7 +52,7 @@ class EditProjectCommand implements CommandInterface
     /**
      * @return ProjectName
      */
-    public function getName(): ProjectName
+    public function getName(): ?ProjectName
     {
         return $this->name;
     }
@@ -60,7 +60,7 @@ class EditProjectCommand implements CommandInterface
     /**
      * @return ProjectUrl
      */
-    public function getUrl(): ProjectUrl
+    public function getUrl(): ?ProjectUrl
     {
         return $this->url;
     }

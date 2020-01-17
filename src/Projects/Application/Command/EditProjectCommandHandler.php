@@ -31,8 +31,14 @@ class EditProjectCommandHandler implements CommandHandlerInterface
     {
         try {
             $project = $this->projectRepo->get($command->getId());
-            $project->changeName($command->getName());
-            $project->changeUrl($command->getUrl());
+
+            if ($command->getName() && !$project->getName()->sameValueAs($command->getName())) {
+                $project->changeName($command->getName());
+            }
+
+            if ($command->getUrl() && !$project->getUrl()->sameValueAs($command->getUrl())) {
+                $project->changeUrl($command->getUrl());
+            }
 
             $this->projectRepo->save($project);
         } catch (ProjectNotFoundException $e) {
