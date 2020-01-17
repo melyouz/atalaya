@@ -73,7 +73,7 @@ class DoctrineUserRepository implements UserRepositoryInterface
      */
     public function emailExists(UserEmail $email): bool
     {
-        return (bool) $this->repo->findOneBy(['email' => $email->value()]);
+        return (bool)$this->repo->findOneBy(['email' => $email->value()]);
     }
 
     /**

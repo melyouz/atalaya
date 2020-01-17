@@ -19,6 +19,15 @@ class TokenGenerator
     public const DEFAULT_LENGTH = 32;
 
     /**
+     * @return string
+     * @throws \Exception
+     */
+    public function md5RandomToken(): string
+    {
+        return md5($this->randomToken());
+    }
+
+    /**
      * @param int $length
      * @return string
      * @throws \Exception
@@ -26,14 +35,5 @@ class TokenGenerator
     public function randomToken(int $length = self::DEFAULT_LENGTH): string
     {
         return bin2hex(random_bytes($length / 2));
-    }
-
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function md5RandomToken(): string
-    {
-        return md5($this->randomToken());
     }
 }

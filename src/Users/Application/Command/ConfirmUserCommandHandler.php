@@ -13,7 +13,6 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class ConfirmUserCommandHandler implements CommandHandlerInterface

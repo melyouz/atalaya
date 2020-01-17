@@ -85,6 +85,20 @@ class Issue
         return $newIssue;
     }
 
+    private function addTagsFromArray(array $tags): void
+    {
+        foreach ($tags as $tagName => $tagValue) {
+            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+        }
+    }
+
+    private function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
     public function resolve(): void
     {
         if ($this->isResolved()) {
@@ -148,26 +162,12 @@ class Issue
      */
     public function getTagValue(TagName $tagName): ?TagValue
     {
-        foreach($this->tags as $tag) {
+        foreach ($this->tags as $tag) {
             if ($tag->getName()->sameValueAs($tagName)) {
                 return $tag->getValue();
             }
         }
 
         throw new TagNotFoundException();
-    }
-
-    private function addTagsFromArray(array $tags): void
-    {
-        foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
-        }
-    }
-
-    private function addTag(Tag $tag): void
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
     }
 }

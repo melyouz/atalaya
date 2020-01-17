@@ -36,7 +36,7 @@ class EnableUserCommandHandler implements CommandHandlerInterface
             $user = $this->userRepo->get($command->getId());
             $user->enable();
             $this->userRepo->save($user);
-        } catch(UserNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             // noop
         } catch (UserNotDisabledYetException $e) {
             // noop

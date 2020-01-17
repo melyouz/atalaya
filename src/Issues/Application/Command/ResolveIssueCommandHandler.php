@@ -35,7 +35,7 @@ class ResolveIssueCommandHandler implements CommandHandlerInterface
             $issue = $this->issueRepo->get($command->getId());
             $issue->resolve();
             $this->issueRepo->save($issue);
-        } catch(IssueNotFoundException $e) {
+        } catch (IssueNotFoundException $e) {
             // noop
         } catch (IssueAlreadyResolvedException $e) {
             // noop
