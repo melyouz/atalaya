@@ -36,7 +36,7 @@ class UnarchiveProjectCommandHandler implements CommandHandlerInterface
             $this->projectRepo->save($project);
         } catch (ProjectNotFoundException $e) {
             // noop
-        }  catch (ProjectNotArchivedYetException $e) {
+        } catch (ProjectNotArchivedYetException $e) {
             // noop
         }
     }

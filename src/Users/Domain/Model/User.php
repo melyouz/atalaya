@@ -227,14 +227,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return UserEmail
-     */
-    public function getEmail(): UserEmail
-    {
-        return UserEmail::fromString($this->email);
-    }
-
-    /**
      * @return UserEncodedPassword
      */
     public function getPassword(): UserEncodedPassword
@@ -283,6 +275,14 @@ class User implements UserInterface
     public function getUsername(): string
     {
         return $this->getEmail()->value();
+    }
+
+    /**
+     * @return UserEmail
+     */
+    public function getEmail(): UserEmail
+    {
+        return UserEmail::fromString($this->email);
     }
 
     /**

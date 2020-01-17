@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace App\Shared\Presentation\Api\Validation;
 
-use App\Shared\Application\Command\CommandInterface;
-
 interface InputDtoInterface
 {
 }

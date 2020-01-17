@@ -19,7 +19,6 @@ use App\Shared\Presentation\Api\Controller\AbstractApiController;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\EditUserCommand;
 use App\Users\Presentation\Api\Input\EditUserInput;
-use App\Users\Presentation\Api\Input\RegisterUserInput;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditUserController extends AbstractController

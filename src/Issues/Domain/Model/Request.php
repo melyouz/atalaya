@@ -56,6 +56,11 @@ class Request
         return $request;
     }
 
+    private function addHeadersFromArray(array $headers)
+    {
+        $this->headers = array_merge($this->headers, $headers);
+    }
+
     public function getMethod(): RequestMethod
     {
         return RequestMethod::fromString($this->method);
@@ -69,10 +74,5 @@ class Request
     public function getHeaders(): array
     {
         return $this->headers;
-    }
-
-    private function addHeadersFromArray(array $headers)
-    {
-        $this->headers = array_merge($this->headers, $headers);
     }
 }
