@@ -14,6 +14,7 @@ namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\UserEncodedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
@@ -35,23 +36,30 @@ class EditUserCommandHandler implements CommandHandlerInterface
         $this->userPasswordEncoder = $userPasswordEncoder;
     }
 
-    public function __invoke(EditUserCommand $command)
+    public function __invoke(EditUserCommand $command): void
     {
-        $user = $this->userRepo->get($command->getId());
-        $encodedPassword = UserEncodedPassword::fromString($this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword()));
+        try {
+            $user = $this->userRepo->get($command->getId());
 
-        if (!$user->getName()->sameValueAs($command->getName())) {
-            $user->changeName($command->getName());
+            if ($command->getName() && !$user->getName()->sameValueAs($command->getName())) {
+                $user->changeName($command->getName());
+            }
+
+            if ($command->getEmail() && !$user->getEmail()->sameValueAs($command->getEmail())) {
+                $user->changeEmail($command->getEmail());
+            }
+
+            if ($command->getPlainPassword()) {
+                $encodedPassword = UserEncodedPassword::fromString($this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword()));
+
+                if (!$user->getPassword()->sameValueAs($encodedPassword)) {
+                    $user->changePassword($encodedPassword);
+                }
+            }
+
+            $this->userRepo->save($user);
+        } catch (UserNotFoundException $e) {
+            // noop
         }
-
-        if (!$user->getEmail()->sameValueAs($command->getEmail())) {
-            $user->changeEmail($command->getEmail());
-        }
-
-        if (!$user->getPassword()->sameValueAs($encodedPassword)) {
-            $user->changePassword($encodedPassword);
-        }
-
-        $this->userRepo->save($user);
     }
 }

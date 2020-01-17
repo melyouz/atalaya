@@ -12,27 +12,29 @@
 
 declare(strict_types=1);
 
-namespace App\Projects\Presentation\Api\Action;
+namespace App\Users\Presentation\Api\Input;
 
-use App\Projects\Application\Command\EditProjectCommand;
-use App\Shared\Presentation\Http\Validation\ActionInterface;
+use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EditProjectAction implements ActionInterface
+class RegisterUserInput implements InputDtoInterface
 {
     /**
      * @Assert\NotBlank()
+     * @Assert\Length(max="255")
      */
     public string $name;
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Url()
+     * @Assert\Email()
+     * @Assert\Length(max="255")
      */
-    public string $url;
+    public string $email;
 
-    public function toCommand(): EditProjectCommand
-    {
-        return new EditProjectCommand(uuid_create(UUID_TYPE_RANDOM), $this->name, $this->url);
-    }
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255")
+     */
+    public string $password;
 }

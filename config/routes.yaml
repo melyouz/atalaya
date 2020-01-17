@@ -1,12 +1,28 @@
-# Projects
-projects_api_get_collection:
-    path: /api/projects
-    controller: App\Projects\Presentation\Api\Controller\GetProjectsController
-    methods:  [GET]
-
-projects_api_post:
-    path: /api/projects
-    controller: App\Projects\Presentation\Api\Controller\PostProjectController
+# Users
+users_register:
+    path: /api/users
+    controller: App\Users\Presentation\Api\Controller\RegisterUserController
     methods:  [POST]
 
+users_edit:
+    path: /api/users/{id}
+    controller: App\Users\Presentation\Api\Controller\EditUserController
+    methods:  [PATCH]
+
+users_confirm:
+    path: /api/users/{token}/confirm
+    controller: App\Users\Presentation\Api\Controller\ConfirmUserController
+    methods:  [PATCH]
+
+users_disable:
+    path: /api/users/{id}/disable
+    controller: App\Users\Presentation\Api\Controller\DisableUserController
+    methods:  [PATCH]
+
+users_enable:
+    path: /api/users/{id}/enable
+    controller: App\Users\Presentation\Api\Controller\EnableUserController
+    methods:  [PATCH]
+
+# Projects
 # Issues

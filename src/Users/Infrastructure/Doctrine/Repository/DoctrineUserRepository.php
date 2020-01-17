@@ -14,6 +14,7 @@ namespace App\Users\Infrastructure\Doctrine\Repository;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
 use App\Users\Domain\Model\UserId;
 use App\Users\Domain\Repository\UserRepositoryInterface;
@@ -53,6 +54,26 @@ class DoctrineUserRepository implements UserRepositoryInterface
         }
 
         return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getByToken(UserConfirmationToken $token): User
+    {
+        if (!$user = $this->repo->findOneBy(['confirmationToken' => $token->value()])) {
+            throw new UserNotFoundException();
+        }
+
+        return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function emailExists(UserEmail $email): bool
+    {
+        return (bool) $this->repo->findOneBy(['email' => $email->value()]);
     }
 
     /**

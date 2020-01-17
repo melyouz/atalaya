@@ -13,25 +13,26 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandInterface;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserId;
 
 class ConfirmUserCommand implements CommandInterface
 {
     /**
-     * @var UserId
+     * @var UserConfirmationToken
      */
-    private UserId $id;
+    private UserConfirmationToken $token;
 
-    public function __construct(string $id)
+    public function __construct(string $token)
     {
-        $this->id = UserId::fromString($id);
+        $this->token = UserConfirmationToken::fromString($token);
     }
 
     /**
-     * @return UserId
+     * @return UserConfirmationToken
      */
-    public function getId(): UserId
+    public function getToken(): UserConfirmationToken
     {
-        return $this->id;
+        return $this->token;
     }
 }

@@ -18,6 +18,7 @@ use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
@@ -52,6 +53,11 @@ class RegisterUserCommandHandlerTest extends TestCase
         $repoMock->expects($this->once())
             ->method('save')
             ->with($userWithPassword);
+
+        $repoMock->expects($this->once())
+            ->method('emailExists')
+            ->with(UserEmail::fromString($email))
+            ->willReturn(false);
 
         $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
         $tokenGeneratorMock->expects($this->once())

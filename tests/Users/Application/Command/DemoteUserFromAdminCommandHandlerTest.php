@@ -58,10 +58,4 @@ class DemoteUserFromAdminCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertFalse($this->user->isAdmin());
     }
-
-    public function testUserCannotBeDemotedTwice()
-    {
-        $this->expectException(UserRoleNotAssignedException::class);
-        $this->handler->__invoke($this->command);
-    }
 }

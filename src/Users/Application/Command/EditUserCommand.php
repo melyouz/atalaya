@@ -28,24 +28,24 @@ class EditUserCommand implements CommandInterface
     /**
      * @var UserName
      */
-    private UserName $name;
+    private ?UserName $name;
 
     /**
      * @var UserEmail
      */
-    private UserEmail $email;
+    private ?UserEmail $email;
 
     /**
      * @var UserPlainPassword
      */
-    private UserPlainPassword $plainPassword;
+    private ?UserPlainPassword $plainPassword;
 
-    public function __construct(string $id, string $name, string $email, string $plainPassword)
+    public function __construct(string $id, ?string $name, ?string $email, ?string $plainPassword)
     {
         $this->id = UserId::fromString($id);
-        $this->name = UserName::fromString($name);
-        $this->email = UserEmail::fromString($email);
-        $this->plainPassword = UserPlainPassword::fromString($plainPassword);
+        $this->name = ($name ? UserName::fromString($name) : null);
+        $this->email = ($email ? UserEmail::fromString($email) : null);
+        $this->plainPassword = ($plainPassword ? UserPlainPassword::fromString($plainPassword) : null);
     }
 
     /**
@@ -59,7 +59,7 @@ class EditUserCommand implements CommandInterface
     /**
      * @return UserName
      */
-    public function getName(): UserName
+    public function getName(): ?UserName
     {
         return $this->name;
     }
@@ -67,7 +67,7 @@ class EditUserCommand implements CommandInterface
     /**
      * @return UserEmail
      */
-    public function getEmail(): UserEmail
+    public function getEmail(): ?UserEmail
     {
         return $this->email;
     }
@@ -75,7 +75,7 @@ class EditUserCommand implements CommandInterface
     /**
      * @return UserPlainPassword
      */
-    public function getPlainPassword(): UserPlainPassword
+    public function getPlainPassword(): ?UserPlainPassword
     {
         return $this->plainPassword;
     }

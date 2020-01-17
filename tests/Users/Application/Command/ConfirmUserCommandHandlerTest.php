@@ -16,7 +16,6 @@ namespace Tests\Projects\Application\Command;
 
 use App\Users\Application\Command\ConfirmUserCommand;
 use App\Users\Application\Command\ConfirmUserCommandHandler;
-use App\Users\Domain\Exception\UserAlreadyDisabledException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
@@ -38,14 +37,15 @@ class ConfirmUserCommandHandlerTest extends TestCase
         $name = 'John Doe';
         $email = 'johndoe@awesome-project.dev';
         $encodedPassword = 'WhateverEncodedPassword';
+        $token = 'someRandomToken';
 
-        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString($token));
         $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
-        $this->command = new ConfirmUserCommand($id);
+        $this->command = new ConfirmUserCommand($token);
         $repoMock = $this->createMock(UserRepositoryInterface::class);
         $repoMock->expects($this->once())
-            ->method('get')
-            ->with(UserId::fromString($id))
+            ->method('getByToken')
+            ->with(UserConfirmationToken::fromString($token))
             ->willReturn($this->user);
 
         $this->handler = new ConfirmUserCommandHandler($repoMock);

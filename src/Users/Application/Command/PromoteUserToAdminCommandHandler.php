@@ -13,6 +13,8 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
+use App\Users\Domain\Exception\UserNotFoundException;
+use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class PromoteUserToAdminCommandHandler implements CommandHandlerInterface
@@ -27,11 +29,17 @@ class PromoteUserToAdminCommandHandler implements CommandHandlerInterface
         $this->userRepo = $userRepo;
     }
 
-    public function __invoke(PromoteUserToAdminCommand $command)
+    public function __invoke(PromoteUserToAdminCommand $command): void
     {
-        $user = $this->userRepo->get($command->getId());
-        $user->promoteToAdmin();
 
-        $this->userRepo->save($user);
+        try {
+            $user = $this->userRepo->get($command->getId());
+            $user->promoteToAdmin();
+            $this->userRepo->save($user);
+        } catch (UserNotFoundException $e) {
+            // noop
+        } catch (UserRoleAlreadyAssignedException $e) {
+            // noop
+        }
     }
 }

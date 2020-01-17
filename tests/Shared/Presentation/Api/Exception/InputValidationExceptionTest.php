@@ -12,7 +12,7 @@
 
 namespace Tests\Shared\Presentation\Http\Exception;
 
-use App\Shared\Presentation\Http\Exception\InputValidationException;
+use App\Shared\Presentation\Api\Exception\InputValidationException;
 use PHPUnit\Framework\TestCase;
 
 class InputValidationExceptionTest extends TestCase

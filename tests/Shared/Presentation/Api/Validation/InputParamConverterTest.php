@@ -13,8 +13,8 @@
 namespace Tests\Shared\Presentation\Http\Validation;
 
 use App\Shared\Application\Command\CommandInterface;
-use App\Shared\Presentation\Http\Validation\ActionInterface;
-use App\Shared\Presentation\Http\Validation\ActionParamConverter;
+use App\Shared\Presentation\Api\Validation\InputDtoInterface;
+use App\Shared\Presentation\Api\Validation\InputParamConverter;
 use PHPUnit\Framework\TestCase;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,15 +22,15 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ActionParamConverterTest extends TestCase
+class InputParamConverterTest extends TestCase
 {
     public function testSupports()
     {
         $serializerMock = $this->createMock(SerializerInterface::class);
         $validatorMock = $this->createMock(ValidatorInterface::class);
-        $paramConverter = new ActionParamConverter($serializerMock, $validatorMock);
+        $paramConverter = new InputParamConverter($serializerMock, $validatorMock);
         $commandMock = $this->createMock(CommandInterface::class);
-        $actionMock = $this->createMock(ActionInterface::class);
+        $actionMock = $this->createMock(InputDtoInterface::class);
 
         $this->assertFalse($paramConverter->supports(new ParamConverter(['class' => get_class($commandMock)])));
         $this->assertTrue($paramConverter->supports(new ParamConverter(['class' => get_class($actionMock)])));
@@ -41,7 +41,7 @@ class ActionParamConverterTest extends TestCase
     {
         $serializerMock = $this->createMock(SerializerInterface::class);
         $validatorMock = $this->createMock(ValidatorInterface::class);
-        $actionMock = $this->createMock(ActionInterface::class);
+        $actionMock = $this->createMock(InputDtoInterface::class);
 
         $validatorMock->expects($this->at(0))
             ->method('validate')
@@ -51,7 +51,7 @@ class ActionParamConverterTest extends TestCase
             ->method('validate')
             ->willReturn([new ConstraintViolation('Awesome descriptive message', '', [], 'original value', 'name', 'original value')]);
 
-        $paramConverter = new ActionParamConverter($serializerMock, $validatorMock);
+        $paramConverter = new InputParamConverter($serializerMock, $validatorMock);
 
         $configuration = new ParamConverter(['class' => get_class($actionMock), 'name' => 'whateverAction']);
         $content = '{"name": "Awesome project"}';
