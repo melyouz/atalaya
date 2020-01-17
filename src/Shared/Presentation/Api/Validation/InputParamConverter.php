@@ -12,16 +12,16 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Presentation\Http\Validation;
+namespace App\Shared\Presentation\Api\Validation;
 
-use App\Shared\Presentation\Http\Exception\InputValidationException;
+use App\Shared\Presentation\Api\Exception\InputValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ActionParamConverter implements ParamConverterInterface
+class InputParamConverter implements ParamConverterInterface
 {
     private SerializerInterface $serializer;
     private ValidatorInterface $validator;
@@ -38,7 +38,7 @@ class ActionParamConverter implements ParamConverterInterface
             return false;
         }
 
-        return is_subclass_of($class, ActionInterface::class);
+        return is_subclass_of($class, InputDtoInterface::class);
     }
 
     public function apply(Request $request, ParamConverter $configuration)

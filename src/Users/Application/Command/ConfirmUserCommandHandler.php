@@ -13,6 +13,7 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
+use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class ConfirmUserCommandHandler implements CommandHandlerInterface
@@ -27,11 +28,10 @@ class ConfirmUserCommandHandler implements CommandHandlerInterface
         $this->userRepo = $userRepo;
     }
 
-    public function __invoke(ConfirmUserCommand $command)
+    public function __invoke(ConfirmUserCommand $command): void
     {
-        $user = $this->userRepo->get($command->getId());
+        $user = $this->userRepo->getByToken($command->getToken());
         $user->confirm();
-
         $this->userRepo->save($user);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
+use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
@@ -28,11 +29,14 @@ class EditProjectCommandHandler implements CommandHandlerInterface
 
     public function __invoke(EditProjectCommand $command)
     {
-        $project = $this->projectRepo->get($command->getId());
+        try {
+            $project = $this->projectRepo->get($command->getId());
+            $project->changeName($command->getName());
+            $project->changeUrl($command->getUrl());
 
-        $project->changeName($command->getName());
-        $project->changeUrl($command->getUrl());
-
-        $this->projectRepo->save($project);
+            $this->projectRepo->save($project);
+        } catch (ProjectNotFoundException $e) {
+            // noop
+        }
     }
 }

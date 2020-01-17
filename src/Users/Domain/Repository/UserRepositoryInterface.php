@@ -16,6 +16,7 @@ namespace App\Users\Domain\Repository;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEmail;
 use App\Users\Domain\Model\UserId;
 
@@ -34,6 +35,19 @@ interface UserRepositoryInterface
      * @throws UserNotFoundException
      */
     public function getByEmail(UserEmail $email): User;
+
+    /**
+     * @param UserConfirmationToken $token
+     * @return User
+     * @throws UserNotFoundException
+     */
+    public function getByToken(UserConfirmationToken $token): User;
+
+    /**
+     * @param UserEmail $email
+     * @return bool
+     */
+    public function emailExists(UserEmail $email): bool;
 
     /**
      * @param User $user

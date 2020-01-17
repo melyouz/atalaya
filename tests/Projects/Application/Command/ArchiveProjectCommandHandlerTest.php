@@ -56,11 +56,4 @@ class ArchiveProjectCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertTrue($this->project->isArchived());
     }
-
-    public function testProjectCannotBeArchivedTwice()
-    {
-        $this->project->archive();
-        $this->expectException(ProjectAlreadyArchivedException::class);
-        $this->handler->__invoke($this->command);
-    }
 }

@@ -12,11 +12,10 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Presentation\Http\Validation;
+namespace App\Shared\Presentation\Api\Validation;
 
 use App\Shared\Application\Command\CommandInterface;
 
-interface ActionInterface
+interface InputDtoInterface
 {
-    public function toCommand(): CommandInterface;
 }

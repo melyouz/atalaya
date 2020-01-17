@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Presentation\Http\Exception;
+namespace App\Shared\Presentation\Api\Exception;
 
 use Exception;
 

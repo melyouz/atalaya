@@ -20,11 +20,12 @@ use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
  */
-class User
+class User implements UserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -43,7 +44,7 @@ class User
     private string $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @var string
      */
     private string $email;
@@ -64,7 +65,7 @@ class User
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable
      */
-    private ?DateTimeImmutable $disabledAt;
+    private ?DateTimeImmutable $disabledAt = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -267,5 +268,27 @@ class User
     public function isAdmin(): bool
     {
         return $this->hasRole(self::ROLE_ADMIN);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt(): void
+    {
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUsername(): string
+    {
+        return $this->getEmail()->value();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials(): void
+    {
     }
 }

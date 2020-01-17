@@ -12,6 +12,8 @@
 
 namespace App\Issues\Application\Command;
 
+use App\Issues\Domain\Exception\IssueNotFoundException;
+use App\Issues\Domain\Exception\IssueNotResolvedYetException;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
@@ -29,9 +31,14 @@ class UnresolveIssueCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UnresolveIssueCommand $command)
     {
-        $issue = $this->issueRepo->get($command->getId());
-        $issue->unresolve();
-
-        $this->issueRepo->save($issue);
+        try {
+            $issue = $this->issueRepo->get($command->getId());
+            $issue->unresolve();
+            $this->issueRepo->save($issue);
+        } catch (IssueNotFoundException $e) {
+            // noop
+        } catch (IssueNotResolvedYetException $e) {
+            // noop
+        }
     }
 }

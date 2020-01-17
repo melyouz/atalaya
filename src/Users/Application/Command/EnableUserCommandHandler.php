@@ -13,6 +13,8 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
+use App\Users\Domain\Exception\UserNotDisabledYetException;
+use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class EnableUserCommandHandler implements CommandHandlerInterface
@@ -27,11 +29,17 @@ class EnableUserCommandHandler implements CommandHandlerInterface
         $this->userRepo = $userRepo;
     }
 
-    public function __invoke(EnableUserCommand $command)
+    public function __invoke(EnableUserCommand $command): void
     {
-        $user = $this->userRepo->get($command->getId());
-        $user->enable();
 
-        $this->userRepo->save($user);
+        try {
+            $user = $this->userRepo->get($command->getId());
+            $user->enable();
+            $this->userRepo->save($user);
+        } catch(UserNotFoundException $e) {
+            // noop
+        } catch (UserNotDisabledYetException $e) {
+            // noop
+        }
     }
 }

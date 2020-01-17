@@ -56,10 +56,4 @@ class UnarchiveProjectCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertFalse($this->project->isArchived());
     }
-
-    public function testProjectCannotBeUnarchivedIfNotArchivedYet()
-    {
-        $this->expectException(ProjectNotArchivedYetException::class);
-        $this->handler->__invoke($this->command);
-    }
 }
