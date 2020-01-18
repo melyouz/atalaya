@@ -17,30 +17,24 @@ namespace App\Shared\Presentation\Api\Controller;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Application\Command\CommandInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class AbstractController
 {
-    private SerializerInterface $serializer;
     private CommandBusInterface $commandBus;
 
-    public function __construct(SerializerInterface $serializer, CommandBusInterface $commandBus)
+    public function __construct(CommandBusInterface $commandBus)
     {
-        $this->serializer = $serializer;
         $this->commandBus = $commandBus;
     }
 
-    protected function dispatch(CommandInterface $command)
+    protected function dispatch(CommandInterface $command): void
     {
         $this->commandBus->dispatch($command);
     }
 
     protected function validationErrorResponse(array $validationErrors): JsonResponse
     {
-        return JsonResponse::fromJsonString(
-            $this->serializer->serialize(['validationErrors' => $validationErrors], 'json'),
-            JsonResponse::HTTP_BAD_REQUEST
-        );
+        return new JsonResponse(['validationErrors' => $validationErrors], JsonResponse::HTTP_BAD_REQUEST);
     }
 
     protected function uuid(): string
