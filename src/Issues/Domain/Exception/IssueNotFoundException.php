@@ -12,6 +12,8 @@
 
 namespace App\Issues\Domain\Exception;
 
-class IssueNotFoundException extends \Exception
+use Exception;
+
+class IssueNotFoundException extends Exception
 {
 }

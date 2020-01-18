@@ -16,6 +16,7 @@ namespace App\Users\Domain\Exception;
 
 use Exception;
 
-class EmailTakenException extends Exception
+class UserPasswordAlreadySetException extends Exception
 {
+
 }

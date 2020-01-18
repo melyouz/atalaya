@@ -16,6 +16,7 @@ namespace App\Users\Domain\Model;
 
 use App\Users\Domain\Exception\UserAlreadyDisabledException;
 use App\Users\Domain\Exception\UserNotDisabledYetException;
+use App\Users\Domain\Exception\UserPasswordAlreadySetException;
 use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use DateTimeImmutable;
@@ -236,11 +237,12 @@ class User implements UserInterface
 
     /**
      * @param UserEncodedPassword $password
+     * @throws UserPasswordAlreadySetException
      */
     public function setPassword(UserEncodedPassword $password): void
     {
         if (!empty($this->password)) {
-            throw new \InvalidArgumentException(sprintf('Password already set. Use User::changePassword() to change it.'));
+            throw new UserPasswordAlreadySetException(sprintf('User password already set. Use User::changePassword() to change it.'));
         }
 
         $this->password = $password->value();

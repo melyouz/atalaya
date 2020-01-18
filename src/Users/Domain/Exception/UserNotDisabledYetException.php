@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace App\Users\Domain\Exception;
 
-class UserNotDisabledYetException extends \Exception
+use Exception;
+
+class UserNotDisabledYetException extends Exception
 {
 }

@@ -12,6 +12,8 @@
 
 namespace App\Projects\Domain\Exception;
 
-class ProjectNotArchivedYetException extends \Exception
+use Exception;
+
+class ProjectNotArchivedYetException extends Exception
 {
 }

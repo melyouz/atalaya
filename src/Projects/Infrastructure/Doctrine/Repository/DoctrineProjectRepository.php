@@ -36,7 +36,10 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
      */
     public function get(ProjectId $id): Project
     {
-        if (!$project = $this->repo->find($id->value())) {
+        /** @var Project|null $project */
+        $project = $this->repo->find($id->value());
+
+        if (!$project) {
             throw new ProjectNotFoundException();
         }
 

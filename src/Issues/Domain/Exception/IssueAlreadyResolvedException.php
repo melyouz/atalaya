@@ -12,6 +12,8 @@
 
 namespace App\Issues\Domain\Exception;
 
-class IssueAlreadyResolvedException extends \Exception
+use Exception;
+
+class IssueAlreadyResolvedException extends Exception
 {
 }
