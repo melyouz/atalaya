@@ -56,6 +56,11 @@ class UserTest extends TestCase
         $this->assertEquals('johndoe@awesome-project.dev', $this->user->getEmail()->value());
     }
 
+    public function testRegisteredUserHasUsername(): void
+    {
+        $this->assertEquals('johndoe@awesome-project.dev', $this->user->getUsername());
+    }
+
     public function testRegisteredUserHasPassword(): void
     {
         $this->assertInstanceOf(UserEncodedPassword::class, $this->user->getPassword());
@@ -103,5 +108,18 @@ class UserTest extends TestCase
     {
         $this->expectException(UserRoleNotAssignedException::class);
         $this->user->demoteFromAdmin();
+    }
+
+    public function testGetSalt(): void
+    {
+        $this->assertEmpty($this->user->getSalt());
+    }
+
+    public function testEraseCredentialsNotDoingAnything(): void
+    {
+        $oldUser = clone $this->user;
+        $this->user->eraseCredentials();
+        $this->assertNotSame($oldUser, $this->user);
+        $this->assertEquals($oldUser, $this->user);
     }
 }
