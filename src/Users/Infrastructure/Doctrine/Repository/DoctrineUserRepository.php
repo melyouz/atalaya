@@ -37,7 +37,10 @@ class DoctrineUserRepository implements UserRepositoryInterface
      */
     public function get(UserId $id): User
     {
-        if (!$user = $this->repo->find($id->value())) {
+        /** @var User|null $user */
+        $user = $this->repo->find($id->value());
+
+        if (!$user) {
             throw new UserNotFoundException();
         }
 
@@ -49,7 +52,10 @@ class DoctrineUserRepository implements UserRepositoryInterface
      */
     public function getByEmail(UserEmail $email): User
     {
-        if (!$user = $this->repo->findOneBy(['email' => $email->value()])) {
+        /** @var User|null $user */
+        $user = $this->repo->findOneBy(['email' => $email->value()]);
+
+        if (!$user) {
             throw new UserNotFoundException();
         }
 
@@ -61,7 +67,10 @@ class DoctrineUserRepository implements UserRepositoryInterface
      */
     public function getByToken(UserConfirmationToken $token): User
     {
-        if (!$user = $this->repo->findOneBy(['confirmationToken' => $token->value()])) {
+        /** @var User|null $user */
+        $user = $this->repo->findOneBy(['confirmationToken' => $token->value()]);
+
+        if (!$user) {
             throw new UserNotFoundException();
         }
 

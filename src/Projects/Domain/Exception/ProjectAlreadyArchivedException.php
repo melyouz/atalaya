@@ -12,6 +12,8 @@
 
 namespace App\Projects\Domain\Exception;
 
-class ProjectAlreadyArchivedException extends \Exception
+use Exception;
+
+class ProjectAlreadyArchivedException extends Exception
 {
 }

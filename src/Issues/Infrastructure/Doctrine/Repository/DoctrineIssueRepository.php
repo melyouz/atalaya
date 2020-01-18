@@ -36,7 +36,10 @@ class DoctrineIssueRepository implements IssueRepositoryInterface
      */
     public function get(IssueId $id): Issue
     {
-        if (!$issue = $this->repo->find($id->value())) {
+        /** @var Issue|null $issue */
+        $issue = $this->repo->find($id->value());
+
+        if (!$issue) {
             throw new IssueNotFoundException();
         }
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
-use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 

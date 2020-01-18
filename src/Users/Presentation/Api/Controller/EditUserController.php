@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace App\Users\Presentation\Api\Controller;
 
-
-use App\Shared\Presentation\Api\Controller\AbstractApiController;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\EditUserCommand;
 use App\Users\Presentation\Api\Input\EditUserInput;

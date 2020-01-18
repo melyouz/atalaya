@@ -12,6 +12,8 @@
 
 namespace App\Projects\Domain\Exception;
 
-class ProjectNotFoundException extends \Exception
+use Exception;
+
+class ProjectNotFoundException extends Exception
 {
 }

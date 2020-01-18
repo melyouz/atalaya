@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Tests\Users\Domain\Model;
 
+use App\Users\Domain\Exception\UserPasswordAlreadySetException;
 use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Model\User;
@@ -69,7 +70,7 @@ class UserTest extends TestCase
 
     public function testRegisteredUserPasswordCannotBeSetTwice(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(UserPasswordAlreadySetException::class);
         $this->user->setPassword(UserEncodedPassword::fromString('TestPassword'));
     }
 

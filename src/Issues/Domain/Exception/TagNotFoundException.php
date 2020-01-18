@@ -12,6 +12,8 @@
 
 namespace App\Issues\Domain\Exception;
 
-class TagNotFoundException extends \Exception
+use Exception;
+
+class TagNotFoundException extends Exception
 {
 }

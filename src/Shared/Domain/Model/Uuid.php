@@ -18,13 +18,6 @@ use Assert\Assertion;
 
 class Uuid extends AbstractStringValueObject
 {
-    protected string $value;
-
-    protected function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-
     public static function fromString(string $value): self
     {
         Assertion::notBlank($value);

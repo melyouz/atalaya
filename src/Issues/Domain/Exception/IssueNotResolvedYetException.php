@@ -12,6 +12,8 @@
 
 namespace App\Issues\Domain\Exception;
 
-class IssueNotResolvedYetException extends \Exception
+use Exception;
+
+class IssueNotResolvedYetException extends Exception
 {
 }

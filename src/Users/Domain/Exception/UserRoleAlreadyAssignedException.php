@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace App\Users\Domain\Exception;
 
-class UserRoleAlreadyAssignedException extends \Exception
+use Exception;
+
+class UserRoleAlreadyAssignedException extends Exception
 {
     public static function fromRole(string $role)
     {
