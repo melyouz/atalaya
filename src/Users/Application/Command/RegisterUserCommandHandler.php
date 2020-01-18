@@ -15,6 +15,7 @@ namespace App\Users\Application\Command;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserConfirmationToken;
 use App\Users\Domain\Model\UserEncodedPassword;
@@ -47,7 +48,7 @@ class RegisterUserCommandHandler implements CommandHandlerInterface
     public function __invoke(RegisterUserCommand $command): void
     {
         if ($this->userRepo->emailExists($command->getEmail())) {
-            return;
+            throw new EmailTakenException();
         }
 
         $confirmationToken = UserConfirmationToken::fromString($this->tokenGenerator->randomToken());
