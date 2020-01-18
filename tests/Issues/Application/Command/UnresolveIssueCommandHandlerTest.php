@@ -94,4 +94,10 @@ class UnresolveIssueCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertFalse($this->issue->isResolved());
     }
+
+    public function testIssueCannotBeUnresolvedWhenNotResolved()
+    {
+        $this->expectException(IssueNotResolvedYetException::class);
+        $this->handler->__invoke($this->command);
+    }
 }

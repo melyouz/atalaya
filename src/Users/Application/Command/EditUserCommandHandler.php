@@ -38,28 +38,24 @@ class EditUserCommandHandler implements CommandHandlerInterface
 
     public function __invoke(EditUserCommand $command): void
     {
-        try {
-            $user = $this->userRepo->get($command->getId());
+        $user = $this->userRepo->get($command->getId());
 
-            if ($command->getName() && !$user->getName()->sameValueAs($command->getName())) {
-                $user->changeName($command->getName());
-            }
-
-            if ($command->getEmail() && !$user->getEmail()->sameValueAs($command->getEmail())) {
-                $user->changeEmail($command->getEmail());
-            }
-
-            if ($command->getPlainPassword()) {
-                $encodedPassword = UserEncodedPassword::fromString($this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword()));
-
-                if (!$user->getPassword()->sameValueAs($encodedPassword)) {
-                    $user->changePassword($encodedPassword);
-                }
-            }
-
-            $this->userRepo->save($user);
-        } catch (UserNotFoundException $e) {
-            // noop
+        if ($command->getName() && !$user->getName()->sameValueAs($command->getName())) {
+            $user->changeName($command->getName());
         }
+
+        if ($command->getEmail() && !$user->getEmail()->sameValueAs($command->getEmail())) {
+            $user->changeEmail($command->getEmail());
+        }
+
+        if ($command->getPlainPassword()) {
+            $encodedPassword = UserEncodedPassword::fromString($this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword()));
+
+            if (!$user->getPassword()->sameValueAs($encodedPassword)) {
+                $user->changePassword($encodedPassword);
+            }
+        }
+
+        $this->userRepo->save($user);
     }
 }

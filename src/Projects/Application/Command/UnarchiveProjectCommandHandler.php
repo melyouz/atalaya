@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
-use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
-use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
@@ -30,14 +28,8 @@ class UnarchiveProjectCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UnarchiveProjectCommand $command)
     {
-        try {
-            $project = $this->projectRepo->get($command->getId());
-            $project->unarchive();
-            $this->projectRepo->save($project);
-        } catch (ProjectNotFoundException $e) {
-            // noop
-        } catch (ProjectNotArchivedYetException $e) {
-            // noop
-        }
+        $project = $this->projectRepo->get($command->getId());
+        $project->unarchive();
+        $this->projectRepo->save($project);
     }
 }

@@ -12,8 +12,6 @@
 
 namespace App\Issues\Application\Command;
 
-use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
-use App\Issues\Domain\Exception\IssueNotFoundException;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
@@ -31,15 +29,8 @@ class ResolveIssueCommandHandler implements CommandHandlerInterface
 
     public function __invoke(ResolveIssueCommand $command)
     {
-        try {
-            $issue = $this->issueRepo->get($command->getId());
-            $issue->resolve();
-            $this->issueRepo->save($issue);
-        } catch (IssueNotFoundException $e) {
-            // noop
-        } catch (IssueAlreadyResolvedException $e) {
-            // noop
-        }
-
+        $issue = $this->issueRepo->get($command->getId());
+        $issue->resolve();
+        $this->issueRepo->save($issue);
     }
 }

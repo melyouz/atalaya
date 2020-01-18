@@ -13,8 +13,6 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Domain\Exception\UserNotFoundException;
-use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class DemoteUserFromAdminCommandHandler implements CommandHandlerInterface
@@ -31,14 +29,8 @@ class DemoteUserFromAdminCommandHandler implements CommandHandlerInterface
 
     public function __invoke(DemoteUserFromAdminCommand $command): void
     {
-        try {
-            $user = $this->userRepo->get($command->getId());
-            $user->demoteFromAdmin();
-            $this->userRepo->save($user);
-        } catch (UserNotFoundException $e) {
-            // noop
-        } catch (UserRoleNotAssignedException $e) {
-            // noop
-        }
+        $user = $this->userRepo->get($command->getId());
+        $user->demoteFromAdmin();
+        $this->userRepo->save($user);
     }
 }

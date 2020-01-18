@@ -56,4 +56,11 @@ class PromoteUserToAdminCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertTrue($this->user->isAdmin());
     }
+
+    public function testUserCannotBePromotedTwice()
+    {
+        $this->user->promoteToAdmin();
+        $this->expectException(UserRoleAlreadyAssignedException::class);
+        $this->handler->__invoke($this->command);
+    }
 }

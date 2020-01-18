@@ -56,4 +56,11 @@ class DisableUserCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertTrue($this->user->isDisabled());
     }
+
+    public function testUserCannotBeDisabledTwice()
+    {
+        $this->user->disable();
+        $this->expectException(UserAlreadyDisabledException::class);
+        $this->handler->__invoke($this->command);
+    }
 }

@@ -13,8 +13,6 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Domain\Exception\UserAlreadyDisabledException;
-use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class DisableUserCommandHandler implements CommandHandlerInterface
@@ -31,14 +29,8 @@ class DisableUserCommandHandler implements CommandHandlerInterface
 
     public function __invoke(DisableUserCommand $command): void
     {
-        try {
-            $user = $this->userRepo->get($command->getId());
-            $user->disable();
-            $this->userRepo->save($user);
-        } catch (UserNotFoundException $e) {
-            // noop
-        } catch (UserAlreadyDisabledException $e) {
-            // noop
-        }
+        $user = $this->userRepo->get($command->getId());
+        $user->disable();
+        $this->userRepo->save($user);
     }
 }

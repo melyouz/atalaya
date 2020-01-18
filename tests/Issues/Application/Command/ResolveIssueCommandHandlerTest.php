@@ -93,4 +93,11 @@ class ResolveIssueCommandHandlerTest extends TestCase
         $this->handler->__invoke($this->command);
         $this->assertTrue($this->issue->isResolved());
     }
+
+    public function testIssueCannotBeResolvedTwice()
+    {
+        $this->issue->resolve();
+        $this->expectException(IssueAlreadyResolvedException::class);
+        $this->handler->__invoke($this->command);
+    }
 }
