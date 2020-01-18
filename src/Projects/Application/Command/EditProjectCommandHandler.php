@@ -29,20 +29,16 @@ class EditProjectCommandHandler implements CommandHandlerInterface
 
     public function __invoke(EditProjectCommand $command)
     {
-        try {
-            $project = $this->projectRepo->get($command->getId());
+        $project = $this->projectRepo->get($command->getId());
 
-            if ($command->getName() && !$project->getName()->sameValueAs($command->getName())) {
-                $project->changeName($command->getName());
-            }
-
-            if ($command->getUrl() && !$project->getUrl()->sameValueAs($command->getUrl())) {
-                $project->changeUrl($command->getUrl());
-            }
-
-            $this->projectRepo->save($project);
-        } catch (ProjectNotFoundException $e) {
-            // noop
+        if ($command->getName() && !$project->getName()->sameValueAs($command->getName())) {
+            $project->changeName($command->getName());
         }
+
+        if ($command->getUrl() && !$project->getUrl()->sameValueAs($command->getUrl())) {
+            $project->changeUrl($command->getUrl());
+        }
+
+        $this->projectRepo->save($project);
     }
 }

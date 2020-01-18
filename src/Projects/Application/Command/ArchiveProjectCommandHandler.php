@@ -14,8 +14,6 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
-use App\Projects\Domain\Exception\ProjectAlreadyArchivedException;
-use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
@@ -30,15 +28,8 @@ class ArchiveProjectCommandHandler implements CommandHandlerInterface
 
     public function __invoke(ArchiveProjectCommand $command)
     {
-
-        try {
-            $project = $this->projectRepo->get($command->getId());
-            $project->archive();
-            $this->projectRepo->save($project);
-        } catch (ProjectNotFoundException $e) {
-            // noop
-        } catch (ProjectAlreadyArchivedException $e) {
-            // noop
-        }
+        $project = $this->projectRepo->get($command->getId());
+        $project->archive();
+        $this->projectRepo->save($project);
     }
 }
