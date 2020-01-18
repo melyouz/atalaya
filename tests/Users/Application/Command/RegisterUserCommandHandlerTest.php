@@ -18,6 +18,7 @@ use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserConfirmationToken;
@@ -63,6 +64,32 @@ class RegisterUserCommandHandlerTest extends TestCase
         $tokenGeneratorMock->expects($this->once())
             ->method('randomToken')
             ->willReturn('someRandomToken');
+
+        $handler = new RegisterUserCommandHandler($repoMock, $userPasswordEncoderMock, $tokenGeneratorMock);
+        $handler->__invoke($command);
+    }
+
+    public function testRegisterUserWithTakenEmail(): void
+    {
+        $this->expectException(EmailTakenException::class);
+
+        $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
+        $name = 'John Doe';
+        $email = 'johndoe@awesome-project.dev';
+        $plainPassword = 'WhateverPlainPassword';
+        $encodedPassword = 'WhateverEncodedPassword';
+        $userWithoutPassword = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+
+        $command = new RegisterUserCommand($id, $name, $email, $plainPassword);
+        $repoMock = $this->createMock(UserRepositoryInterface::class);
+
+        $repoMock->expects($this->once())
+            ->method('emailExists')
+            ->with(UserEmail::fromString($email))
+            ->willReturn(true);
+
+        $userPasswordEncoderMock = $this->createMock(UserPasswordEncoderInterface::class);
+        $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
 
         $handler = new RegisterUserCommandHandler($repoMock, $userPasswordEncoderMock, $tokenGeneratorMock);
         $handler->__invoke($command);
