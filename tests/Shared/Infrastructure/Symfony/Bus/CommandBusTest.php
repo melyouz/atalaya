@@ -10,10 +10,10 @@
  *
  */
 
-namespace Tests\Shared\Infrastructure\Symfony\Bus;
+namespace Tests\Shared\Infrastructure\Bus;
 
 use App\Shared\Application\Command\CommandInterface;
-use App\Shared\Infrastructure\Symfony\Bus\CommandBus;
+use App\Shared\Infrastructure\Bus\SymfonyCommandBus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -29,7 +29,7 @@ class CommandBusTest extends TestCase
             ->with($commandMock)
             ->willReturn(new Envelope($commandMock));
 
-        $commandBus = new CommandBus($symfonyMessageBusMock);
+        $commandBus = new SymfonyCommandBus($symfonyMessageBusMock);
         $commandBus->dispatch($commandMock);
     }
 }

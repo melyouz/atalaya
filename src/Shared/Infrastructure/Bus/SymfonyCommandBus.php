@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,13 +12,13 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Infrastructure\Symfony\Bus;
+namespace App\Shared\Infrastructure\Bus;
 
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Application\Command\CommandInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class CommandBus implements CommandBusInterface
+class SymfonyCommandBus implements CommandBusInterface
 {
     /**
      * @var MessageBusInterface
