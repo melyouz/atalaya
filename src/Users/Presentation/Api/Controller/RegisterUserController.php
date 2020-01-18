@@ -17,6 +17,7 @@ namespace App\Users\Presentation\Api\Controller;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Presentation\Api\Input\RegisterUserInput;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class RegisterUserController extends AbstractController
@@ -27,9 +28,10 @@ class RegisterUserController extends AbstractController
             return $this->validationErrorResponse($validationErrors);
         }
 
-        $command = new RegisterUserCommand(uuid_create(UUID_TYPE_RANDOM), $input->name, $input->email, $input->password);
+        $userId = $this->uuid();
+        $command = new RegisterUserCommand($userId, $input->name, $input->email, $input->password);
         $this->dispatch($command);
 
-        return new Response('', Response::HTTP_CREATED);
+        return new JsonResponse(['id' => $userId], Response::HTTP_CREATED);
     }
 }

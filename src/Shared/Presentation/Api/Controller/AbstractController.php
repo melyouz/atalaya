@@ -42,4 +42,9 @@ class AbstractController
             JsonResponse::HTTP_BAD_REQUEST
         );
     }
+
+    protected function uuid(): string
+    {
+        return uuid_create(UUID_TYPE_RANDOM);
+    }
 }

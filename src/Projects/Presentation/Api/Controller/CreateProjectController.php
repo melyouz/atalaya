@@ -17,6 +17,7 @@ namespace App\Projects\Presentation\Api\Controller;
 use App\Projects\Application\Command\CreateProjectCommand;
 use App\Projects\Presentation\Api\Input\CreateProjectInput;
 use App\Shared\Presentation\Api\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProjectController extends AbstractController
@@ -25,14 +26,15 @@ class CreateProjectController extends AbstractController
     {
         // @todo: get logged in user_id
         $userId = '988cd824-1689-4bf5-bfa4-f0cc66120276';
+        $projectId = $this->uuid();
 
         if (count($validationErrors)) {
             return $this->validationErrorResponse($validationErrors);
         }
 
-        $command = new CreateProjectCommand(uuid_create(UUID_TYPE_RANDOM), $input->name, $input->url, $userId);
+        $command = new CreateProjectCommand($projectId, $input->name, $input->url, $userId);
         $this->dispatch($command);
 
-        return new Response('', Response::HTTP_CREATED);
+        return new JsonResponse(['id' => $projectId], Response::HTTP_CREATED);
     }
 }
