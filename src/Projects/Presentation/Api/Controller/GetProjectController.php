@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace App\Projects\Presentation\Api\Controller;
 
-use App\Projects\Application\Command\ArchiveProjectCommand;
 use App\Projects\Application\Query\GetProjectQuery;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

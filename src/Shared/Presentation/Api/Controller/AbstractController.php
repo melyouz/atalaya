@@ -41,7 +41,7 @@ abstract class AbstractController
         $this->commandBus->dispatch($command);
     }
 
-    protected function query(QueryInterface $query): object
+    protected function query(QueryInterface $query): ?object
     {
         return $this->queryBus->query($query);
     }
