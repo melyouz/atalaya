@@ -15,8 +15,10 @@ namespace Tests\Shared\Presentation\Api\Controller;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Application\Bus\QueryBusInterface;
 use App\Shared\Application\Command\CommandInterface;
+use App\Shared\Application\Query\QueryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -38,6 +40,36 @@ class AbstractControllerTest extends TestCase
         $controller->dispatch($commandMock);
     }
 
+    public function testQuery(): void
+    {
+        $commandBusMock = $this->createMock(CommandBusInterface::class);
+        $queryBusMock = $this->createMock(QueryBusInterface::class);
+        $serializerMock = $this->createMock(Serializer::class);
+        $queryMock = $this->createMock(QueryInterface::class);
+
+        $queryBusMock->expects($this->once())
+            ->method('query')
+            ->with($queryMock);
+
+        $controller = new FakeController($commandBusMock, $queryBusMock, $serializerMock);
+        $controller->query($queryMock);
+    }
+
+    public function testUuid(): void
+    {
+        $commandBusMock = $this->createMock(CommandBusInterface::class);
+        $queryBusMock = $this->createMock(QueryBusInterface::class);
+        $serializerMock = $this->createMock(Serializer::class);
+        $controller = new FakeController($commandBusMock, $queryBusMock, $serializerMock);
+        $uuidRegex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
+        $uuid1 = $controller->uuid();
+        $uuid2 = $controller->uuid();
+
+        $this->assertRegExp($uuidRegex, $uuid1);
+        $this->assertRegExp($uuidRegex, $uuid2);
+        $this->assertNotEquals($uuid1, $uuid2);
+    }
+
     public function testValidationErrorResponse(): void
     {
         $commandBusMock = $this->createMock(CommandBusInterface::class);
@@ -55,19 +87,22 @@ class AbstractControllerTest extends TestCase
         $this->assertEquals($expectedStatusCode, $result->getStatusCode());
     }
 
-    public function testUuid(): void
+    public function testToJsonResponse(): void
     {
         $commandBusMock = $this->createMock(CommandBusInterface::class);
         $queryBusMock = $this->createMock(QueryBusInterface::class);
         $serializerMock = $this->createMock(Serializer::class);
         $controller = new FakeController($commandBusMock, $queryBusMock, $serializerMock);
-        $uuidRegex = '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i';
-        $uuid1 = $controller->uuid();
-        $uuid2 = $controller->uuid();
 
-        $this->assertRegExp($uuidRegex, $uuid1);
-        $this->assertRegExp($uuidRegex, $uuid2);
-        $this->assertNotEquals($uuid1, $uuid2);
+        $serializerMock->expects($this->once())
+            ->method('serialize')
+            ->willReturn('{"name":"John Doe","age":27}');
+
+        $object = (object)['name' => 'John Doe', 'age' => 27];
+        $result = $controller->toJsonResponse($object);
+
+        $this->assertEquals(json_encode($object), $result->getContent());
+        $this->assertEquals(JsonResponse::HTTP_OK, $result->getStatusCode());
     }
 }
 
@@ -78,13 +113,23 @@ class FakeController extends AbstractController
         parent::dispatch($command);
     }
 
-    public function validationErrorResponse(array $validationErrors): JsonResponse
+    public function query(QueryInterface $query): ?object
     {
-        return parent::validationErrorResponse($validationErrors);
+        return parent::query($query);
     }
 
     public function uuid(): string
     {
         return parent::uuid();
+    }
+
+    public function validationErrorResponse(array $validationErrors): JsonResponse
+    {
+        return parent::validationErrorResponse($validationErrors);
+    }
+
+    public function toJsonResponse(object $object): JsonResponse
+    {
+        return parent::toJsonResponse($object);
     }
 }
