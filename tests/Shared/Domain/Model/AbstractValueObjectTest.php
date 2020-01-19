@@ -48,4 +48,14 @@ class AbstractStringValueObjectTest extends TestCase
         $this->assertTrue($valueObjectMock1->sameValueAs($valueObjectMock2));
         $this->assertFalse($valueObjectMock1->sameValueAs($valueObjectMock3));
     }
+
+    public function testJsonSerialize(): void
+    {
+        $valueObjectMock = $this->getMockForAbstractClass(AbstractStringValueObject::class, [], '', false, true, true, ['value']);
+        $valueObjectMock->expects($this->once())
+            ->method('value')
+            ->willReturn('test-value');
+
+        $this->assertEquals('test-value', $valueObjectMock->jsonSerialize());
+    }
 }
