@@ -13,6 +13,7 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
         "beberlei/assert": "^3.2",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "5.0.*",
@@ -28,6 +29,7 @@
         "symfony/yaml": "5.0.*"
     },
     "require-dev": {
+        "dg/bypass-finals": "^1.1",
         "symfony/phpunit-bridge": "^5.0"
     },
     "config": {
