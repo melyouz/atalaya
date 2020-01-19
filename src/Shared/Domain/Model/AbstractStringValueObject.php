@@ -37,13 +37,13 @@ abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSe
         return $this->value;
     }
 
-    public function __toString(): string
-    {
-        return $this->value();
-    }
-
     public function jsonSerialize(): string
     {
         return $this->__toString();
+    }
+
+    public function __toString(): string
+    {
+        return $this->value();
     }
 }
