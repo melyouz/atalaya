@@ -45,4 +45,9 @@ projects_unarchive:
     controller: App\Projects\Presentation\Api\Controller\UnarchiveProjectController
     methods:  [PATCH]
 
+projects_get_item:
+    path: /api/projects/{id}
+    controller: App\Projects\Presentation\Api\Controller\GetProjectController
+    methods:  [GET]
+
 # Issues

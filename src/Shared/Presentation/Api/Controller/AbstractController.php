@@ -15,16 +15,25 @@ declare(strict_types=1);
 namespace App\Shared\Presentation\Api\Controller;
 
 use App\Shared\Application\Bus\CommandBusInterface;
+use App\Shared\Application\Bus\QueryBusInterface;
 use App\Shared\Application\Command\CommandInterface;
+use App\Shared\Application\Query\QueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 
-class AbstractController
+abstract class AbstractController
 {
-    private CommandBusInterface $commandBus;
+    public const FORMAT_JSON = 'json';
 
-    public function __construct(CommandBusInterface $commandBus)
+    private CommandBusInterface $commandBus;
+    private QueryBusInterface $queryBus;
+    private SerializerInterface $serializer;
+
+    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, SerializerInterface $serializer)
     {
         $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
+        $this->serializer = $serializer;
     }
 
     protected function dispatch(CommandInterface $command): void
@@ -32,13 +41,25 @@ class AbstractController
         $this->commandBus->dispatch($command);
     }
 
-    protected function validationErrorResponse(array $validationErrors): JsonResponse
+    protected function query(QueryInterface $query): object
     {
-        return new JsonResponse(['validationErrors' => $validationErrors], JsonResponse::HTTP_BAD_REQUEST);
+        return $this->queryBus->query($query);
     }
 
     protected function uuid(): string
     {
         return uuid_create(UUID_TYPE_RANDOM);
+    }
+
+    protected function validationErrorResponse(array $validationErrors): JsonResponse
+    {
+        return new JsonResponse(['validationErrors' => $validationErrors], JsonResponse::HTTP_BAD_REQUEST);
+    }
+
+    protected function toJsonResponse(object $object): JsonResponse
+    {
+        $content = $this->serializer->serialize($object, self::FORMAT_JSON);
+
+        return JsonResponse::fromJsonString($content);
     }
 }
