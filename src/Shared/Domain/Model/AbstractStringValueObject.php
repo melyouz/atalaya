@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Model;
 
-abstract class AbstractStringValueObject implements ValueObjectInterface
+use JsonSerializable;
+
+abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSerializable
 {
     const MAX_LENGTH = 255;
 
@@ -38,5 +40,10 @@ abstract class AbstractStringValueObject implements ValueObjectInterface
     public function __toString(): string
     {
         return $this->value();
+    }
+
+    public function jsonSerialize(): string
+    {
+        return $this->__toString();
     }
 }

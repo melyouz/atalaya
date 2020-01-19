@@ -131,4 +131,9 @@ class Project
     {
         return ProjectUrl::fromString($this->url);
     }
+
+    public function getToken(): ProjectToken
+    {
+        return ProjectToken::fromString($this->token);
+    }
 }

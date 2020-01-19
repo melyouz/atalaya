@@ -32,6 +32,9 @@ services:
         App\Shared\Application\Command\CommandHandlerInterface:
             tags: [{ name: messenger.message_handler, bus: command.bus }]
 
+        App\Shared\Application\Query\QueryHandlerInterface:
+            tags: [{ name: messenger.message_handler, bus: query.bus }]
+
     App\Shared\Presentation\Api\Validation\InputParamConverter:
         tags:
             - { name: request.param_converter }

@@ -53,6 +53,12 @@ class ProjectTest extends TestCase
         $this->assertEquals('https://awesome-project.dev', $this->project->getUrl()->value());
     }
 
+    public function testCreatedProjectHasToken(): void
+    {
+        $this->assertInstanceOf(ProjectToken::class, $this->project->getToken());
+        $this->assertNotEmpty($this->project->getToken()->value());
+    }
+
     public function testCreatedProjectIsNotArchived(): void
     {
         $this->assertFalse($this->project->isArchived());
