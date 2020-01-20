@@ -128,8 +128,8 @@ class FakeController extends AbstractController
         return parent::validationErrorResponse($validationErrors);
     }
 
-    public function toJsonResponse(object $object): JsonResponse
+    public function toJsonResponse($data): JsonResponse
     {
-        return parent::toJsonResponse($object);
+        return parent::toJsonResponse($data);
     }
 }
