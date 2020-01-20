@@ -50,4 +50,9 @@ projects_get_item:
     controller: App\Projects\Presentation\Api\Controller\GetProjectController
     methods:  [GET]
 
+projects_get_collection:
+    path: /api/projects
+    controller: App\Projects\Presentation\Api\Controller\GetProjectsController
+    methods:  [GET]
+
 # Issues

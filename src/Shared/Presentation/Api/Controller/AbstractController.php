@@ -41,7 +41,11 @@ abstract class AbstractController
         $this->commandBus->dispatch($command);
     }
 
-    protected function query(QueryInterface $query): ?object
+    /**
+     * @param QueryInterface $query
+     * @return mixed
+     */
+    protected function query(QueryInterface $query)
     {
         return $this->queryBus->query($query);
     }
@@ -56,9 +60,13 @@ abstract class AbstractController
         return new JsonResponse(['validationErrors' => $validationErrors], JsonResponse::HTTP_BAD_REQUEST);
     }
 
-    protected function toJsonResponse(object $object): JsonResponse
+    /**
+     * @param array|object $data
+     * @return JsonResponse
+     */
+    protected function toJsonResponse($data): JsonResponse
     {
-        $content = $this->serializer->serialize($object, self::FORMAT_JSON);
+        $content = $this->serializer->serialize($data, self::FORMAT_JSON);
 
         return JsonResponse::fromJsonString($content);
     }
