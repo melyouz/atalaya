@@ -19,6 +19,7 @@ use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
 use App\Users\Domain\Model\UserId;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 /**
  * @ORM\Entity()
@@ -57,6 +58,12 @@ class Project
     private ?DateTimeImmutable $archivedAt = null;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=false)
+     * @var DateTimeImmutable
+     */
+    private DateTimeImmutable $createdAt;
+
+    /**
      * @ORM\Column(type="string", length=36)
      * @var string
      */
@@ -69,6 +76,7 @@ class Project
      * @param ProjectUrl $url
      * @param ProjectToken $token
      * @param UserId $userId
+     * @throws Exception
      */
     private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId)
     {
@@ -77,6 +85,7 @@ class Project
         $this->url = $url->value();
         $this->token = $token->value();
         $this->userId = $userId->value();
+        $this->createdAt = new DateTimeImmutable();
     }
 
     public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId): self
@@ -105,6 +114,11 @@ class Project
         }
 
         $this->archivedAt = null;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
     public function changeName(ProjectName $newName): void
