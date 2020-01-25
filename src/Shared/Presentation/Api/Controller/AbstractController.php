@@ -14,10 +14,13 @@ declare(strict_types=1);
 
 namespace App\Shared\Presentation\Api\Controller;
 
+use App\Security\Application\AuthServiceInterface;
+use App\Security\Domain\UserNotLoggedInException;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Application\Bus\QueryBusInterface;
 use App\Shared\Application\Command\CommandInterface;
 use App\Shared\Application\Query\QueryInterface;
+use App\Users\Domain\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -28,12 +31,14 @@ abstract class AbstractController
     private CommandBusInterface $commandBus;
     private QueryBusInterface $queryBus;
     private SerializerInterface $serializer;
+    private AuthServiceInterface $authService;
 
-    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, SerializerInterface $serializer)
+    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus, SerializerInterface $serializer, AuthServiceInterface $authService)
     {
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
         $this->serializer = $serializer;
+        $this->authService = $authService;
     }
 
     protected function dispatch(CommandInterface $command): void
@@ -69,5 +74,14 @@ abstract class AbstractController
         $content = $this->serializer->serialize($data, self::FORMAT_JSON);
 
         return JsonResponse::fromJsonString($content);
+    }
+
+    /**
+     * @return User
+     * @throws UserNotLoggedInException
+     */
+    protected function getLoggedInUser(): User
+    {
+        return $this->authService->getLoggedInUser();
     }
 }

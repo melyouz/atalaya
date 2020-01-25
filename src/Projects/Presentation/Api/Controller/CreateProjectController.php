@@ -17,6 +17,7 @@ namespace App\Projects\Presentation\Api\Controller;
 use App\Projects\Application\Command\CreateProjectCommand;
 use App\Projects\Presentation\Api\Input\CreateProjectInput;
 use App\Shared\Presentation\Api\Controller\AbstractController;
+use App\Users\Domain\Model\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,15 +25,15 @@ class CreateProjectController extends AbstractController
 {
     public function __invoke(CreateProjectInput $input, array $validationErrors): Response
     {
-        // @todo: get logged in user_id
-        $userId = '988cd824-1689-4bf5-bfa4-f0cc66120276';
+        /** @var User $user */
+        $user = $this->getLoggedInUser();
         $projectId = $this->uuid();
 
         if (count($validationErrors)) {
             return $this->validationErrorResponse($validationErrors);
         }
 
-        $command = new CreateProjectCommand($projectId, $input->name, $input->url, $userId);
+        $command = new CreateProjectCommand($projectId, $input->name, $input->url, $user->getId()->value());
         $this->dispatch($command);
 
         return new JsonResponse(['id' => $projectId], Response::HTTP_CREATED);

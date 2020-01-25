@@ -16,16 +16,17 @@ namespace App\Projects\Presentation\Api\Controller;
 
 use App\Projects\Application\Query\GetProjectsByUserIdQuery;
 use App\Shared\Presentation\Api\Controller\AbstractController;
+use App\Users\Domain\Model\User;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProjectsController extends AbstractController
 {
     public function __invoke(): Response
     {
-        // @todo: get logged in user_id
-        $userId = '988cd824-1689-4bf5-bfa4-f0cc66120276';
+        /** @var User $user */
+        $user = $this->getLoggedInUser();
 
-        $query = new GetProjectsByUserIdQuery($userId);
+        $query = new GetProjectsByUserIdQuery($user->getId()->value());
         $result = $this->query($query);
 
         return $this->toJsonResponse($result);
