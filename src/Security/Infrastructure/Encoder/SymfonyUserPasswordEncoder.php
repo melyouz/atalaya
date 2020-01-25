@@ -12,9 +12,9 @@
 
 declare(strict_types=1);
 
-namespace App\Security\Infrastructure;
+namespace App\Security\Infrastructure\Encoder;
 
-use App\Security\Application\UserPasswordEncoderInterface;
+use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserPlainPassword;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface as SymfonyUserPasswordEncoderInterface;

@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Security\Infrastructure;
+namespace App\Security\Infrastructure\Authenticator;
 
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;

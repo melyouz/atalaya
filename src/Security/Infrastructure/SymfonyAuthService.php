@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure;
 
 use App\Security\Application\AuthServiceInterface;
-use App\Security\Domain\UserNotLoggedInException;
+use App\Security\Domain\Exception\UserNotLoggedInException;
 use App\Users\Domain\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

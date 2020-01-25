@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Security\Infrastructure;
+namespace App\Security\Infrastructure\Provider;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
