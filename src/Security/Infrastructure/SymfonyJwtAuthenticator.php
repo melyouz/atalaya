@@ -14,16 +14,11 @@ declare(strict_types=1);
 
 namespace App\Security\Infrastructure;
 
-use App\Security\Application\UserPasswordEncoderInterface;
-use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserPlainPassword;
-use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -78,10 +73,10 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         $token = $request->headers->get(self::HEADER_AUTHORIZATION);
-        $jwt = (new Parser())->parse(str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $token));
+        $token = (new Parser())->parse(str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $token));
 
         return [
-            'jwt' => $jwt,
+            'token' => $token,
         ];
     }
 
@@ -90,10 +85,10 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var Token $jwt */
-        $jwt = $credentials['jwt'];
+        /** @var Token $token */
+        $token = $credentials['token'];
 
-        if (!$userId = $jwt->getClaim('sub', '')) {
+        if (!$userId = $token->getClaim('sub', '')) {
             return null;
         }
 
@@ -105,16 +100,16 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user)
     {
-        /** @var Token $jwt */
-        $jwt = $credentials['jwt'];
+        /** @var Token $token */
+        $token = $credentials['token'];
         $signer = new Sha256();
         $publicKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_public_key')));
 
         $isUserActive = !$user->isDisabled();
-        $isJwtValid = $jwt->verify($signer, $publicKey);
-        $isJwtNotExpired = !$jwt->isExpired();
+        $isTokenValid = $token->verify($signer, $publicKey);
+        $isTokenNotExpired = !$token->isExpired();
 
-        return $isUserActive && $isJwtValid && $isJwtNotExpired;
+        return $isUserActive && $isTokenValid && $isTokenNotExpired;
     }
 
     /**

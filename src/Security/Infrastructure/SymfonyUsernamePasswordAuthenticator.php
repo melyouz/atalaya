@@ -127,7 +127,7 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        return new JsonResponse(['jwt' => $this->buildJwt($token->getUser())]);
+        return new JsonResponse(['token' => $this->buildToken($token->getUser())]);
     }
 
     /**
@@ -142,20 +142,20 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
      * @param User $user
      * @return string
      */
-    private function buildJwt(User $user): string
+    private function buildToken(User $user): string
     {
         $signer = new Sha256();
         $privateKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_private_key')));
         $time = time();
 
         $builder = new Builder();
-        $jwt = $builder
+        $token = $builder
             ->relatedTo($user->getId()->value())
             ->issuedAt($time)
             ->expiresAt($time + 28800) // 8H
             ->withClaim('roles', $user->getRoles())
             ->getToken($signer, $privateKey);
 
-        return $jwt->__toString();
+        return $token->__toString();
     }
 }
