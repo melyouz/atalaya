@@ -1,0 +1,29 @@
+app_projects_create:
+    path: /api/projects
+    controller: App\Projects\Presentation\Api\Controller\CreateProjectController
+    methods:  [POST]
+
+app_projects_edit:
+    path: /api/projects/{id}
+    controller: App\Projects\Presentation\Api\Controller\EditProjectController
+    methods:  [PATCH]
+
+app_projects_archive:
+    path: /api/projects/{id}/archive
+    controller: App\Projects\Presentation\Api\Controller\ArchiveProjectController
+    methods:  [PATCH]
+
+app_projects_unarchive:
+    path: /api/projects/{id}/unarchive
+    controller: App\Projects\Presentation\Api\Controller\UnarchiveProjectController
+    methods:  [PATCH]
+
+app_projects_get_item:
+    path: /api/projects/{id}
+    controller: App\Projects\Presentation\Api\Controller\GetProjectController
+    methods:  [GET]
+
+app_projects_get_collection:
+    path: /api/projects
+    controller: App\Projects\Presentation\Api\Controller\GetProjectsController
+    methods:  [GET]

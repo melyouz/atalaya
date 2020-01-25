@@ -1,4 +1,6 @@
 parameters:
+    app_jwt_private_key: '%kernel.project_dir%/%env(APP_JWT_PRIVATE_KEY)%'
+    app_jwt_public_key: '%kernel.project_dir%/%env(APP_JWT_PUBLIC_KEY)%'
 
 services:
     _defaults:
@@ -27,6 +29,10 @@ services:
     App\Projects\Presentation\Api\Controller\:
         resource: '../src/Projects/Presentation/Api/Controller/*'
         tags: ['controller.service_arguments']
+
+    #App\Security\Presentation\Api\Controller\:
+    #    resource: '../src/Security/Presentation/Api/Controller/*'
+    #    tags: ['controller.service_arguments']
 
     _instanceof:
         App\Shared\Application\Command\CommandHandlerInterface:

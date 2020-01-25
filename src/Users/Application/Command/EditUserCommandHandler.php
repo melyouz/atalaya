@@ -13,7 +13,7 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\UserEncodedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
