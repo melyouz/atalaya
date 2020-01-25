@@ -2,7 +2,7 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         app_user_provider:
-            id: App\Security\Infrastructure\SymfonyUserProvider
+            id: App\Security\Infrastructure\Provider\SymfonyUserProvider
     encoders:
         App\Users\Domain\Model\User:
             algorithm: auto
@@ -15,9 +15,9 @@ security:
 
             guard:
                 authenticators:
-                    - App\Security\Infrastructure\SymfonyUsernamePasswordAuthenticator
-                    - App\Security\Infrastructure\SymfonyJwtAuthenticator
-                entry_point: App\Security\Infrastructure\SymfonyUsernamePasswordAuthenticator
+                    - App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
+                    - App\Security\Infrastructure\Authenticator\SymfonyJwtAuthenticator
+                entry_point: App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
         api:
             anonymous: lazy
             stateless: true

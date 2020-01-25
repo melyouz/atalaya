@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Security\Application;
 
-use App\Security\Domain\UserNotLoggedInException;
+use App\Security\Domain\Exception\UserNotLoggedInException;
 use App\Users\Domain\Model\User;
 
 interface AuthServiceInterface

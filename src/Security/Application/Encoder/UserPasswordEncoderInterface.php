@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Security\Application;
+namespace App\Security\Application\Encoder;
 
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserPlainPassword;

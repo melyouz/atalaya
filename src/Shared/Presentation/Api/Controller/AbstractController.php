@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace App\Shared\Presentation\Api\Controller;
 
 use App\Security\Application\AuthServiceInterface;
-use App\Security\Domain\UserNotLoggedInException;
+use App\Security\Domain\Exception\UserNotLoggedInException;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Application\Bus\QueryBusInterface;
 use App\Shared\Application\Command\CommandInterface;
@@ -80,7 +80,7 @@ abstract class AbstractController
      * @return User
      * @throws UserNotLoggedInException
      */
-    protected function getLoggedInUser(): User
+    protected function ç(): User
     {
         return $this->authService->getLoggedInUser();
     }
