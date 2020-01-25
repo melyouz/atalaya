@@ -1,0 +1,24 @@
+app_users_register:
+    path: /api/users
+    controller: App\Users\Presentation\Api\Controller\RegisterUserController
+    methods:  [POST]
+
+app_users_edit:
+    path: /api/users/{id}
+    controller: App\Users\Presentation\Api\Controller\EditUserController
+    methods:  [PATCH]
+
+app_users_confirm:
+    path: /api/users/{token}/confirm
+    controller: App\Users\Presentation\Api\Controller\ConfirmUserController
+    methods:  [PATCH]
+
+app_users_disable:
+    path: /api/users/{id}/disable
+    controller: App\Users\Presentation\Api\Controller\DisableUserController
+    methods:  [PATCH]
+
+app_users_enable:
+    path: /api/users/{id}/enable
+    controller: App\Users\Presentation\Api\Controller\EnableUserController
+    methods:  [PATCH]

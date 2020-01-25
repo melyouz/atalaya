@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application\Encoder;
+namespace App\Security\Application;
 
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserPlainPassword;
@@ -26,4 +26,11 @@ interface UserPasswordEncoderInterface
      * @return string
      */
     public function encodePassword(User $user, UserPlainPassword $plainPassword): string;
+
+    /**
+     * @param User $user
+     * @param UserPlainPassword $plainPassword
+     * @return bool
+     */
+    public function isPasswordValid(User $user, UserPlainPassword $plainPassword): bool;
 }

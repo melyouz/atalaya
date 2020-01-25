@@ -1,7 +1,8 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: null }
+        app_user_provider:
+            id: App\Security\Infrastructure\SymfonyUserProvider
     encoders:
         App\Users\Domain\Model\User:
             algorithm: auto
@@ -11,6 +12,16 @@ security:
             security: false
         main:
             anonymous: lazy
+
+            guard:
+                authenticators:
+                    - App\Security\Infrastructure\SymfonyUsernamePasswordAuthenticator
+                    - App\Security\Infrastructure\SymfonyJwtAuthenticator
+                entry_point: App\Security\Infrastructure\SymfonyUsernamePasswordAuthenticator
+        api:
+            anonymous: lazy
+            stateless: true
+            pattern: ^/api
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
