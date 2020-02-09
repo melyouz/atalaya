@@ -36,21 +36,6 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function get(ProjectId $id): Project
-    {
-        /** @var Project|null $project */
-        $project = $this->repo->find($id->value());
-
-        if (!$project) {
-            throw new ProjectNotFoundException();
-        }
-
-        return $project;
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function findAllByUserId(UserId $userId): array
     {
         return $this->repo->findBy(['userId' => $userId->value()]);
@@ -70,6 +55,21 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
         }
 
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get(ProjectId $id): Project
+    {
+        /** @var Project|null $project */
+        $project = $this->repo->find($id->value());
+
+        if (!$project) {
+            throw new ProjectNotFoundException();
+        }
+
+        return $project;
     }
 
     /**

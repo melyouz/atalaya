@@ -131,14 +131,6 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @inheritDoc
-     */
-    public function supportsRememberMe()
-    {
-        return false;
-    }
-
-    /**
      * @param User $user
      * @return string
      */
@@ -157,5 +149,13 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
             ->getToken($signer, $privateKey);
 
         return $token->__toString();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supportsRememberMe()
+    {
+        return false;
     }
 }
