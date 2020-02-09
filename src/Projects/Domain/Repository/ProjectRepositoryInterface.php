@@ -17,6 +17,7 @@ namespace App\Projects\Domain\Repository;
 use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Users\Domain\Model\UserId;
 
 interface ProjectRepositoryInterface
@@ -33,6 +34,13 @@ interface ProjectRepositoryInterface
      * @return array
      */
     public function findAllByUserId(UserId $userId): array;
+
+    /**
+     * @param ProjectId $id
+     * @param ProjectToken $token
+     * @return bool
+     */
+    public function isProjectTokenValidOrThrow(ProjectId $id, ProjectToken $token): bool;
 
     /**
      * @param Project $project

@@ -30,6 +30,10 @@ services:
         resource: '../src/Projects/Presentation/Api/Controller/*'
         tags: ['controller.service_arguments']
 
+    App\Issues\Presentation\Api\Controller\:
+        resource: '../src/Issues/Presentation/Api/Controller/*'
+        tags: ['controller.service_arguments']
+
     #App\Security\Presentation\Api\Controller\:
     #    resource: '../src/Security/Presentation/Api/Controller/*'
     #    tags: ['controller.service_arguments']
