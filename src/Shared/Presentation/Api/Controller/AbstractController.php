@@ -80,7 +80,7 @@ abstract class AbstractController
      * @return User
      * @throws UserNotLoggedInException
      */
-    protected function ç(): User
+    protected function getLoggedInUser(): User
     {
         return $this->authService->getLoggedInUser();
     }

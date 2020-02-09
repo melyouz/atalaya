@@ -1,1 +1,4 @@
-# Issues
+app_issues_add:
+    path: /
+    controller: App\Issues\Presentation\Api\Controller\AddIssueController
+    methods:  [POST]

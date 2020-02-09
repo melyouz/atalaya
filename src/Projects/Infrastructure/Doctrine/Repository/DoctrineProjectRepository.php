@@ -12,9 +12,11 @@
 
 namespace App\Projects\Infrastructure\Doctrine\Repository;
 
+use App\Projects\Domain\Exception\InvalidProjectTokenException;
 use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Users\Domain\Model\UserId;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,6 +54,22 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
     public function findAllByUserId(UserId $userId): array
     {
         return $this->repo->findBy(['userId' => $userId->value()]);
+    }
+
+    /**
+     * @inheritDoc
+     * @throws InvalidProjectTokenException
+     * @throws ProjectNotFoundException
+     */
+    public function isProjectTokenValidOrThrow(ProjectId $id, ProjectToken $token): bool
+    {
+        $project = $this->get($id);
+
+        if (!$project->getToken()->sameValueAs($token)) {
+            throw new InvalidProjectTokenException();
+        }
+
+        return true;
     }
 
     /**

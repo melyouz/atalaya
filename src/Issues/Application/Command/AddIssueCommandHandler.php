@@ -14,6 +14,7 @@ namespace App\Issues\Application\Command;
 
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
+use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 
 class AddIssueCommandHandler implements CommandHandlerInterface
@@ -23,15 +24,22 @@ class AddIssueCommandHandler implements CommandHandlerInterface
      */
     private IssueRepositoryInterface $issueRepo;
 
-    public function __construct(IssueRepositoryInterface $issueRepo)
+    /**
+     * @var ProjectRepositoryInterface
+     */
+    private ProjectRepositoryInterface $projectRepo;
+
+    public function __construct(IssueRepositoryInterface $issueRepo, ProjectRepositoryInterface $projectRepo)
     {
         $this->issueRepo = $issueRepo;
+        $this->projectRepo = $projectRepo;
     }
 
     public function __invoke(AddIssueCommand $command)
     {
-        $issue = Issue::create($command->getId(), $command->getProjectId(), $command->getRequest(), $command->getException(), $command->getTags());
+        $this->projectRepo->isProjectTokenValidOrThrow($command->getProjectId(), $command->getProjectToken());
 
+        $issue = Issue::create($command->getId(), $command->getProjectId(), $command->getRequest(), $command->getException(), $command->getTags());
         $this->issueRepo->save($issue);
     }
 }

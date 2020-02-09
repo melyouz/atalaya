@@ -20,6 +20,7 @@ use App\Issues\Domain\Model\Request;
 use App\Issues\Domain\Model\RequestMethod;
 use App\Issues\Domain\Model\RequestUrl;
 use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\ProjectToken;
 use App\Shared\Application\Command\CommandInterface;
 
 class AddIssueCommand implements CommandInterface
@@ -33,6 +34,10 @@ class AddIssueCommand implements CommandInterface
      */
     private ProjectId $projectId;
     /**
+     * @var ProjectToken
+     */
+    private ProjectToken $projectToken;
+    /**
      * @var Request
      */
     private Request $request;
@@ -45,10 +50,11 @@ class AddIssueCommand implements CommandInterface
      */
     private array $tags;
 
-    public function __construct(string $id, string $projectId, string $exceptionClass, string $exceptionMessage, string $requestMethod, string $requestUrl, array $requestHeaders, array $tags)
+    public function __construct(string $id, string $projectId, string $projectToken, string $exceptionClass, string $exceptionMessage, string $requestMethod, string $requestUrl, array $requestHeaders, array $tags)
     {
         $this->id = IssueId::fromString($id);
         $this->projectId = ProjectId::fromString($projectId);
+        $this->projectToken = ProjectToken::fromString($projectToken);
         $this->request = Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
         $this->exception = Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
         $this->tags = $tags;
@@ -68,6 +74,14 @@ class AddIssueCommand implements CommandInterface
     public function getProjectId(): ProjectId
     {
         return $this->projectId;
+    }
+
+    /**
+     * @return ProjectToken
+     */
+    public function getProjectToken(): ProjectToken
+    {
+        return $this->projectToken;
     }
 
     /**

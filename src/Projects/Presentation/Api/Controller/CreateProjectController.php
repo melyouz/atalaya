@@ -25,13 +25,13 @@ class CreateProjectController extends AbstractController
 {
     public function __invoke(CreateProjectInput $input, array $validationErrors): Response
     {
-        /** @var User $user */
-        $user = $this->getLoggedInUser();
-        $projectId = $this->uuid();
-
         if (count($validationErrors)) {
             return $this->validationErrorResponse($validationErrors);
         }
+
+        /** @var User $user */
+        $user = $this->getLoggedInUser();
+        $projectId = $this->uuid();
 
         $command = new CreateProjectCommand($projectId, $input->name, $input->url, $user->getId()->value());
         $this->dispatch($command);
