@@ -12,3 +12,8 @@ app_issues_unresolve:
     path: /api/issues/{id}/unresolve
     controller: App\Issues\Presentation\Api\Controller\UnresolveIssueController
     methods:  [PATCH]
+
+app_issues_get_item:
+    path: /api/issues/{id}
+    controller: App\Issues\Presentation\Api\Controller\GetIssueController
+    methods:  [GET]
