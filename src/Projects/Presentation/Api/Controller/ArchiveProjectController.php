@@ -25,6 +25,6 @@ class ArchiveProjectController extends AbstractController
         $command = new ArchiveProjectCommand($id);
         $this->dispatch($command);
 
-        return new Response('', Response::HTTP_CREATED);
+        return new Response('', Response::HTTP_OK);
     }
 }
