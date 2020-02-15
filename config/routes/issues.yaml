@@ -2,3 +2,13 @@ app_issues_add:
     path: /
     controller: App\Issues\Presentation\Api\Controller\AddIssueController
     methods:  [POST]
+
+app_issues_resolve:
+    path: /api/issues/{id}/resolve
+    controller: App\Issues\Presentation\Api\Controller\ResolveIssueController
+    methods:  [PATCH]
+
+app_issues_unresolve:
+    path: /api/issues/{id}/unresolve
+    controller: App\Issues\Presentation\Api\Controller\UnresolveIssueController
+    methods:  [PATCH]
