@@ -27,3 +27,8 @@ app_projects_get_collection:
     path: /api/projects
     controller: App\Projects\Presentation\Api\Controller\GetProjectsController
     methods:  [GET]
+
+app_projects_get_item_issues_collection:
+    path: /api/projects/{projectId}/issues
+    controller: App\Projects\Presentation\Api\Controller\GetProjectIssuesController
+    methods:  [GET]
