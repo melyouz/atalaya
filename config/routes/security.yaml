@@ -1,3 +1,8 @@
 app_security_jwt_token:
     path: /api/jwt/token
-    methods:  [POST]
+    methods: [POST]
+
+app_security_jwt_refresh:
+    path: /api/jwt/refresh
+    controller: App\Security\Presentation\Api\Controller\RefreshTokenController
+    methods: [POST]

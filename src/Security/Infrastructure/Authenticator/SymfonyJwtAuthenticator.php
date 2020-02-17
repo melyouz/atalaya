@@ -14,11 +14,9 @@ declare(strict_types=1);
 
 namespace App\Security\Infrastructure\Authenticator;
 
+use App\Security\Application\JwtValidatorInterface;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -38,14 +36,14 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
     private UserProviderInterface $userProvider;
 
     /**
-     * @var ParameterBagInterface
+     * @var JwtValidatorInterface
      */
-    private ParameterBagInterface $parameterBag;
+    private JwtValidatorInterface $jwtValidator;
 
-    public function __construct(UserProviderInterface $userProvider, ParameterBagInterface $parameterBag)
+    public function __construct(UserProviderInterface $userProvider, JwtValidatorInterface $jwtValidator)
     {
         $this->userProvider = $userProvider;
-        $this->parameterBag = $parameterBag;
+        $this->jwtValidator = $jwtValidator;
     }
 
     /**
@@ -64,7 +62,7 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
         $headers = $request->headers;
         $authorizationHeader = $headers->get(self::HEADER_AUTHORIZATION);
 
-        return !empty($authorizationHeader) && 0 === strpos($authorizationHeader, self::HEADER_AUTHORIZATION_BEARER);;
+        return !empty($authorizationHeader) && 0 === strpos($authorizationHeader, self::HEADER_AUTHORIZATION_BEARER);
     }
 
     /**
@@ -102,14 +100,11 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
     {
         /** @var Token $token */
         $token = $credentials['token'];
-        $signer = new Sha256();
-        $publicKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_public_key')));
 
+        $isTokenValid = $this->jwtValidator->fromToken($token);
         $isUserActive = !$user->isDisabled();
-        $isTokenValid = $token->verify($signer, $publicKey);
-        $isTokenNotExpired = !$token->isExpired();
 
-        return $isUserActive && $isTokenValid && $isTokenNotExpired;
+        return $isUserActive && $isTokenValid;
     }
 
     /**

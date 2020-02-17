@@ -15,12 +15,9 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure\Authenticator;
 
 use App\Security\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\JwtGeneratorInterface;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\UserPlainPassword;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,15 +44,15 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     private UserPasswordEncoderInterface $userPasswordEncoder;
 
     /**
-     * @var ParameterBagInterface
+     * @var JwtGeneratorInterface
      */
-    private ParameterBagInterface $parameterBag;
+    private JwtGeneratorInterface $jwtGenerator;
 
-    public function __construct(UserProviderInterface $userProvider, UserPasswordEncoderInterface $userPasswordEncoder, ParameterBagInterface $parameterBag)
+    public function __construct(UserProviderInterface $userProvider, UserPasswordEncoderInterface $userPasswordEncoder, JwtGeneratorInterface $jwtGenerator)
     {
         $this->userProvider = $userProvider;
         $this->userPasswordEncoder = $userPasswordEncoder;
-        $this->parameterBag = $parameterBag;
+        $this->jwtGenerator = $jwtGenerator;
     }
 
     /**
@@ -127,28 +124,10 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
-        return new JsonResponse(['token' => $this->buildToken($token->getUser())]);
-    }
+        /** @var User $user */
+        $user = $token->getUser();
 
-    /**
-     * @param User $user
-     * @return string
-     */
-    private function buildToken(User $user): string
-    {
-        $signer = new Sha256();
-        $privateKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_private_key')));
-        $time = time();
-
-        $builder = new Builder();
-        $token = $builder
-            ->relatedTo($user->getId()->value())
-            ->issuedAt($time)
-            ->expiresAt($time + 28800) // 8H
-            ->withClaim('roles', $user->getRoles())
-            ->getToken($signer, $privateKey);
-
-        return $token->__toString();
+        return new JsonResponse(['token' => $this->jwtGenerator->forUser($user)]);
     }
 
     /**
