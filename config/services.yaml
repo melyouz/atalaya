@@ -34,9 +34,9 @@ services:
         resource: '../src/Issues/Presentation/Api/Controller/*'
         tags: ['controller.service_arguments']
 
-    #App\Security\Presentation\Api\Controller\:
-    #    resource: '../src/Security/Presentation/Api/Controller/*'
-    #    tags: ['controller.service_arguments']
+    App\Security\Presentation\Api\Controller\:
+        resource: '../src/Security/Presentation/Api/Controller/*'
+        tags: ['controller.service_arguments']
 
     _instanceof:
         App\Shared\Application\Command\CommandHandlerInterface:
