@@ -84,4 +84,14 @@ abstract class AbstractController
     {
         return $this->authService->getLoggedInUser();
     }
+
+    /**
+     * @param $attributes
+     * @param $subject
+     * @return bool
+     */
+    protected function isGranted($attributes, $subject): bool
+    {
+        return $this->authService->isGranted($attributes, $subject);
+    }
 }

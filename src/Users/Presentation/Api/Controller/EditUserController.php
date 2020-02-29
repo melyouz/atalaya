@@ -16,13 +16,20 @@ namespace App\Users\Presentation\Api\Controller;
 
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\EditUserCommand;
+use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Repository\UserRepositoryInterface;
 use App\Users\Presentation\Api\Input\EditUserInput;
 use Symfony\Component\HttpFoundation\Response;
 
 class EditUserController extends AbstractController
 {
-    public function __invoke(string $id, EditUserInput $input, array $validationErrors): Response
+    public function __invoke(string $id, UserRepositoryInterface $userRepo, EditUserInput $input, array $validationErrors): Response
     {
+        if (!$this->isGranted(User::EDIT, $userRepo->get(UserId::fromString($id)))) {
+            return new Response(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         if (count($validationErrors)) {
             return $this->validationErrorResponse($validationErrors);
         }

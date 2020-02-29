@@ -31,6 +31,12 @@ class User implements UserInterface
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
+    const EDIT = 'edit';
+    const PROMOTE = 'promote';
+    const DEMOTE = 'demote';
+    const DISABLE = 'disable';
+    const ENABLE = 'enable';
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
@@ -292,5 +298,10 @@ class User implements UserInterface
      */
     public function eraseCredentials(): void
     {
+    }
+
+    public function isSame(UserId $userId): bool
+    {
+        return $userId->sameValueAs($this->getId());
     }
 }
