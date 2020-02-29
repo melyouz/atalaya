@@ -15,13 +15,20 @@ declare(strict_types=1);
 namespace App\Projects\Presentation\Api\Controller;
 
 use App\Projects\Application\Query\GetProjectQuery;
+use App\Projects\Domain\Model\Project;
+use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProjectController extends AbstractController
 {
-    public function __invoke(string $id): Response
+    public function __invoke(string $id, ProjectRepositoryInterface $projectRepo): Response
     {
+        if (!$this->isGranted(Project::VIEW, $projectRepo->get(ProjectId::fromString($id)))) {
+            return new Response(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         $query = new GetProjectQuery($id);
         $project = $this->query($query);
 

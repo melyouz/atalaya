@@ -15,13 +15,20 @@ declare(strict_types=1);
 namespace App\Projects\Presentation\Api\Controller;
 
 use App\Projects\Application\Query\GetProjectIssuesQuery;
+use App\Projects\Domain\Model\Project;
+use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProjectIssuesController extends AbstractController
 {
-    public function __invoke(string $projectId): Response
+    public function __invoke(string $projectId, ProjectRepositoryInterface $projectRepo): Response
     {
+        if (!$this->isGranted(Project::LIST_ISSUES, $projectRepo->get(ProjectId::fromString($projectId)))) {
+            return new Response(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         $query = new GetProjectIssuesQuery($projectId);
         $issues = $this->query($query);
 
