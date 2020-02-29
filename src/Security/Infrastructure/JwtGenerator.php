@@ -15,13 +15,10 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure;
 
 use App\Security\Application\JwtGeneratorInterface;
-use App\Security\Application\JwtValidatorInterface;
 use App\Users\Domain\Model\User;
 use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class JwtGenerator implements JwtGeneratorInterface

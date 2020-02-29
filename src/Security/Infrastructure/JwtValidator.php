@@ -35,6 +35,20 @@ class JwtValidator implements JwtValidatorInterface
         $this->parameterBag = $parameterBag;
     }
 
+    public function fromBearerAuthorizationHeader(string $value): bool
+    {
+        $tokenString = str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $value);
+
+        return $this->fromString($tokenString);
+    }
+
+    public function fromString(string $token): bool
+    {
+        $token = (new Parser())->parse($token);
+
+        return $this->fromToken($token);
+    }
+
     /**
      * @inheritDoc
      */
@@ -47,19 +61,5 @@ class JwtValidator implements JwtValidatorInterface
         $isTokenNotExpired = !$token->isExpired();
 
         return $isTokenValid && $isTokenNotExpired;
-    }
-
-    public function fromString(string $token): bool
-    {
-        $token = (new Parser())->parse($token);
-
-        return $this->fromToken($token);
-    }
-
-    public function fromBearerAuthorizationHeader(string $value): bool
-    {
-        $tokenString = str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $value);
-
-        return $this->fromString($tokenString);
     }
 }

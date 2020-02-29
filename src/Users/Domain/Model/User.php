@@ -218,14 +218,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return UserId
-     */
-    public function getId(): UserId
-    {
-        return UserId::fromString($this->id);
-    }
-
-    /**
      * @return UserName
      */
     public function getName(): UserName
@@ -303,5 +295,13 @@ class User implements UserInterface
     public function isSame(UserId $userId): bool
     {
         return $userId->sameValueAs($this->getId());
+    }
+
+    /**
+     * @return UserId
+     */
+    public function getId(): UserId
+    {
+        return UserId::fromString($this->id);
     }
 }
