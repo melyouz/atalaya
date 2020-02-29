@@ -16,12 +16,19 @@ namespace App\Users\Presentation\Api\Controller;
 
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\DisableUserCommand;
+use App\Users\Domain\Model\User;
+use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class DisableUserController extends AbstractController
 {
-    public function __invoke(string $id): Response
+    public function __invoke(string $id, UserRepositoryInterface $userRepo): Response
     {
+        if (!$this->isGranted(User::DISABLE, $userRepo->get(UserId::fromString($id)))) {
+            return new Response(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         $command = new DisableUserCommand($id);
         $this->dispatch($command);
 
