@@ -26,6 +26,12 @@ use Exception;
  */
 class Project
 {
+    const VIEW = 'view';
+    const LIST_ISSUES = 'list_issues';
+    const EDIT = 'edit';
+    const ARCHIVE = 'archive';
+    const UNARCHIVE = 'unarchive';
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
@@ -149,5 +155,10 @@ class Project
     public function getToken(): ProjectToken
     {
         return ProjectToken::fromString($this->token);
+    }
+
+    public function isOwner(UserId $userId): bool
+    {
+        return $userId->sameValueAs(UserId::fromString($this->userId));
     }
 }
