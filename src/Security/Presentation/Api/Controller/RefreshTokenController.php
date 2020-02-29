@@ -26,7 +26,7 @@ class RefreshTokenController extends AbstractController
 {
     const HEADER_AUTHORIZATION = 'Authorization';
 
-    public function __invoke(Request $request, JwtGeneratorInterface $jwtGenerator ,JwtValidatorInterface $jwtValidator)
+    public function __invoke(Request $request, JwtGeneratorInterface $jwtGenerator, JwtValidatorInterface $jwtValidator)
     {
         $token = $request->headers->get(self::HEADER_AUTHORIZATION);
 

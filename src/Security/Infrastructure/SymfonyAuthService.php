@@ -19,6 +19,7 @@ use App\Security\Domain\Exception\UserNotLoggedInException;
 use App\Users\Domain\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use function is_object;
 
 class SymfonyAuthService implements AuthServiceInterface
 {
@@ -50,7 +51,7 @@ class SymfonyAuthService implements AuthServiceInterface
         /** @var User|string $user */
         $user = $token->getUser();
 
-        if (!\is_object($user)) {
+        if (!is_object($user)) {
             // e.g. anonymous authentication
             throw new UserNotLoggedInException();
         }
