@@ -15,13 +15,20 @@ declare(strict_types=1);
 namespace App\Issues\Presentation\Api\Controller;
 
 use App\Issues\Application\Command\ResolveIssueCommand;
+use App\Issues\Domain\Model\Issue;
+use App\Issues\Domain\Model\IssueId;
+use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResolveIssueController extends AbstractController
 {
-    public function __invoke(string $id): Response
+    public function __invoke(string $id, IssueRepositoryInterface $issueRepo): Response
     {
+        if (!$this->isGranted(Issue::RESOLVE, $issueRepo->get(IssueId::fromString($id)))) {
+            return new Response(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         $command = new ResolveIssueCommand($id);
         $this->dispatch($command);
 
