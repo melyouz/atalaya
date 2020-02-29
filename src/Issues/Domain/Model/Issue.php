@@ -28,6 +28,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Issue
 {
+    const VIEW = 'view';
+    const RESOLVE = 'resolve';
+    const UNRESOLVE = 'unresolve';
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
@@ -125,6 +129,11 @@ class Issue
     public function getId(): IssueId
     {
         return IssueId::fromString($this->id);
+    }
+
+    public function getProjectId(): ProjectId
+    {
+        return ProjectId::fromString($this->projectId);
     }
 
     public function getRequest(): Request
