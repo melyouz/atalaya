@@ -47,7 +47,9 @@ class JwtGenerator implements JwtGeneratorInterface
             ->relatedTo($user->getId()->value())
             ->issuedAt($time)
             ->expiresAt($time + 28800) // 8H
-            ->withClaim('roles', $user->getRoles())
+            ->withClaim('user_name', $user->getName())
+            ->withClaim('user_email', $user->getEmail())
+            ->withClaim('user_roles', $user->getRoles())
             ->getToken($signer, $privateKey);
 
         return $token->__toString();

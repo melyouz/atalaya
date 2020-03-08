@@ -38,7 +38,7 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
      */
     public function findAllByUserId(UserId $userId): array
     {
-        return $this->repo->findBy(['userId' => $userId->value()]);
+        return $this->repo->findBy(['userId' => $userId->value()], ['createdAt' => 'desc']);
     }
 
     /**

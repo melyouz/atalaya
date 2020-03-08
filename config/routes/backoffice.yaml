@@ -1,0 +1,11 @@
+app_backoffice_index:
+    path: /
+    controller: App\Shared\Presentation\Backoffice\Controller\IndexController
+    methods:  [GET]
+
+app_backoffice_fallback:
+    path: /{route}
+    controller: App\Shared\Presentation\Backoffice\Controller\IndexController
+    requirements:
+        route: '^(?!.*api|_wdt|_profiler).+'
+    methods:  [HEAD, GET]
