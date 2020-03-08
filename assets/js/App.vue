@@ -12,12 +12,12 @@
 <template>
     <div class="page-container">
         <v-app>
-            <v-navigation-drawer v-if="loggedIn" v-model="menuVisible" :clipped="$vuetify.breakpoint.lgAndUp" app>
+            <v-navigation-drawer :clipped="$vuetify.breakpoint.lgAndUp" app v-if="loggedIn" v-model="menuVisible">
                 <v-layout column fill-height>
                     <v-list>
                         <v-list-item link>
                             <v-list-item-avatar>
-                                <v-gravatar :email="user.email" default-img="mm" />
+                                <v-gravatar :email="user.email" default-img="mm"/>
                             </v-list-item-avatar>
                             <v-list-item-content>
                                 <v-list-item-title class="title">{{ user.name }}</v-list-item-title>
@@ -30,9 +30,9 @@
                         </v-list-item>
                     </v-list>
                     <v-divider/>
-                    <v-list nav dense>
+                    <v-list dense nav>
                         <v-list-item-group color="primary">
-                            <v-list-item link :to="{ name: 'projects-list' }">
+                            <v-list-item :to="{ name: 'projects-list' }" link>
                                 <v-list-item-action>
                                     <v-icon>mdi-folder-multiple</v-icon>
                                 </v-list-item-action>
@@ -52,8 +52,8 @@
                     </v-list>
                     <v-spacer/>
                     <v-divider/>
-                    <v-list nav dense>
-                        <v-list-item link color="primary" :to="{ name: 'users-logout' }">
+                    <v-list dense nav>
+                        <v-list-item :to="{ name: 'users-logout' }" color="primary" link>
                             <v-list-item-action>
                                 <v-icon>mdi-logout</v-icon>
                             </v-list-item-action>
@@ -65,11 +65,11 @@
                 </v-layout>
             </v-navigation-drawer>
 
-            <v-app-bar app color="primary" dark :clipped-left="$vuetify.breakpoint.lgAndUp">
-                <v-app-bar-nav-icon v-if="loggedIn" @click.stop="menuVisible = !menuVisible" class="pr-4" />
+            <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="primary" dark>
+                <v-app-bar-nav-icon @click.stop="menuVisible = !menuVisible" class="pr-4" v-if="loggedIn"/>
                 <v-toolbar-title class="ml-0">
                     <router-link :to="{ name: 'homepage'}">
-                        <v-img :src="require('@images/Atalaya_white.svg')" :alt="appName" max-width="150"/>
+                        <v-img :alt="appName" :src="require('@images/Atalaya_white.svg')" max-width="150"/>
                     </router-link>
                 </v-toolbar-title>
             </v-app-bar>
@@ -78,9 +78,9 @@
                 <router-view :key="$route.fullPath"/>
                 <Snackbar/>
             </v-content>
-            <v-footer color="primary" app>
+            <v-footer app color="primary">
                 <v-row>
-                    <v-col cols="auto" class="mx-auto">
+                    <v-col class="mx-auto" cols="auto">
                         <span class="white--text body-2">&copy; {{(new Date()).getFullYear()}} Atalaya. All rights reserved.</span>
                     </v-col>
                 </v-row>
@@ -91,6 +91,7 @@
 
 <script>
     import Snackbar from './components/Snackbar'
+
     export default {
         name: "App",
         data: () => ({
@@ -98,8 +99,7 @@
             appName: "Atalaya",
             appVersion: "v0.7",
         }),
-        methods: {
-        },
+        methods: {},
         computed: {
             loggedIn() {
                 return this.$store.getters['users/isLoggedIn']

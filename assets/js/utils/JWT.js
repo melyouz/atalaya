@@ -9,13 +9,12 @@
  *
  */
 
-export default class JWT
-{
+export default class JWT {
     static isExpired(jwt) {
         if (!jwt) return true;
 
         const payload = JWT.getPayload(jwt);
-        const now =  parseInt((Date.now() / 1000).toString());
+        const now = parseInt((Date.now() / 1000).toString());
         const graceTime = 60 * 60 * 2; //2 hours
 
         return payload.exp - graceTime <= now;

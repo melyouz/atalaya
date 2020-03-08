@@ -10,7 +10,7 @@
   -->
 
 <template>
-    <v-snackbar v-model="show" :color="color" top>
+    <v-snackbar :color="color" top v-model="show">
         {{message}}
     </v-snackbar>
 </template>
