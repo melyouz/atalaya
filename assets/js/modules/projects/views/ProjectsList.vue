@@ -13,44 +13,53 @@
     <v-container>
         <h2 class="d-block pt-4">Projects</h2>
         <v-row class=" d-flex justify-start pa-2">
-            <v-card v-for="project in activeProjects" :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px">
+            <v-card :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px" v-for="project in activeProjects">
                 <v-card-title>{{ project.name }}</v-card-title>
-                <v-card-subtitle >
-                    <a :href="project.url" target="_blank" class="body-2 external-link" style="text-decoration: none;">
-                        <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon> {{ project.url }}
+                <v-card-subtitle>
+                    <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
+                        <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
+                        {{ project.url }}
                     </a>
                 </v-card-subtitle>
                 <v-card-actions>
                     <v-list-item class="grow">
                         <v-row align="center" justify="end">
-                            <v-btn small text @click="editingProject = project" color="primary"><v-icon>mdi-pencil</v-icon></v-btn>
-                            <v-btn small text @click="archive(project)" color="red"><v-icon>mdi-archive-arrow-down</v-icon></v-btn>
+                            <v-btn @click="editingProject = project" color="primary" small text>
+                                <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
+                            <v-btn @click="archive(project)" color="red" small text>
+                                <v-icon>mdi-archive-arrow-down</v-icon>
+                            </v-btn>
                         </v-row>
                     </v-list-item>
                 </v-card-actions>
             </v-card>
         </v-row>
 
-        <h2 v-if="archivedProjects.length" class="d-block pt-12">Archived projects</h2>
-        <v-row v-if="archivedProjects.length" class="d-flex justify-start pa-2">
-            <v-card v-for="project in archivedProjects" :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px">
+        <h2 class="d-block pt-12" v-if="archivedProjects.length">Archived projects</h2>
+        <v-row class="d-flex justify-start pa-2" v-if="archivedProjects.length">
+            <v-card :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px"
+                    v-for="project in archivedProjects">
                 <v-card-title>{{ project.name }}</v-card-title>
-                <v-card-subtitle >
-                    <a :href="project.url" target="_blank" class="body-2 external-link" style="text-decoration: none;">
-                        <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon> {{ project.url }}
+                <v-card-subtitle>
+                    <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
+                        <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
+                        {{ project.url }}
                     </a>
                 </v-card-subtitle>
                 <v-card-actions>
                     <v-list-item class="grow">
                         <v-row align="center" justify="end">
-                            <v-btn @click="unarchive(project)" text color="primary"><v-icon>mdi-archive-arrow-up</v-icon></v-btn>
+                            <v-btn @click="unarchive(project)" color="primary" text>
+                                <v-icon>mdi-archive-arrow-up</v-icon>
+                            </v-btn>
                         </v-row>
                     </v-list-item>
                 </v-card-actions>
             </v-card>
         </v-row>
 
-        <v-btn color="accent" dark fixed bottom right fab @click="newProjectDialog = !newProjectDialog">
+        <v-btn @click="newProjectDialog = !newProjectDialog" bottom color="accent" dark fab fixed right>
             <v-icon>mdi-plus</v-icon>
         </v-btn>
 
@@ -58,15 +67,20 @@
             <v-card>
                 <v-card-title class="secondary">Create project</v-card-title>
                 <v-container>
-                        <v-form  @keyup.native.enter="create" ref="newProjectForm" v-model="newProjectFormValid" lazy-validation autocomplete="off" class="pa-2">
-                            <v-text-field v-model="newProject.name" :rules="rules.name" required autocorrect="off" autocapitalize="none" placeholder="Name"/>
-                            <v-text-field v-model="newProject.url" :rules="rules.url" required autocorrect="off" autocapitalize="none" placeholder="URL"/>
-                        </v-form>
+                    <v-form @keyup.native.enter="create" autocomplete="off" class="pa-2"
+                            lazy-validation ref="newProjectForm" v-model="newProjectFormValid">
+                        <v-text-field :rules="rules.name" autocapitalize="none" autocorrect="off" placeholder="Name"
+                                      required v-model="newProject.name"/>
+                        <v-text-field :rules="rules.url" autocapitalize="none" autocorrect="off" placeholder="URL"
+                                      required v-model="newProject.url"/>
+                    </v-form>
                 </v-container>
                 <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="newProjectDialog = false; $refs.newProjectForm.reset()">Cancel</v-btn>
-                    <v-btn color="primary" @click="create" :disabled="!newProjectFormValid || loading" :loading="loading">Save</v-btn>
+                    <v-spacer/>
+                    <v-btn @click="newProjectDialog = false; $refs.newProjectForm.reset()" text>Cancel</v-btn>
+                    <v-btn :disabled="!newProjectFormValid || loading" :loading="loading" @click="create"
+                           color="primary">Save
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -75,15 +89,20 @@
             <v-card>
                 <v-card-title class="secondary">Edit project</v-card-title>
                 <v-container>
-                    <v-form  @keyup.native.enter="edit" ref="editProjectForm" v-model="editProjectFormValid" lazy-validation autocomplete="off" class="pa-2">
-                        <v-text-field v-model="editingProject.name" :rules="rules.name" required autocorrect="off" autocapitalize="none" placeholder="Name"/>
-                        <v-text-field v-model="editingProject.url" :rules="rules.url" required autocorrect="off" autocapitalize="none" placeholder="URL"/>
+                    <v-form @keyup.native.enter="edit" autocomplete="off" class="pa-2"
+                            lazy-validation ref="editProjectForm" v-model="editProjectFormValid">
+                        <v-text-field :rules="rules.name" autocapitalize="none" autocorrect="off" placeholder="Name"
+                                      required v-model="editingProject.name"/>
+                        <v-text-field :rules="rules.url" autocapitalize="none" autocorrect="off" placeholder="URL"
+                                      required v-model="editingProject.url"/>
                     </v-form>
                 </v-container>
                 <v-card-actions>
-                    <v-spacer />
-                    <v-btn text @click="editingProject = null">Cancel</v-btn>
-                    <v-btn color="primary" @click="edit" :disabled="!editProjectFormValid || loading" :loading="loading">Save</v-btn>
+                    <v-spacer/>
+                    <v-btn @click="editingProject = null" text>Cancel</v-btn>
+                    <v-btn :disabled="!editProjectFormValid || loading" :loading="loading" @click="edit"
+                           color="primary">Save
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -127,7 +146,10 @@
                         this.archivedProjects = projects.filter(project => project.archived);
                     })
                     .catch(error => {
-                        this.setSnackMessage({message: "Unexpected error occurred. Please, try again.", color: "error"});
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
                     })
                     .then(() => {
                         this.loading = false;
@@ -143,7 +165,10 @@
                         this.list();
                     })
                     .catch(error => {
-                        this.setSnackMessage({message: "Unexpected error occurred. Please, try again.", color: "error"});
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
                     })
                     .then(() => {
                         this.loading = false;
@@ -159,7 +184,10 @@
                         this.list();
                     })
                     .catch(error => {
-                        this.setSnackMessage({message: "Unexpected error occurred. Please, try again.", color: "error"});
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
                     })
                     .then(() => {
                         this.loading = false;
@@ -169,16 +197,24 @@
                 this.$store.dispatch('projects/archive', project.id)
                     .then(response => {
                         this.list();
-                    }).catch(error => {
-                        this.setSnackMessage({message: "Unexpected error occurred. Please, try again.", color: "error"});
+                    })
+                    .catch(error => {
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
                     });
             },
             unarchive(project) {
                 this.$store.dispatch('projects/unarchive', project.id)
                     .then(response => {
                         this.list();
-                    }).catch(error => {
-                        this.setSnackMessage({message: "Unexpected error occurred. Please, try again.", color: "error"});
+                    })
+                    .catch(error => {
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
                     });
             },
         }

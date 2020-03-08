@@ -11,8 +11,8 @@
 
 <template>
     <v-container fill-height>
-        <v-layout row wrap align-center>
-            <v-flex xs12 sm8 offset-sm2 md6 offset-md3 class="text-xs-center">
+        <v-layout align-center row wrap>
+            <v-flex class="text-xs-center" md6 offset-md3 offset-sm2 sm8 xs12>
                 <h1>This page is not available.</h1>
                 <p>Perhaps the link you have followed is incorrect or the page has been deleted. Return to
                     <router-link :to="{name: 'homepage'}">Home</router-link>

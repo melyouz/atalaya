@@ -11,44 +11,44 @@
 
 <template>
     <v-container fill-height>
-        <v-layout row wrap align-center>
+        <v-layout align-center row wrap>
             <v-flex class="xs12 text-xs-center">
                 <v-form
                     @keyup.native.enter="submit"
-                    ref="form"
-                    v-model="valid"
-                    lazy-validation
                     aria-autocomplete
                     autocomplete="off"
+                    lazy-validation
+                    ref="form"
+                    v-model="valid"
                 >
                     <v-text-field
-                        v-model="formData.email"
                         :rules="rules.email"
+                        autocapitalize="none"
+                        autocorrect="off"
                         label="Email"
                         required
-                        autocorrect="off"
-                        autocapitalize="none"
+                        v-model="formData.email"
                     ></v-text-field>
 
                     <v-text-field
-                        v-model="formData.password"
-                        required
                         :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                        :rules="rules.password"
                         :type="showPassword ? 'text' : 'password'"
                         @click:append="showPassword = !showPassword"
-                        :rules="rules.password"
-                        label="Password"
-                        autocorrect="off"
                         autocapitalize="none"
+                        autocorrect="off"
+                        label="Password"
+                        required
+                        v-model="formData.password"
                     ></v-text-field>
 
                     <v-btn
-                        large
-                        block
-                        color="primary"
-                        @click="submit"
                         :disabled="!valid || loading"
                         :loading="loading"
+                        @click="submit"
+                        block
+                        color="primary"
+                        large
                     >Log in
                     </v-btn>
                 </v-form>
@@ -96,7 +96,10 @@
                             this.setSnackMessage({message: "Invalid credentials.", color: "error"});
                         }
                         if (error.response.status === 500) {
-                            this.setSnackMessage({message: "Unexpected error occurred. Please, try again later.", color: "error"});
+                            this.setSnackMessage({
+                                message: "Unexpected error occurred. Please, try again later.",
+                                color: "error"
+                            });
                         }
                     })
                     .then(() => {
@@ -110,7 +113,7 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     .container {
         max-width: 800px !important;
     }
