@@ -1,0 +1,31 @@
+/*
+ *
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
+ * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
+ *
+ * @link      https://github.com/ayrad
+ *
+ * @licence   GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ */
+
+.splash-screen
+{
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    margin-top: -0.5em;
+    color: #ddd;
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 4rem;
+    text-align: center;
+}
+
+.splash-screen .app-version
+{
+    display: block;
+    font-weight: normal;
+    font-size: 1rem;
+}
