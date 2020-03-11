@@ -71,7 +71,7 @@
 
         <v-dialog v-model="newProjectDialog" width="800px">
             <v-card>
-                <v-card-title class="secondary">Create project</v-card-title>
+                <v-card-title class="secondary white--text">Create project</v-card-title>
                 <v-container>
                     <v-form @keyup.native.enter="create" autocomplete="off" class="pa-2"
                             lazy-validation ref="newProjectForm" v-model="newProjectFormValid">
@@ -93,7 +93,7 @@
 
         <v-dialog v-if="editingProject" v-model="editingProject" width="800px">
             <v-card>
-                <v-card-title class="secondary">Edit project</v-card-title>
+                <v-card-title class="secondary white--text">Edit project</v-card-title>
                 <v-container>
                     <v-form @keyup.native.enter="edit" autocomplete="off" class="pa-2"
                             lazy-validation ref="editProjectForm" v-model="editProjectFormValid">
