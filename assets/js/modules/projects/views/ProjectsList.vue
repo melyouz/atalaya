@@ -11,9 +11,12 @@
 
 <template>
     <v-container>
-        <h2 class="d-block pt-4">Projects</h2>
+        <h2 class="d-block pt-4">Projects
+            <v-btn @click="newProjectDialog = !newProjectDialog" depressed>Add new</v-btn>
+        </h2>
+
         <v-row class=" d-flex justify-start pa-2">
-            <v-card :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px" v-for="project in activeProjects">
+            <v-card :key="project.id" class="ma-2 ma-lg-4 pa-2" v-for="project in activeProjects" min-width="415px">
                 <v-card-title>{{ project.name }}</v-card-title>
                 <v-card-subtitle>
                     <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
@@ -21,6 +24,13 @@
                         {{ project.url }}
                     </a>
                 </v-card-subtitle>
+                <v-card-text>
+                    <v-layout class="flex justify-start">
+                        <v-text-field :value="projectFullToken(project)" dense filled hide-details label="Project Token"
+                                      readonly/>
+                        <v-btn @click="doCopy(projectFullToken(project))" class="mt-3" text>Copy!</v-btn>
+                    </v-layout>
+                </v-card-text>
                 <v-card-actions>
                     <v-list-item class="grow">
                         <v-row align="center" justify="end">
@@ -216,6 +226,16 @@
                             color: "error"
                         });
                     });
+            },
+            projectFullToken(project) {
+                return `${project.id}:${project.token}@atalaya.tech`;
+            },
+            doCopy(text) {
+                this.$copyText(text).then(function (e) {
+                    alert('Copied!');
+                }, function (e) {
+                    alert('Cannot copy :(');
+                })
             },
         }
     }

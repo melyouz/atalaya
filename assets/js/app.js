@@ -19,6 +19,7 @@ import DateTimeFilter from './filters/DateTimeFilter'
 
 import vuetify from './plugins/vuetify'
 import Gravatar from 'vue-gravatar';
+import VueClipboard from 'vue-clipboard2';
 
 // Vue filters
 Vue.filter('date', DateTimeFilter);
@@ -26,6 +27,7 @@ Vue.filter('date', DateTimeFilter);
 // Vue plugins
 Vue.prototype.$http = http;
 Vue.component('v-gravatar', Gravatar);
+Vue.use(VueClipboard);
 
 // App
 new Vue({
