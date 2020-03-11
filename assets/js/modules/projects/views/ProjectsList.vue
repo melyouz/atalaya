@@ -69,10 +69,6 @@
             </v-card>
         </v-row>
 
-        <v-btn @click="newProjectDialog = !newProjectDialog" bottom color="accent" dark fab fixed right>
-            <v-icon>mdi-plus</v-icon>
-        </v-btn>
-
         <v-dialog v-model="newProjectDialog" width="800px">
             <v-card>
                 <v-card-title class="secondary">Create project</v-card-title>
