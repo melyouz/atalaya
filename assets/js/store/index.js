@@ -13,6 +13,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import users from '@modules/users/store';
 import projects from '@modules/projects/store';
+import issues from '@modules/issues/store';
 
 Vue.use(Vuex);
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     modules: {
         users,
         projects,
+        issues,
     },
     state: {
         snackMessage: ''

@@ -18,6 +18,7 @@ import NotFound from '@/views/NotFound';
 
 import usersRoutes from '@modules/users/router';
 import projectsRoutes from '@modules/projects/router';
+import issuesRoutes from '@modules/issues/router';
 
 Vue.use(VueRouter);
 
@@ -42,7 +43,7 @@ const baseRoutes = [
     }
 ];
 
-const routes = baseRoutes.concat(usersRoutes, projectsRoutes);
+const routes = baseRoutes.concat(usersRoutes, projectsRoutes, issuesRoutes);
 
 const router = new VueRouter({
     routes,
