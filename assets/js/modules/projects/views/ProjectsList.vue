@@ -16,7 +16,7 @@
         </h2>
 
         <v-row class=" d-flex justify-start pa-2">
-            <v-card :key="project.id" class="ma-2 ma-lg-4 pa-2" v-for="project in activeProjects" min-width="415px">
+            <v-card :key="project.id" class="ma-2 ma-lg-4 pa-2" min-width="415px" v-for="project in activeProjects">
                 <v-card-title>{{ project.name }}</v-card-title>
                 <v-card-subtitle>
                     <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
