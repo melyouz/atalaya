@@ -15,11 +15,13 @@
 
         <v-row class="align-center justify-start">
             <v-col cols="3">
-                <v-overflow-btn :items="activeProjects" item-text="name" item-value="id" v-model="selectedProject" label="Project" editable append-icon="mdi-folder-multiple" segmented :loading="loading"/>
+                <v-overflow-btn :items="activeProjects" :loading="loading" append-icon="mdi-folder-multiple" editable
+                                item-text="name" item-value="id" label="Project" segmented
+                                v-model="selectedProject"/>
             </v-col>
         </v-row>
 
-        <v-data-table :items="issues" :headers="issuesHeaders" :items-per-page="10" class="elevation-1">
+        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1">
             <!--<template #item.full_request="{ item }">{{ item.request.method }} {{ item.request.url }}</template>-->
             <template v-slot:item.resolved="{ item }">
                 <v-icon>

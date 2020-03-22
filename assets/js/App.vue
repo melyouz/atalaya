@@ -40,7 +40,7 @@
                                     <v-list-item-title>Projects</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item :to="{ name: 'issues-list' }"  link>
+                            <v-list-item :to="{ name: 'issues-list' }" link>
                                 <v-list-item-action>
                                     <v-icon>mdi-bug-check</v-icon>
                                 </v-list-item-action>
