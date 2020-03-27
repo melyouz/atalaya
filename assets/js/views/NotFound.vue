@@ -11,15 +11,15 @@
 
 <template>
     <v-container fill-height>
-        <v-layout align-center row wrap>
-            <v-flex class="text-xs-center" md6 offset-md3 offset-sm2 sm8 xs12>
-                <h1>This page is not available.</h1>
-                <p>Perhaps the link you have followed is incorrect or the page has been deleted. Return to
-                    <router-link :to="{name: 'homepage'}">Home</router-link>
-                    .
-                </p>
-            </v-flex>
-        </v-layout>
+        <v-row class="text-center align-center">
+            <v-col>
+                <h1 class="display-2 primary--text">Whoops, this page is not available.</h1>
+                <p class="pt-2">Perhaps the link you have followed is incorrect or the page has been deleted.</p>
+                <v-btn :to="{name: 'homepage'}" color="primary">
+                    Return to Home
+                </v-btn>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
