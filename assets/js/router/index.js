@@ -26,7 +26,7 @@ const baseRoutes = [
     {
         path: '/',
         name: 'homepage',
-        redirect: { name: 'projects-list' },
+        redirect: { name: 'issues-list' },
         //component: Home,
         meta: {
             'authRequired': true
