@@ -10,46 +10,48 @@
   -->
 
 <template>
-    <v-container>
+    <v-container fluid>
         <h2 class="d-block pt-4">Projects
             <v-btn @click="newProjectDialog = !newProjectDialog" depressed>Add new</v-btn>
         </h2>
 
-        <v-row class=" d-flex justify-start pa-2">
-            <v-card :key="project.id" class="ma-2 ma-lg-4 pa-2" min-width="415px" v-for="project in activeProjects">
-                <v-card-title>{{ project.name }}</v-card-title>
-                <v-card-subtitle>
-                    <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
-                        <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
-                        {{ project.url }}
-                    </a>
-                </v-card-subtitle>
-                <v-card-text>
-                    <v-layout class="flex justify-start">
-                        <v-text-field :value="projectFullToken(project)" dense filled hide-details label="Project Token"
-                                      readonly/>
-                        <v-btn @click="doCopy(projectFullToken(project))" class="mt-3" text>Copy!</v-btn>
-                    </v-layout>
-                </v-card-text>
-                <v-card-actions>
-                    <v-list-item class="grow">
-                        <v-row align="center" justify="end">
-                            <v-btn @click="editingProject = project" color="primary" small text>
-                                <v-icon>mdi-pencil</v-icon>
-                            </v-btn>
-                            <v-btn @click="archive(project)" color="red" small text>
-                                <v-icon>mdi-archive-arrow-down</v-icon>
-                            </v-btn>
-                        </v-row>
-                    </v-list-item>
-                </v-card-actions>
-            </v-card>
+        <v-row v-if="activeProjects.length">
+            <v-col :key="project.id" v-for="project in activeProjects" cols="12" sm="6" lg="4">
+                <v-card>
+                    <v-card-title>{{ project.name }}</v-card-title>
+                    <v-card-subtitle>
+                        <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
+                            <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
+                            {{ project.url }}
+                        </a>
+                    </v-card-subtitle>
+                    <v-card-text>
+                        <v-layout class="flex justify-start">
+                            <v-text-field :value="projectFullToken(project)" dense filled hide-details label="Project Token"
+                                          readonly/>
+                            <v-btn @click="doCopy(projectFullToken(project))" class="mt-3" text>Copy!</v-btn>
+                        </v-layout>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-list-item class="grow">
+                            <v-row align="center" justify="end">
+                                <v-btn @click="editingProject = project" color="primary" small text>
+                                    <v-icon>mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-btn @click="archive(project)" color="red" small text>
+                                    <v-icon>mdi-archive-arrow-down</v-icon>
+                                </v-btn>
+                            </v-row>
+                        </v-list-item>
+                    </v-card-actions>
+                </v-card>
+            </v-col>
         </v-row>
 
         <h2 class="d-block pt-12" v-if="archivedProjects.length">Archived projects</h2>
-        <v-row class="d-flex justify-start pa-2" v-if="archivedProjects.length">
-            <v-card :key="project.id" class="ma-lg-4 ma-md-2 pa-2" min-width="415px"
-                    v-for="project in archivedProjects">
+        <v-row v-if="archivedProjects.length">
+            <v-col :key="project.id" v-for="project in archivedProjects" cols="12" sm="6" lg="4">
+            <v-card>
                 <v-card-title>{{ project.name }}</v-card-title>
                 <v-card-subtitle>
                     <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
@@ -67,6 +69,7 @@
                     </v-list-item>
                 </v-card-actions>
             </v-card>
+            </v-col>
         </v-row>
 
         <v-dialog v-model="newProjectDialog" width="800px">

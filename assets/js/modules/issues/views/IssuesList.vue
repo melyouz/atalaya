@@ -21,7 +21,7 @@
             </v-col>
         </v-row>
 
-        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1">
+        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1" :loading="loading">
             <!--<template #item.full_request="{ item }">{{ item.request.method }} {{ item.request.url }}</template>-->
             <template v-slot:item.resolved="{ item }">
                 <v-icon>
