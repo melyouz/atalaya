@@ -11,4 +11,4 @@
 
 import moment from 'moment'
 
-export default (value) => moment(String(value)).format('YYYY-MM-DD HH:mm:ss');
+export default (value) => moment(String(value)).fromNow();
