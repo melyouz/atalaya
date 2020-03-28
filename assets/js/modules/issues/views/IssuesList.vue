@@ -28,11 +28,14 @@
                     {{ item.resolved ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline" }}
                 </v-icon>
             </template>
+            <template v-slot:item.createdAt="{ item }">{{ item.createdAt|timeago }}</template>
         </v-data-table>
     </v-container>
 </template>
 
 <script>
+    import {mapMutations} from 'vuex';
+
     export default {
         name: "IssuesList",
         data: () => ({
@@ -40,7 +43,7 @@
             activeProjects: [],
             selectedProject: null,
             issuesHeaders: [
-                {text: 'Id', value: 'id'},
+                {text: 'Created At', value: 'createdAt'},
                 {text: 'Request Method', value: 'request.method'},
                 {text: 'Request URL', value: 'request.url'},
                 {text: 'Exception Class', value: 'exception.class'},
@@ -108,6 +111,9 @@
                         this.loading = false;
                     });
             },
+            ...mapMutations({
+                setSnackMessage: 'setSnackMessage'
+            })
         }
     }
 </script>

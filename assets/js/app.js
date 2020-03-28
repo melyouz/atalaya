@@ -16,13 +16,15 @@ import http from './http'
 import App from './App.vue'
 
 import DateTimeFilter from './filters/DateTimeFilter'
+import TimeAgoFilter from './filters/TimeAgoFilter'
 
 import vuetify from './plugins/vuetify'
 import Gravatar from 'vue-gravatar';
 import VueClipboard from 'vue-clipboard2';
 
 // Vue filters
-Vue.filter('date', DateTimeFilter);
+Vue.filter('datetime', DateTimeFilter);
+Vue.filter('timeago', TimeAgoFilter);
 
 // Vue plugins
 Vue.prototype.$http = http;
