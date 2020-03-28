@@ -28,7 +28,7 @@
                     {{ item.resolved ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline" }}
                 </v-icon>
             </template>
-            <template v-slot:item.createdAt="{ item }">{{ item.createdAt|timeago }}</template>
+            <template v-slot:item.seenAt="{ item }">{{ item.seenAt|timeago }}</template>
         </v-data-table>
     </v-container>
 </template>
@@ -43,7 +43,7 @@
             activeProjects: [],
             selectedProject: null,
             issuesHeaders: [
-                {text: 'Created At', value: 'createdAt'},
+                {text: 'Seen At', value: 'seenAt'},
                 {text: 'Request Method', value: 'request.method'},
                 {text: 'Request URL', value: 'request.url'},
                 {text: 'Exception Class', value: 'exception.class'},
