@@ -33,7 +33,7 @@ class CreateProjectController extends AbstractController
         $user = $this->getLoggedInUser();
         $projectId = $this->uuid();
 
-        $command = new CreateProjectCommand($projectId, $input->name, $input->url, $user->getId()->value());
+        $command = new CreateProjectCommand($projectId, $input->name, $input->url, $input->platform, $user->getId()->value());
         $this->dispatch($command);
 
         return new JsonResponse(['id' => $projectId], Response::HTTP_CREATED);

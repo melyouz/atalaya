@@ -9,4 +9,6 @@
  *
  */
 
-export default {}
+export default {
+    getAvailablePlatforms: (state) => state.availablePlatforms,
+}

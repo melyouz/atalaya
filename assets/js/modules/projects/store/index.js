@@ -15,7 +15,12 @@ import mutations from './mutations';
 
 export default {
     namespaced: true,
-    state: {},
+    state: {
+        availablePlatforms: [
+            {name: 'PHP', icon: 'mdi-language-php'},
+            {name: 'Symfony', icon: 'mdi-symfony'},
+        ],
+    },
     actions,
     getters,
     mutations,

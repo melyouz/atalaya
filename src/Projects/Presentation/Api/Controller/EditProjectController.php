@@ -34,7 +34,7 @@ class EditProjectController extends AbstractController
             return $this->validationErrorResponse($validationErrors);
         }
 
-        $command = new EditProjectCommand($id, $input->name ?? '', $input->url ?? '');
+        $command = new EditProjectCommand($id, $input->name ?? '', $input->url ?? '', $input->platform ?? '');
         $this->dispatch($command);
 
         return new Response('', Response::HTTP_OK);

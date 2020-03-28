@@ -29,4 +29,9 @@ class EditProjectInput implements InputDtoInterface
      * @Assert\Length(max="80")
      */
     public ?string $url = null;
+
+    /**
+     * @Assert\Length(max="30")
+     */
+    public ?string $platform = null;
 }

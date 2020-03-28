@@ -18,7 +18,9 @@
         <v-row v-if="activeProjects.length">
             <v-col :key="project.id" v-for="project in activeProjects" cols="12" sm="6" lg="4">
                 <v-card>
-                    <v-card-title>{{ project.name }}</v-card-title>
+                    <v-card-title>
+                        <v-icon class="mr-1" size="20">{{ projectIcon(project) }}</v-icon> {{ project.name }}
+                    </v-card-title>
                     <v-card-subtitle>
                         <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
                             <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
@@ -52,7 +54,9 @@
         <v-row v-if="archivedProjects.length">
             <v-col :key="project.id" v-for="project in archivedProjects" cols="12" sm="6" lg="4">
             <v-card>
-                <v-card-title>{{ project.name }}</v-card-title>
+                <v-card-title>
+                    <v-icon class="mr-1" size="20">{{ projectIcon(project) }}</v-icon> {{ project.name }}
+                </v-card-title>
                 <v-card-subtitle>
                     <a :href="project.url" class="body-2 external-link" style="text-decoration: none;" target="_blank">
                         <v-icon color="secondary" style="text-decoration: none;">mdi-link</v-icon>
@@ -78,10 +82,11 @@
                 <v-container>
                     <v-form @keyup.native.enter="create" autocomplete="off" class="pa-2"
                             lazy-validation ref="newProjectForm" v-model="newProjectFormValid">
-                        <v-text-field :rules="rules.name" autocapitalize="none" autocorrect="off" placeholder="Name"
+                        <v-text-field :rules="[rules.required('Name is required')]" autocapitalize="none" autocorrect="off" placeholder="Name"
                                       required v-model="newProject.name"/>
-                        <v-text-field :rules="rules.url" autocapitalize="none" autocorrect="off" placeholder="URL"
+                        <v-text-field :rules="[rules.required('URL is required'), rules.url]" autocapitalize="none" autocorrect="off" placeholder="URL"
                                       required v-model="newProject.url"/>
+                        <v-select :rules="[rules.required('Platform is required')]" :items="projectAvailablePlatforms()" item-text="name" item-value="name" label="Platform" v-model="newProject.platform" />
                     </v-form>
                 </v-container>
                 <v-card-actions>
@@ -104,6 +109,7 @@
                                       required v-model="editingProject.name"/>
                         <v-text-field :rules="rules.url" autocapitalize="none" autocorrect="off" placeholder="URL"
                                       required v-model="editingProject.url"/>
+                        <v-select :rules="[rules.required('Platform is required')]" :items="projectAvailablePlatforms()" item-text="name" item-value="name" label="Platform" v-model="editingProject.platform" />
                     </v-form>
                 </v-container>
                 <v-card-actions>
@@ -119,6 +125,8 @@
 </template>
 
 <script>
+    import {mapMutations} from 'vuex';
+
     export default {
         name: "ProjectsList",
         data: () => ({
@@ -127,16 +135,12 @@
             newProject: {
                 name: '',
                 url: '',
+                platform: '',
             },
             newProjectFormValid: false,
             rules: {
-                name: [
-                    v => !!v || 'Name is required',
-                ],
-                url: [
-                    v => !!v || 'URL is required',
-                    v => /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(v) || 'Invalid URL',
-                ],
+                required: msg => v => !!v || msg,
+                url: v => /^(?:(?:https?):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i.test(v) || 'Invalid URL',
             },
             editingProject: null,
             editProjectFormValid: false,
@@ -189,7 +193,6 @@
                 this.$store.dispatch('projects/edit', this.editingProject)
                     .then(response => {
                         this.editingProject = null;
-                        console.log('Editing project should have gone', this.editingProject);
                         this.list();
                     })
                     .catch(error => {
@@ -226,8 +229,19 @@
                         });
                     });
             },
+            projectIcon(project) {
+                const filtered = this.projectAvailablePlatforms().filter((platform) => platform.name === project.platform);
+                if (!filtered.length) {
+                    return '';
+                }
+
+                return filtered[0].icon;
+            },
             projectFullToken(project) {
                 return `${project.id}:${project.token}@atalaya.tech`;
+            },
+            projectAvailablePlatforms() {
+                return this.$store.getters['projects/getAvailablePlatforms'];
             },
             doCopy(text) {
                 this.$copyText(text).then(function (e) {
@@ -236,6 +250,9 @@
                     alert('Cannot copy :(');
                 })
             },
+            ...mapMutations({
+                setSnackMessage: 'setSnackMessage'
+            })
         }
     }
 </script>
