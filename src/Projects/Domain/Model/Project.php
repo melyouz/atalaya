@@ -58,6 +58,12 @@ class Project
     private string $token;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     * @var string
+     */
+    private string $platform;
+
+    /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
      * @var DateTimeImmutable
      */
@@ -81,22 +87,24 @@ class Project
      * @param ProjectName $name
      * @param ProjectUrl $url
      * @param ProjectToken $token
+     * @param ProjectPlatform $platform
      * @param UserId $userId
      * @throws Exception
      */
-    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId)
+    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId)
     {
         $this->id = $id->value();
         $this->name = $name->value();
         $this->url = $url->value();
         $this->token = $token->value();
+        $this->platform = $platform->value();
         $this->userId = $userId->value();
         $this->createdAt = new DateTimeImmutable();
     }
 
-    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, UserId $userId): self
+    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId): self
     {
-        return new self($id, $name, $url, $token, $userId);
+        return new self($id, $name, $url, $token, $platform, $userId);
     }
 
     public function archive(): void
@@ -137,6 +145,11 @@ class Project
         $this->url = $newUrl->value();
     }
 
+    public function changePlatform(ProjectPlatform $newPlatform): void
+    {
+        $this->platform = $newPlatform->value();
+    }
+
     public function getId(): ProjectId
     {
         return ProjectId::fromString($this->id);
@@ -155,6 +168,11 @@ class Project
     public function getToken(): ProjectToken
     {
         return ProjectToken::fromString($this->token);
+    }
+
+    public function getPlatform(): ProjectPlatform
+    {
+        return ProjectPlatform::fromString($this->platform);
     }
 
     public function isOwner(UserId $userId): bool

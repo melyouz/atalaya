@@ -38,7 +38,7 @@ class CreateProjectCommandHandler implements CommandHandlerInterface
     public function __invoke(CreateProjectCommand $command)
     {
         $projectToken = ProjectToken::fromString($this->tokenGenerator->md5RandomToken());
-        $project = Project::create($command->getId(), $command->getName(), $command->getUrl(), $projectToken, $command->getUserId());
+        $project = Project::create($command->getId(), $command->getName(), $command->getUrl(), $projectToken, $command->getPlatform(), $command->getUserId());
 
         $this->projectRepo->save($project);
     }

@@ -38,6 +38,10 @@ class EditProjectCommandHandler implements CommandHandlerInterface
             $project->changeUrl($command->getUrl());
         }
 
+        if ($command->getPlatform() && !$project->getPlatform()->sameValueAs($command->getPlatform())) {
+            $project->changePlatform($command->getPlatform());
+        }
+
         $this->projectRepo->save($project);
     }
 }

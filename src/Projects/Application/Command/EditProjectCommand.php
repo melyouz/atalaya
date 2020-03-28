@@ -16,6 +16,7 @@ namespace App\Projects\Application\Command;
 
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectName;
+use App\Projects\Domain\Model\ProjectPlatform;
 use App\Projects\Domain\Model\ProjectUrl;
 use App\Shared\Application\Command\CommandInterface;
 
@@ -33,12 +34,17 @@ class EditProjectCommand implements CommandInterface
      * @var ProjectUrl
      */
     private ?ProjectUrl $url;
+    /**
+     * @var ProjectPlatform
+     */
+    private ?ProjectPlatform $platform;
 
-    public function __construct(string $id, ?string $name, ?string $url)
+    public function __construct(string $id, ?string $name, ?string $url, ?string $platform)
     {
         $this->id = ProjectId::fromString($id);
         $this->name = ($name ? ProjectName::fromString($name) : null);
         $this->url = ($url ? ProjectUrl::fromString($url) : null);
+        $this->platform = ($platform ? ProjectPlatform::fromString($platform) : null);
     }
 
     /**
@@ -63,5 +69,13 @@ class EditProjectCommand implements CommandInterface
     public function getUrl(): ?ProjectUrl
     {
         return $this->url;
+    }
+
+    /**
+     * @return ProjectPlatform
+     */
+    public function getPlatform(): ?ProjectPlatform
+    {
+        return $this->platform;
     }
 }

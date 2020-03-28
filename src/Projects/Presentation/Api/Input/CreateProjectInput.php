@@ -31,4 +31,10 @@ class CreateProjectInput implements InputDtoInterface
      * @Assert\Length(max="80")
      */
     public string $url;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max="30")
+     */
+    public string $platform;
 }
