@@ -67,7 +67,7 @@ class Issue
      * @ORM\Column(type="datetime_immutable", nullable=false)
      * @var DateTimeImmutable
      */
-    private DateTimeImmutable $createdAt;
+    private DateTimeImmutable $seenAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
@@ -82,7 +82,7 @@ class Issue
         $this->request = $request;
         $this->exception = $exception;
         $this->tags = new ArrayCollection();
-        $this->createdAt = new DateTimeImmutable();
+        $this->seenAt = new DateTimeImmutable();
     }
 
     public static function create(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = []): self
@@ -187,8 +187,8 @@ class Issue
         throw new TagNotFoundException();
     }
 
-    public function getCreatedAt(): DateTimeImmutable
+    public function getSeenAt(): DateTimeImmutable
     {
-        return $this->createdAt;
+        return $this->seenAt;
     }
 }

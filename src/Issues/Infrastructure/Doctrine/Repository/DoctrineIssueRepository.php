@@ -51,7 +51,7 @@ class DoctrineIssueRepository implements IssueRepositoryInterface
      */
     public function findAllByProjectId(ProjectId $projectId): array
     {
-        return $this->repo->findBy(['projectId' => $projectId->value()], ['createdAt' => 'desc']);
+        return $this->repo->findBy(['projectId' => $projectId->value()], ['seenAt' => 'desc']);
     }
 
     /**
