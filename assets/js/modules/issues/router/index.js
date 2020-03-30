@@ -10,6 +10,7 @@
  */
 
 import IssuesList from '../views/IssuesList'
+import IssueDetail from '../views/IssueDetail'
 
 export default [
     {
@@ -20,4 +21,12 @@ export default [
             authRequired: true
         }
     },
+    {
+        path: '/issues/:id',
+        name: 'issue-detail',
+        component: IssueDetail,
+        meta: {
+            authRequired: true
+        }
+    }
 ];

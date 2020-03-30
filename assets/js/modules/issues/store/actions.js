@@ -23,4 +23,15 @@ export default {
                 });
         })
     },
+    fetch(context, id) {
+        return new Promise((resolve, reject) => {
+            http.get(`/issues/${id}`)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    },
 };

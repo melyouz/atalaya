@@ -9,6 +9,6 @@
  *
  */
 
-import moment from 'moment'
+import moment from 'moment-timezone'
 
-export default (value) => moment(String(value)).format('YYYY-MM-DD HH:mm:ss');
+export default (value) => moment(String(value)).tz('Europe/Madrid').format('DD-MMM-YYYY HH:mm:ss z');
