@@ -34,4 +34,26 @@ export default {
                 });
         })
     },
+    resolve(context, id) {
+        return new Promise((resolve, reject) => {
+            http.patch(`/issues/${id}/resolve`)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    },
+    unresolve(context, id) {
+        return new Promise((resolve, reject) => {
+            http.patch(`/issues/${id}/unresolve`)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        })
+    },
 };
