@@ -30,5 +30,8 @@
         "watch": "encore dev --watch",
         "build": "encore production --progress",
         "hot": "encore dev-server --hot"
+    },
+    "dependencies": {
+        "moment-timezone": "^0.5.28"
     }
 }

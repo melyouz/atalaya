@@ -21,12 +21,9 @@
             </v-col>
         </v-row>
 
-        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1" :loading="loading">
-            <!--<template #item.full_request="{ item }">{{ item.request.method }} {{ item.request.url }}</template>-->
+        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1" :loading="loading" @click:row="handleClick">
             <template v-slot:item.resolved="{ item }">
-                <v-icon>
-                    {{ item.resolved ? "mdi-checkbox-marked" : "mdi-checkbox-blank-outline" }}
-                </v-icon>
+                <v-simple-checkbox v-model="item.resolved" disabled></v-simple-checkbox>
             </template>
             <template v-slot:item.seenAt="{ item }">{{ item.seenAt|timeago }}</template>
         </v-data-table>
@@ -50,19 +47,6 @@
                 {text: 'Exception Message', value: 'exception.message'},
                 {text: 'Resolved', value: 'resolved'},
             ],
-            /*{
-                text: string
-                value: string
-                align?: 'start' | 'center' | 'end'
-                sortable?: boolean
-                filterable?: boolean
-                divider?: boolean
-                class?: string | string[]
-                width?: string | number
-                filter?: (value: any, search: string, item: any) => boolean
-                sort?: (a: any, b: any) => number
-
-            }*/
             issues: [],
         }),
         created() {
@@ -110,6 +94,9 @@
                     .then(() => {
                         this.loading = false;
                     });
+            },
+            handleClick(issue, row) {
+                this.$router.push({name: 'issue-detail', params: {id: issue.id}});
             },
             ...mapMutations({
                 setSnackMessage: 'setSnackMessage'
