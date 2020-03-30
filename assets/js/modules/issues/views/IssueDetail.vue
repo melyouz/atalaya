@@ -13,6 +13,7 @@
     <v-container>
         <div v-if="issue">
             <h2 class="d-block pt-4">{{ issue.exception.class }}</h2>
+
             <div>
                 <v-icon class="pr-1 pb-1" color="red" small>mdi-checkbox-blank-circle</v-icon>
                 {{ issue.exception.message }}
@@ -20,6 +21,15 @@
             <div>
                 <v-icon class="pr-1 pb-1" small>mdi-calendar</v-icon>
                 {{ issue.seenAt|datetime }} ({{ issue.seenAt|timeago }})
+            </div>
+
+            <div class="mt-4">
+                <v-btn v-if="!issue.resolved" @click="resolve()" :loading="loading" depressed outlined color="primary" small>
+                    <v-icon small class="mr-1">mdi-check-outline</v-icon> Resolve
+                </v-btn>
+                <v-btn v-if="issue.resolved" @click="unresolve()" :loading="loading" depressed color="primary" small>
+                    <v-icon small class="mr-1">mdi-check-bold</v-icon> Resolved
+                </v-btn>
             </div>
 
             <h3 class="d-block mt-4">Request</h3>
@@ -32,16 +42,10 @@
                 <pre><template v-for="(value, key, index) in issue.request.headers">{{ key }}: {{ value }}
 </template></pre>
             </div>
-            <!-- headers
-            <div class="my-2 py-2">
-                    <pre><template v-for="(value, key, index) in issue.request.headers">{{ key }}: {{ value }}
-                    </template>
-                </pre>
-            </div>-->
 
             <h3 class="d-block pt-4">Tags</h3>
             <div class="mt-2">
-                <v-btn-toggle class="ma-1" v-for="tag in issue.tags">
+                <v-btn-toggle class="ma-1" v-for="tag in issue.tags" :key="name">
                     <v-btn class="disable-events" color="primary" outlined small>{{ tag.name }}</v-btn>
                     <v-btn class="disable-events" depressed outlined small>{{ tag.value }}</v-btn>
                 </v-btn-toggle>
@@ -85,6 +89,38 @@
                         });
                     })
                     .then(() => {
+                        this.loading = false;
+                    });
+            },
+            resolve() {
+                this.loading = true;
+                this.$store.dispatch('issues/resolve', this.issue.id)
+                    .then(response => {
+                        this.issue.resolved = true;
+                    })
+                    .catch(error => {
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
+                    })
+                    .finally(() => {
+                            this.loading = false;
+                    });
+            },
+            unresolve() {
+                this.loading = true;
+                this.$store.dispatch('issues/unresolve', this.issue.id)
+                    .then(response => {
+                        this.issue.resolved = false;
+                    })
+                    .catch(error => {
+                        this.setSnackMessage({
+                            message: "Unexpected error occurred. Please, try again.",
+                            color: "error"
+                        });
+                    })
+                    .finally(() => {
                         this.loading = false;
                     });
             },
