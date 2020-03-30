@@ -12,8 +12,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-
-import Home from '@/views/Home'
 import NotFound from '@/views/NotFound';
 
 import usersRoutes from '@modules/users/router';
@@ -26,7 +24,7 @@ const baseRoutes = [
     {
         path: '/',
         name: 'homepage',
-        redirect: { name: 'issues-list' },
+        redirect: {name: 'issues-list'},
         //component: Home,
         meta: {
             'authRequired': true

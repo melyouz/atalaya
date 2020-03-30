@@ -21,9 +21,10 @@
             </v-col>
         </v-row>
 
-        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" class="elevation-1" :loading="loading" @click:row="handleClick">
+        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" :loading="loading"
+                      @click:row="handleClick" class="elevation-1">
             <template v-slot:item.resolved="{ item }">
-                <v-simple-checkbox v-model="item.resolved" disabled></v-simple-checkbox>
+                <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
             </template>
             <template v-slot:item.seenAt="{ item }">{{ item.seenAt|timeago }}</template>
         </v-data-table>

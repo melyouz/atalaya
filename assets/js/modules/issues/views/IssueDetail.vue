@@ -14,15 +14,18 @@
         <div v-if="issue">
             <h2 class="d-block pt-4">{{ issue.exception.class }}</h2>
             <div>
-                <v-icon small color="red" class="pr-1 pb-1">mdi-checkbox-blank-circle</v-icon> {{ issue.exception.message }}
+                <v-icon class="pr-1 pb-1" color="red" small>mdi-checkbox-blank-circle</v-icon>
+                {{ issue.exception.message }}
             </div>
             <div>
-                <v-icon small class="pr-1 pb-1">mdi-calendar</v-icon>  {{ issue.seenAt|datetime }} ({{ issue.seenAt|timeago }})
+                <v-icon class="pr-1 pb-1" small>mdi-calendar</v-icon>
+                {{ issue.seenAt|datetime }} ({{ issue.seenAt|timeago }})
             </div>
 
             <h3 class="d-block mt-4">Request</h3>
             <div class="mt-2">
-                <v-chip label disabled color="primary" class="font-weight-bold">{{ issue.request.method }}</v-chip> {{ issue.request.url }}
+                <v-chip class="font-weight-bold" color="primary" disabled label>{{ issue.request.method }}</v-chip>
+                {{ issue.request.url }}
             </div>
             <div class="ml-4 mt-4">
                 <h4>Headers</h4>
@@ -38,9 +41,9 @@
 
             <h3 class="d-block pt-4">Tags</h3>
             <div class="mt-2">
-                <v-btn-toggle v-for="tag in issue.tags" class="ma-1">
-                    <v-btn small outlined color="primary" class="disable-events">{{ tag.name }}</v-btn>
-                    <v-btn small depressed outlined class="disable-events">{{ tag.value }}</v-btn>
+                <v-btn-toggle class="ma-1" v-for="tag in issue.tags">
+                    <v-btn class="disable-events" color="primary" outlined small>{{ tag.name }}</v-btn>
+                    <v-btn class="disable-events" depressed outlined small>{{ tag.value }}</v-btn>
                 </v-btn-toggle>
             </div>
 
@@ -56,7 +59,6 @@
 
 <script>
     import {mapMutations} from 'vuex';
-    import _ from 'lodash';
 
     export default {
         name: "IssueDetail",
