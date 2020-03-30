@@ -9,8 +9,7 @@
  *
  */
 
-.splash-screen
-{
+.splash-screen {
     position: absolute;
     width: 100%;
     top: 50%;
@@ -23,8 +22,7 @@
     text-align: center;
 }
 
-.splash-screen .app-version
-{
+.splash-screen .app-version {
     display: block;
     font-weight: normal;
     font-size: 1rem;
