@@ -16,7 +16,7 @@
         </h2>
 
         <v-row v-if="activeProjects.length">
-            <v-col :key="project.id" cols="12" lg="4" sm="6" v-for="project in activeProjects">
+            <v-col :key="project.id" cols="12" sm="6" xl="4" v-for="project in activeProjects">
                 <v-card>
                     <v-card-title>
                         <v-icon class="mr-1" size="20">{{ projectIcon(project) }}</v-icon>
