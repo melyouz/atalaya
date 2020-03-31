@@ -10,7 +10,7 @@
   -->
 
 <template>
-    <v-container fluid>
+    <v-container>
         <h2 class="d-block pt-4">Projects
             <v-btn @click="newProjectDialog = !newProjectDialog" depressed>Add new</v-btn>
         </h2>

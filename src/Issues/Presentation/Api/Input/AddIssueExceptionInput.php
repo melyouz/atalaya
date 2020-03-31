@@ -14,11 +14,22 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
+use App\Issues\Domain\Model\Exception;
+use App\Issues\Domain\Model\ExceptionClass;
+use App\Issues\Domain\Model\ExceptionCode;
+use App\Issues\Domain\Model\ExceptionMessage;
+use App\Issues\Domain\Model\File;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class AddIssueExceptionInput implements InputDtoInterface
 {
+    /**
+     * @Assert\Length(max="255")
+     * @var string
+     */
+    public string $code;
+
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
@@ -32,4 +43,19 @@ class AddIssueExceptionInput implements InputDtoInterface
      * @var string
      */
     public string $message;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueExceptionFileInput")
+     * @Assert\Valid()
+     * @var AddIssueExceptionFileInput
+     */
+    public AddIssueExceptionFileInput $file;
+
+    public function toDomainObject(): Exception
+    {
+        $file = $this->file->toDomainObject();
+        
+        return Exception::create(ExceptionCode::fromString($this->code), ExceptionClass::fromString($this->class), ExceptionMessage::fromString($this->message), $file);
+    }
 }

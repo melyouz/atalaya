@@ -16,25 +16,23 @@ namespace App\Shared\Domain\Model;
 
 use JsonSerializable;
 
-abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSerializable
+abstract class AbstractIntegerValueObject implements ValueObjectInterface, JsonSerializable
 {
-    const MAX_LENGTH = 255;
+    protected int $value;
 
-    protected string $value;
-
-    protected function __construct(string $value)
+    protected function __construct(int $value)
     {
         $this->value = $value;
     }
 
-    public abstract static function fromString(string $value): self;
+    public abstract static function fromInteger(int $value): self;
 
     public function sameValueAs(ValueObjectInterface $other): bool
     {
         return $this->value() === $other->value();
     }
 
-    public function value(): string
+    public function value(): int
     {
         return $this->value;
     }
@@ -46,6 +44,6 @@ abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSe
 
     public function __toString(): string
     {
-        return $this->value();
+        return (string) $this->value();
     }
 }

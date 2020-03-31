@@ -14,6 +14,7 @@ namespace App\Issues\Application\Command;
 
 use App\Issues\Domain\Model\Exception;
 use App\Issues\Domain\Model\ExceptionClass;
+use App\Issues\Domain\Model\ExceptionCode;
 use App\Issues\Domain\Model\ExceptionMessage;
 use App\Issues\Domain\Model\IssueId;
 use App\Issues\Domain\Model\Request;
@@ -50,13 +51,13 @@ class AddIssueCommand implements CommandInterface
      */
     private array $tags;
 
-    public function __construct(string $id, string $projectId, string $projectToken, string $exceptionClass, string $exceptionMessage, string $requestMethod, string $requestUrl, array $requestHeaders, array $tags)
+    public function __construct(string $id, string $projectId, string $projectToken, Exception $exception, Request $request, array $tags)
     {
         $this->id = IssueId::fromString($id);
         $this->projectId = ProjectId::fromString($projectId);
         $this->projectToken = ProjectToken::fromString($projectToken);
-        $this->request = Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
-        $this->exception = Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->exception = $exception;
+        $this->request = $request;
         $this->tags = $tags;
     }
 

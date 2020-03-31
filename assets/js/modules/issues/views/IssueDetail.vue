@@ -16,7 +16,7 @@
 
             <div>
                 <v-icon class="pr-1 pb-1" color="red" small>mdi-checkbox-blank-circle</v-icon>
-                {{ issue.exception.message }}
+                <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template> {{ issue.exception.message }}
             </div>
             <div>
                 <v-icon class="pr-1 pb-1" small>mdi-calendar</v-icon>
@@ -51,11 +51,21 @@
                 </v-btn-toggle>
             </div>
 
-            <h3 class="d-block pt-4">Exception</h3>
-            <div class="mt-2">
-                <div>{{ issue.exception.class }}</div>
-                <div>{{ issue.exception.message }}</div>
-                <!-- @todo: Add exception trace, file, line, code excerpt, ...-->
+            <h3 class="d-block pt-4">{{issue.exception.class}}</h3>
+            <div>
+                <div>
+                    <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template> {{ issue.exception.message }}
+                </div>
+                <div>
+                    <div>
+                        <v-icon class="pb-1">mdi-chevron-right</v-icon> in {{ issue.exception.file.path }} (line {{ issue.exception.file.line }})
+                    </div>
+                    <div class="body-2 pl-7">
+                        <code>{{ issue.exception.file.excerpt }}</code>
+                        <!-- @todo: Add better code format -->
+                    </div>
+                </div>
+                <!-- @todo: Add exception trace -->
             </div>
         </div>
     </v-container>

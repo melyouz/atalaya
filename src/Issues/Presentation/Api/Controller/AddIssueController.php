@@ -39,8 +39,9 @@ class AddIssueController extends AbstractController
         }
 
         $issueId = $this->uuid();
-
-        $command = new AddIssueCommand($issueId, $this->projectId, $this->projectToken, $input->exception->class, $input->exception->message, $input->request->method, $input->request->url, $input->request->headers, $input->tags);
+        $exception = $input->exception->toDomainObject();
+        $request = $input->request->toDomainObject();
+        $command = new AddIssueCommand($issueId, $this->projectId, $this->projectToken, $exception, $request, $input->tags);
         $this->dispatch($command);
 
         return new JsonResponse(['id' => $issueId], Response::HTTP_CREATED);

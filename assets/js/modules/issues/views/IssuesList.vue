@@ -27,6 +27,17 @@
                 <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
             </template>
             <template v-slot:item.seenAt="{ item }">{{ item.seenAt|timeago }}</template>
+            <template v-slot:item.exception.className="{ item }">
+                <v-tooltip top>
+                    <template v-slot:activator="{ on }">
+                        <abbr v-on="on" title="">{{ item.exception.className }}</abbr>
+                    </template>
+                    <span>{{ item.exception.class }}</span>
+                </v-tooltip>
+            </template>
+            <template v-slot:item.exception.message="{ item }">
+                <template v-if="item.exception.code">(code: {{ item.exception.code }})</template> {{ item.exception.message }}
+            </template>
         </v-data-table>
     </v-container>
 </template>
@@ -45,7 +56,7 @@
                 {text: 'Seen At', value: 'seenAt'},
                 {text: 'Request Method', value: 'request.method'},
                 {text: 'Request URL', value: 'request.url'},
-                {text: 'Exception Class', value: 'exception.class'},
+                {text: 'Exception Class', value: 'exception.className'},
                 {text: 'Exception Message', value: 'exception.message'},
                 {text: 'Resolved', value: 'resolved'},
             ],
