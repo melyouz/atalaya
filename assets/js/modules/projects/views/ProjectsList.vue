@@ -248,16 +248,23 @@
                 return filtered[0].icon;
             },
             projectFullToken(project) {
-                return `${project.id}:${project.token}@atalaya.tech`;
+                return `${location.protocol}//${project.id}:${project.token}@${location.hostname}:${location.port}`;
             },
             projectAvailablePlatforms() {
                 return this.$store.getters['projects/getAvailablePlatforms'];
             },
             doCopy(text) {
+                const parent = this;
                 this.$copyText(text).then(function (e) {
-                    alert('Copied!');
+                    parent.setSnackMessage({
+                        message: "Copied!",
+                        color: "success"
+                    });
                 }, function (e) {
-                    alert('Cannot copy :(');
+                    parent.setSnackMessage({
+                        message: "Cannot copy :( Please, select and copy using the mouse.",
+                        color: "error"
+                    });
                 })
             },
             ...mapMutations({
