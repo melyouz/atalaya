@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure\Authenticator;
 
 use App\Security\Application\JwtValidatorInterface;
+use App\Users\Domain\Exception\UserNotFoundException;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Token;
 use Symfony\Component\HttpFoundation\Request;
@@ -90,7 +91,11 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        return $this->userProvider->loadUserById($userId);
+        try {
+            return $this->userProvider->loadUserById($userId);
+        } catch(UserNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
