@@ -18,26 +18,11 @@ Atalaya is Open Source, contributions are really appreciated (and necessary).
 2. Install Composer packages: `php bin/composer install`
 3. Install NPM packages and build Atalaya UI: `npm install && npm run build`
 4. Copy .env into .env.local `cp .env .env.local` and modify it accordingly (e.g. to set DATABASE_URL)
-5. Execute migrations: `php bin/console d:m:m`
+5. Execute migrations and load data fixtures: `php bin/console d:m:m -n && php bin/console d:f:l -n`
 6. Atalaya uses JWT (JSON Web Token) to authenticate users. A SSL keys pair (public and private) are required. Use OpenSSL or any other tool to generate them:
     * Generate private key: `openssl genrsa -out var/jwt/private.pem 2048`
     * Generate public key: `openssl rsa -in var/jwt/private.pem -outform PEM -pubout -out var/jwt/public.pem`
     * Remove password from private key (if any): `openssl rsa -in var/jwt/private.pem -out var/jwt/private.pem`
 7. Run local server using [Symfony CLI](https://symfony.com/download) `symfony serve` or using PHP Development Server `php -S localhost:8000 -t public &`
-8. Register and confirm a new user using cURL or any other tool such as Postman (this will be soon part of an installation wizard / data fixture):
-```bash
-curl --location --request POST 'http://localhost:8000/api/users' \
---header 'Content-Type: application/json' \
---header 'Content-Type: text/plain' \
---data-raw '{
-	"name": "{firstname} {lastname}",
-	"email": "{email}",
-	"password": "{password}"
-}'
-```
-```bash
-curl --location --request PATCH 'http://localhost:8000/api/users/{confirmation_token}/confirm' \
---header 'Content-Type: application/json' \
---data-raw ''
-```
 9. Go to http://localhost:8000
+10. Log in using the test username `john.doe@atalaya.tech` and password `john123`

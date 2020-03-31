@@ -157,6 +157,11 @@ class User implements UserInterface
         $this->disabledAt = null;
     }
 
+    public function getConfirmationToken(): UserConfirmationToken
+    {
+        return UserConfirmationToken::fromString($this->confirmationToken);
+    }
+
     /**
      * @return bool
      */

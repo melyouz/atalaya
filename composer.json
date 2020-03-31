@@ -34,6 +34,7 @@
     },
     "require-dev": {
         "dg/bypass-finals": "^1.1",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "symfony/phpunit-bridge": "^5.0"
     },
     "config": {
