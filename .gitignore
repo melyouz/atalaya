@@ -14,14 +14,15 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-###> atalaya ###
-.idea/
-/build/
-###< atalaya ###
-
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> atalaya ###
+.idea/
+/build/
+!/var/jwt
+###< atalaya ###
