@@ -13,13 +13,8 @@
 namespace App\Issues\Application\Command;
 
 use App\Issues\Domain\Model\Exception;
-use App\Issues\Domain\Model\ExceptionClass;
-use App\Issues\Domain\Model\ExceptionCode;
-use App\Issues\Domain\Model\ExceptionMessage;
 use App\Issues\Domain\Model\IssueId;
 use App\Issues\Domain\Model\Request;
-use App\Issues\Domain\Model\RequestMethod;
-use App\Issues\Domain\Model\RequestUrl;
 use App\Projects\Domain\Model\ProjectId;
 use App\Projects\Domain\Model\ProjectToken;
 use App\Shared\Application\Command\CommandInterface;

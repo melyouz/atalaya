@@ -15,13 +15,15 @@
 
         <v-row class="align-center justify-start">
             <v-col cols="3">
-                <v-overflow-btn :items="activeProjects" :loading="loadingProjects" append-icon="mdi-folder-multiple" editable
+                <v-overflow-btn :items="activeProjects" :loading="loadingProjects" append-icon="mdi-folder-multiple"
+                                editable
                                 item-text="name" item-value="id" label="Project" segmented
                                 v-model="selectedProject"/>
             </v-col>
         </v-row>
 
-        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="100" :footer-props="{itemsPerPageOptions: [10, 50, 100, 200, -1]}" :loading="loadingIssues"
+        <v-data-table :footer-props="{itemsPerPageOptions: [10, 50, 100, 200, -1]}" :headers="issuesHeaders" :items="issues"
+                      :items-per-page="100" :loading="loadingIssues"
                       @click:row="handleClick" class="elevation-1">
             <template v-slot:item.resolved="{ item }">
                 <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
@@ -30,13 +32,14 @@
             <template v-slot:item.exception.className="{ item }">
                 <v-tooltip top>
                     <template v-slot:activator="{ on }">
-                        <abbr v-on="on" title="">{{ item.exception.className }}</abbr>
+                        <abbr title="" v-on="on">{{ item.exception.className }}</abbr>
                     </template>
                     <span>{{ item.exception.class }}</span>
                 </v-tooltip>
             </template>
             <template v-slot:item.exception.message="{ item }">
-                <template v-if="item.exception.code">(code: {{ item.exception.code }})</template> {{ item.exception.message }}
+                <template v-if="item.exception.code">(code: {{ item.exception.code }})</template>
+                {{ item.exception.message }}
             </template>
         </v-data-table>
     </v-container>

@@ -16,7 +16,8 @@
 
             <div>
                 <v-icon class="pr-1 pb-1" color="red" small>mdi-checkbox-blank-circle</v-icon>
-                <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template> {{ issue.exception.message }}
+                <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template>
+                {{ issue.exception.message }}
             </div>
             <div>
                 <v-icon class="pr-1 pb-1" small>mdi-calendar</v-icon>
@@ -24,11 +25,14 @@
             </div>
 
             <div class="mt-4">
-                <v-btn v-if="!issue.resolved" @click="resolve()" :loading="loading" depressed outlined color="primary" small>
-                    <v-icon small class="mr-1">mdi-check-outline</v-icon> Resolve
+                <v-btn :loading="loading" @click="resolve()" color="primary" depressed outlined small
+                       v-if="!issue.resolved">
+                    <v-icon class="mr-1" small>mdi-check-outline</v-icon>
+                    Resolve
                 </v-btn>
-                <v-btn v-if="issue.resolved" @click="unresolve()" :loading="loading" depressed color="primary" small>
-                    <v-icon small class="mr-1">mdi-check-bold</v-icon> Resolved
+                <v-btn :loading="loading" @click="unresolve()" color="primary" depressed small v-if="issue.resolved">
+                    <v-icon class="mr-1" small>mdi-check-bold</v-icon>
+                    Resolved
                 </v-btn>
             </div>
 
@@ -45,7 +49,7 @@
 
             <h3 class="d-block pt-4">Tags</h3>
             <div class="mt-2">
-                <v-btn-toggle class="ma-1" v-for="(tag, i) in issue.tags" :key="i">
+                <v-btn-toggle :key="i" class="ma-1" v-for="(tag, i) in issue.tags">
                     <v-btn class="disable-events" color="primary" outlined small>{{ tag.name }}</v-btn>
                     <v-btn class="disable-events" depressed outlined small>{{ tag.value }}</v-btn>
                 </v-btn-toggle>
@@ -54,11 +58,13 @@
             <h3 class="d-block pt-4">{{issue.exception.class}}</h3>
             <div>
                 <div>
-                    <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template> {{ issue.exception.message }}
+                    <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template>
+                    {{ issue.exception.message }}
                 </div>
                 <div>
                     <div>
-                        <v-icon class="pb-1">mdi-chevron-right</v-icon> in {{ issue.exception.file.path }} (line {{ issue.exception.file.line }})
+                        <v-icon class="pb-1">mdi-chevron-right</v-icon>
+                        in {{ issue.exception.file.path }} (line {{ issue.exception.file.line }})
                     </div>
                     <div class="body-2 pl-7">
                         <code>{{ issue.exception.file.excerpt }}</code>
@@ -115,7 +121,7 @@
                         });
                     })
                     .finally(() => {
-                            this.loading = false;
+                        this.loading = false;
                     });
             },
             unresolve() {

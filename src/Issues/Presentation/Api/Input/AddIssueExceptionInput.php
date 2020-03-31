@@ -18,7 +18,6 @@ use App\Issues\Domain\Model\Exception;
 use App\Issues\Domain\Model\ExceptionClass;
 use App\Issues\Domain\Model\ExceptionCode;
 use App\Issues\Domain\Model\ExceptionMessage;
-use App\Issues\Domain\Model\File;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -55,7 +54,7 @@ class AddIssueExceptionInput implements InputDtoInterface
     public function toDomainObject(): Exception
     {
         $file = $this->file->toDomainObject();
-        
+
         return Exception::create(ExceptionCode::fromString($this->code), ExceptionClass::fromString($this->class), ExceptionMessage::fromString($this->message), $file);
     }
 }
