@@ -15,13 +15,13 @@
 
         <v-row class="align-center justify-start">
             <v-col cols="3">
-                <v-overflow-btn :items="activeProjects" :loading="loading" append-icon="mdi-folder-multiple" editable
+                <v-overflow-btn :items="activeProjects" :loading="loadingProjects" append-icon="mdi-folder-multiple" editable
                                 item-text="name" item-value="id" label="Project" segmented
                                 v-model="selectedProject"/>
             </v-col>
         </v-row>
 
-        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="10" :loading="loading"
+        <v-data-table :headers="issuesHeaders" :items="issues" :items-per-page="100" :footer-props="{itemsPerPageOptions: [10, 50, 100, 200, -1]}" :loading="loadingIssues"
                       @click:row="handleClick" class="elevation-1">
             <template v-slot:item.resolved="{ item }">
                 <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
@@ -37,7 +37,8 @@
     export default {
         name: "IssuesList",
         data: () => ({
-            loading: false,
+            loadingProjects: true,
+            loadingIssues: true,
             activeProjects: [],
             selectedProject: null,
             issuesHeaders: [
@@ -60,8 +61,6 @@
         },
         methods: {
             fetchProjectsList() {
-                this.loading = true;
-
                 this.$store.dispatch('projects/fetchList')
                     .then(response => {
                         this.activeProjects = response.data.filter(project => !project.archived);
@@ -76,11 +75,11 @@
                         });
                     })
                     .then(() => {
-                        this.loading = false;
+                        this.loadingProjects = false;
                     });
             },
             fetchIssuesList(projectId) {
-                this.loading = true;
+                this.loadingIssues = true;
 
                 this.$store.dispatch('issues/fetchList', projectId)
                     .then(response => {
@@ -93,7 +92,7 @@
                         });
                     })
                     .then(() => {
-                        this.loading = false;
+                        this.loadingIssues = false;
                     });
             },
             handleClick(issue, row) {
@@ -106,6 +105,8 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+    .v-data-table tbody tr {
+        cursor: pointer;
+    }
 </style>

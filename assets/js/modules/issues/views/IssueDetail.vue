@@ -45,7 +45,7 @@
 
             <h3 class="d-block pt-4">Tags</h3>
             <div class="mt-2">
-                <v-btn-toggle class="ma-1" v-for="tag in issue.tags" :key="name">
+                <v-btn-toggle class="ma-1" v-for="(tag, i) in issue.tags" :key="i">
                     <v-btn class="disable-events" color="primary" outlined small>{{ tag.name }}</v-btn>
                     <v-btn class="disable-events" depressed outlined small>{{ tag.value }}</v-btn>
                 </v-btn-toggle>

@@ -24,6 +24,7 @@ class Tag
     /**
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue", inversedBy="tags")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @var Issue
      */
     private Issue $issue;

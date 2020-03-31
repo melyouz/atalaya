@@ -58,7 +58,7 @@ class Issue
     private Exception $exception;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Tag", mappedBy="issue", cascade={"PERSIST"})
+     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Tag", mappedBy="issue", cascade={"persist", "remove"})
      * @var Collection
      */
     private Collection $tags;
