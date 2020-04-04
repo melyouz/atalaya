@@ -34,16 +34,16 @@ class File
     private int $line;
 
     /**
-     * @ORM\Column(type="string", length=1024)
-     * @var string
+     * @ORM\Embedded(class="App\Issues\Domain\Model\FileExcerpt")
+     * @var FileExcerpt
      */
-    private string $excerpt;
+    private FileExcerpt $excerpt;
 
     private function __construct(FilePath $path, FileLine $line, FileExcerpt $excerpt)
     {
         $this->path = $path->value();
         $this->line = $line->value();
-        $this->excerpt = $excerpt->value();
+        $this->excerpt = $excerpt;
     }
 
     public static function create(FilePath $path, FileLine $line, FileExcerpt $excerpt)
@@ -63,6 +63,6 @@ class File
 
     public function getExcerpt(): FileExcerpt
     {
-        return FileExcerpt::fromString($this->excerpt);
+        return $this->excerpt;
     }
 }

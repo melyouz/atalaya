@@ -66,12 +66,19 @@
                         <v-icon class="pb-1">mdi-chevron-right</v-icon>
                         in {{ issue.exception.file.path }} (line {{ issue.exception.file.line }})
                     </div>
-                    <div class="body-2 pl-7">
-                        <code>{{ issue.exception.file.excerpt }}</code>
-                        <!-- @todo: Add better code format -->
+                    <div class="body-2 overflow-auto">
+                        <v-list disabled>
+                            <v-list-item-group color="warning">
+                                <v-list-item v-for="(line, i) in issue.exception.file.excerpt.lines" :key="i" class="list-item-code" v-bind:class="{'v-item--active v-list-item--active': line.selected}">
+                                    <v-list-item-content class="py-1 ma-0 overflow-visible">
+                                        <pre>{{ line.line }}. {{ line.content }}</pre>
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-list-item-group>
+                        </v-list>
                     </div>
                 </div>
-                <!-- @todo: Add exception trace -->
+                <!-- @todo: Add exception trace(s) -->
             </div>
         </div>
     </v-container>
@@ -150,5 +157,9 @@
 <style scoped>
     .disable-events {
         pointer-events: none
+    }
+
+    .list-item-code {
+        min-height: 20px;
     }
 </style>

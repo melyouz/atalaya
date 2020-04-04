@@ -14,18 +14,49 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
-use App\Shared\Domain\Model\AbstractStringValueObject;
-use Assert\Assertion;
+use Doctrine\ORM\Mapping as ORM;
 
-class FileExcerpt extends AbstractStringValueObject
+/**
+ * @ORM\Embeddable()
+ */
+class FileExcerpt
 {
-    const MAX_LENGTH = 1024;
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private string $lang;
 
-    public static function fromString(string $value): self
+    /**
+     * @ORM\Column(type="array")
+     * @var CodeLine[]
+     */
+    private array $lines;
+
+    private function __construct(string $lang, array $lines)
     {
-        Assertion::notBlank($value);
-        Assertion::maxLength($value, self::MAX_LENGTH);
+        $this->lang = $lang;
+        $this->lines = $lines;
+    }
 
-        return new self($value);
+    public static function create(string $lang, array $lines): self
+    {
+        return new self($lang, $lines);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLang(): string
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @return CodeLine[]
+     */
+    public function getLines(): array
+    {
+        return $this->lines;
     }
 }

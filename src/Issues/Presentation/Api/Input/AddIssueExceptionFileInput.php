@@ -39,14 +39,14 @@ class AddIssueExceptionFileInput implements InputDtoInterface
     public int $line;
 
     /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max="1024")
-     * @var string
+     * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueExceptionFileExcerpt")
+     * @Assert\Valid
+     * @var AddIssueExceptionFileExcerpt
      */
-    public string $excerpt;
+    public AddIssueExceptionFileExcerpt $excerpt;
 
     public function toDomainObject(): File
     {
-        return File::create(FilePath::fromString($this->path), FileLine::fromInteger($this->line), FileExcerpt::fromString($this->excerpt));
+        return File::create(FilePath::fromString($this->path), FileLine::fromInteger($this->line), $this->excerpt->toDomainObject());
     }
 }
