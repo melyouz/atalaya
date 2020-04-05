@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\CodeLine;
-use App\Issues\Domain\Model\FileExcerpt;
+use App\Issues\Domain\Model\ExceptionFileCodeLine;
+use App\Issues\Domain\Model\ExceptionFileExcerpt;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AddIssueExceptionFileExcerpt implements InputDtoInterface
+class AddIssueExceptionFileExcerptInput implements InputDtoInterface
 {
     /**
      * @Assert\NotBlank()
@@ -30,19 +30,19 @@ class AddIssueExceptionFileExcerpt implements InputDtoInterface
 
     /**
      * @Assert\All({
-     *      @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueExceptionFileCodeLineInput")
+     *      @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueExceptionFileExcerptCodeLineInput")
      * })
      * @Assert\Valid
-     * @var AddIssueExceptionFileCodeLineInput[]
+     * @var AddIssueExceptionFileExcerptCodeLineInput[]
      */
     public array $lines;
 
-    public function toDomainObject(): FileExcerpt
+    public function toDomainObject(): ExceptionFileExcerpt
     {
-        $codeLines = array_map(function(AddIssueExceptionFileCodeLineInput $line) {
+        $codeLines = array_map(function(AddIssueExceptionFileExcerptCodeLineInput $line) {
             return $line->toDomainObject();
         }, $this->lines);
 
-        return FileExcerpt::create($this->lang, $codeLines);
+        return ExceptionFileExcerpt::create($this->lang, $codeLines);
     }
 }

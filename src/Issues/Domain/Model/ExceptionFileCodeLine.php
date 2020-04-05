@@ -16,7 +16,7 @@ namespace App\Issues\Domain\Model;
 
 use Serializable;
 
-class CodeLine implements Serializable
+class ExceptionFileCodeLine implements Serializable
 {
     /**
      * @var int

@@ -17,7 +17,7 @@ namespace App\Issues\Domain\Model;
 use App\Shared\Domain\Model\AbstractIntegerValueObject;
 use Assert\Assertion;
 
-class FileLine extends AbstractIntegerValueObject
+class ExceptionFileLine extends AbstractIntegerValueObject
 {
     public static function fromInteger(int $value): self
     {

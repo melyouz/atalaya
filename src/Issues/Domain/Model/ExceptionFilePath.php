@@ -17,7 +17,7 @@ namespace App\Issues\Domain\Model;
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class FilePath extends AbstractStringValueObject
+class ExceptionFilePath extends AbstractStringValueObject
 {
     public static function fromString(string $value): self
     {

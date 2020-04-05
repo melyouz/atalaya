@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable()
  */
-class File
+class ExceptionFile
 {
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,34 +34,34 @@ class File
     private int $line;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\FileExcerpt")
-     * @var FileExcerpt
+     * @ORM\Embedded(class="App\Issues\Domain\Model\ExceptionFileExcerpt")
+     * @var ExceptionFileExcerpt
      */
-    private FileExcerpt $excerpt;
+    private ExceptionFileExcerpt $excerpt;
 
-    private function __construct(FilePath $path, FileLine $line, FileExcerpt $excerpt)
+    private function __construct(ExceptionFilePath $path, ExceptionFileLine $line, ExceptionFileExcerpt $excerpt)
     {
         $this->path = $path->value();
         $this->line = $line->value();
         $this->excerpt = $excerpt;
     }
 
-    public static function create(FilePath $path, FileLine $line, FileExcerpt $excerpt)
+    public static function create(ExceptionFilePath $path, ExceptionFileLine $line, ExceptionFileExcerpt $excerpt)
     {
         return new self($path, $line, $excerpt);
     }
 
-    public function getPath(): FilePath
+    public function getPath(): ExceptionFilePath
     {
-        return FilePath::fromString($this->path);
+        return ExceptionFilePath::fromString($this->path);
     }
 
-    public function getLine(): FileLine
+    public function getLine(): ExceptionFileLine
     {
-        return FileLine::fromInteger($this->line);
+        return ExceptionFileLine::fromInteger($this->line);
     }
 
-    public function getExcerpt(): FileExcerpt
+    public function getExcerpt(): ExceptionFileExcerpt
     {
         return $this->excerpt;
     }

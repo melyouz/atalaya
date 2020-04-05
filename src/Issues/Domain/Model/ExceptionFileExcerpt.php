@@ -19,7 +19,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Embeddable()
  */
-class FileExcerpt
+class ExceptionFileExcerpt
 {
     /**
      * @ORM\Column(type="string", length=255)
@@ -29,7 +29,7 @@ class FileExcerpt
 
     /**
      * @ORM\Column(type="array")
-     * @var CodeLine[]
+     * @var ExceptionFileCodeLine[]
      */
     private array $lines;
 
@@ -53,7 +53,7 @@ class FileExcerpt
     }
 
     /**
-     * @return CodeLine[]
+     * @return ExceptionFileCodeLine[]
      */
     public function getLines(): array
     {

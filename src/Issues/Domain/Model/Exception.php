@@ -40,12 +40,12 @@ class Exception
     private string $message;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\File")
-     * @var File
+     * @ORM\Embedded(class="App\Issues\Domain\Model\ExceptionFile")
+     * @var ExceptionFile
      */
-    private File $file;
+    private ExceptionFile $file;
 
-    private function __construct(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
+    private function __construct(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, ExceptionFile $file)
     {
         $this->code = $code->value();
         $this->class = $class->value();
@@ -53,7 +53,7 @@ class Exception
         $this->file = $file;
     }
 
-    public static function create(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
+    public static function create(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, ExceptionFile $file)
     {
         return new self($code, $class, $message, $file);
     }
@@ -63,7 +63,7 @@ class Exception
         return ExceptionCode::fromString($this->code);
     }
 
-    public function getFile(): File
+    public function getFile(): ExceptionFile
     {
         return $this->file;
     }
