@@ -14,7 +14,7 @@ namespace App\Users\Application\Command;
 
 use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Domain\Model\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserEncodedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class EditUserCommandHandler implements CommandHandlerInterface

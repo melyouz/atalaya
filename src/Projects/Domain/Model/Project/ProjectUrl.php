@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,18 +12,20 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model;
+namespace App\Projects\Domain\Model\Project;
 
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class RequestMethod extends AbstractStringValueObject
+class ProjectUrl extends AbstractStringValueObject
 {
-    const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+    const MAX_LENGTH = 80;
 
     public static function fromString(string $value): self
     {
-        Assertion::inArray($value, self::AVAILABLE_METHODS);
+        Assertion::notBlank($value);
+        Assertion::url($value);
+        Assertion::maxLength($value, self::MAX_LENGTH);
 
         return new self($value);
     }

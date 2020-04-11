@@ -12,7 +12,7 @@
 
 namespace App\Issues\Application\Command;
 
-use App\Issues\Domain\Model\IssueId;
+use App\Issues\Domain\Model\Issue\IssueId;
 use App\Shared\Application\Command\CommandInterface;
 
 class ResolveIssueCommand implements CommandInterface

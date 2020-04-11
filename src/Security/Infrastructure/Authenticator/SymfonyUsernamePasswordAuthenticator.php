@@ -17,7 +17,7 @@ namespace App\Security\Infrastructure\Authenticator;
 use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Security\Application\JwtGeneratorInterface;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserPlainPassword;
+use App\Users\Domain\Model\User\UserPlainPassword;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

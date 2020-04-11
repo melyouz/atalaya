@@ -13,7 +13,7 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandInterface;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserId;
 
 class EnableUserCommand implements CommandInterface
 {

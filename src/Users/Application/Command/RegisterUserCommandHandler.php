@@ -17,8 +17,8 @@ use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserConfirmationToken;
-use App\Users\Domain\Model\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserConfirmationToken;
+use App\Users\Domain\Model\User\UserEncodedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class RegisterUserCommandHandler implements CommandHandlerInterface

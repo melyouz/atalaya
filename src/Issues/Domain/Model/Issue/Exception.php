@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,8 +12,12 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model;
+namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,7 +44,7 @@ class Exception
     private string $message;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\ExceptionFile")
+     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\ExceptionFile")
      * @var ExceptionFile
      */
     private ExceptionFile $file;

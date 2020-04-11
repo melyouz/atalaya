@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace App\Projects\Application\Command;
 
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectToken;
+use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Application\Util\TokenGenerator;

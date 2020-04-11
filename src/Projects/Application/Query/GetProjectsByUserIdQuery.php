@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace App\Projects\Application\Query;
 
 use App\Shared\Application\Query\QueryInterface;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserId;
 
 class GetProjectsByUserIdQuery implements QueryInterface
 {

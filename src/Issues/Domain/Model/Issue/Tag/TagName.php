@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,19 +12,17 @@
 
 declare(strict_types=1);
 
-namespace App\Projects\Domain\Model;
+namespace App\Issues\Domain\Model\Issue\Tag;
 
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class ProjectToken extends AbstractStringValueObject
+class TagName extends AbstractStringValueObject
 {
-    const MAX_LENGTH = 32;
-
     public static function fromString(string $value): self
     {
         Assertion::notBlank($value);
-        Assertion::length($value, self::MAX_LENGTH);
+        Assertion::maxLength($value, self::MAX_LENGTH);
 
         return new self($value);
     }

@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model;
+namespace App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
 
 use Serializable;
 
@@ -69,16 +69,21 @@ class ExceptionFileCodeLine implements Serializable
         return $this->selected;
     }
 
+    public function toArray(): array
+    {
+        return [
+            'line' => $this->line,
+            'content' => $this->content,
+            'selected' => $this->selected,
+        ];
+    }
+
     /**
      * @inheritDoc
      */
     public function serialize()
     {
-        return serialize([
-            'line' => $this->line,
-            'content' => $this->content,
-            'selected' => $this->selected,
-        ]);
+        return serialize($this->toArray());
     }
 
     /**

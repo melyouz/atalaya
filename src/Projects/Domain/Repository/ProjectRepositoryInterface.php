@@ -16,9 +16,9 @@ namespace App\Projects\Domain\Repository;
 
 use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectToken;
-use App\Users\Domain\Model\UserId;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectToken;
+use App\Users\Domain\Model\User\UserId;
 
 interface ProjectRepositoryInterface
 {

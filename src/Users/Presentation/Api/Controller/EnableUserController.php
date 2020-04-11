@@ -17,7 +17,7 @@ namespace App\Users\Presentation\Api\Controller;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use App\Users\Application\Command\EnableUserCommand;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Response;
 

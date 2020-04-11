@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectName;
-use App\Projects\Domain\Model\ProjectPlatform;
-use App\Projects\Domain\Model\ProjectUrl;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
+use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Shared\Application\Command\CommandInterface;
 
 class EditProjectCommand implements CommandInterface

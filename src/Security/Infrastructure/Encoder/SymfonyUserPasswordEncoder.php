@@ -16,7 +16,7 @@ namespace App\Security\Infrastructure\Encoder;
 
 use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserPlainPassword;
+use App\Users\Domain\Model\User\UserPlainPassword;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface as SymfonyUserPasswordEncoderInterface;
 
 class SymfonyUserPasswordEncoder implements UserPasswordEncoderInterface

@@ -16,8 +16,8 @@ namespace App\Issues\Domain\Repository;
 
 use App\Issues\Domain\Exception\IssueNotFoundException;
 use App\Issues\Domain\Model\Issue;
-use App\Issues\Domain\Model\IssueId;
-use App\Projects\Domain\Model\ProjectId;
+use App\Issues\Domain\Model\Issue\IssueId;
+use App\Projects\Domain\Model\Project\ProjectId;
 
 interface IssueRepositoryInterface
 {

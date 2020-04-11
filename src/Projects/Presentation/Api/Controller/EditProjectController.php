@@ -16,7 +16,7 @@ namespace App\Projects\Presentation\Api\Controller;
 
 use App\Projects\Application\Command\EditProjectCommand;
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Projects\Presentation\Api\Input\EditProjectInput;
 use App\Shared\Presentation\Api\Controller\AbstractController;

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Request;
-use App\Issues\Domain\Model\RequestMethod;
-use App\Issues\Domain\Model\RequestUrl;
+use App\Issues\Domain\Model\Issue\Request;
+use App\Issues\Domain\Model\Issue\Request\RequestMethod;
+use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

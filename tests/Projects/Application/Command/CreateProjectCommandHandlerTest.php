@@ -17,13 +17,13 @@ namespace Tests\Projects\Application\Command;
 use App\Projects\Application\Command\CreateProjectCommand;
 use App\Projects\Application\Command\CreateProjectCommandHandler;
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectName;
-use App\Projects\Domain\Model\ProjectToken;
-use App\Projects\Domain\Model\ProjectUrl;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectToken;
+use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Util\TokenGenerator;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserId;
 use PHPUnit\Framework\TestCase;
 
 class CreateProjectCommandHandlerTest extends TestCase

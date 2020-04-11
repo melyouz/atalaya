@@ -16,7 +16,7 @@ namespace App\Issues\Presentation\Api\Controller;
 
 use App\Issues\Application\Command\UnresolveIssueCommand;
 use App\Issues\Domain\Model\Issue;
-use App\Issues\Domain\Model\IssueId;
+use App\Issues\Domain\Model\Issue\IssueId;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

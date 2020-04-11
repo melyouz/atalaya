@@ -15,10 +15,10 @@ namespace App\Projects\Infrastructure\Doctrine\Repository;
 use App\Projects\Domain\Exception\InvalidProjectTokenException;
 use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectToken;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 

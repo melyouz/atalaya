@@ -16,8 +16,8 @@ namespace App\Security\Infrastructure\Provider;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserEmail;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserEmail;
+use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;

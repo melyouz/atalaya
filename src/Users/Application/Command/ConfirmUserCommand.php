@@ -13,7 +13,7 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandInterface;
-use App\Users\Domain\Model\UserConfirmationToken;
+use App\Users\Domain\Model\User\UserConfirmationToken;
 
 class ConfirmUserCommand implements CommandInterface
 {

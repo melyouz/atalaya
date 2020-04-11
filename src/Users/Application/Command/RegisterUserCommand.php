@@ -13,10 +13,10 @@
 namespace App\Users\Application\Command;
 
 use App\Shared\Application\Command\CommandInterface;
-use App\Users\Domain\Model\UserEmail;
-use App\Users\Domain\Model\UserId;
-use App\Users\Domain\Model\UserName;
-use App\Users\Domain\Model\UserPlainPassword;
+use App\Users\Domain\Model\User\UserEmail;
+use App\Users\Domain\Model\User\UserId;
+use App\Users\Domain\Model\User\UserName;
+use App\Users\Domain\Model\User\UserPlainPassword;
 
 class RegisterUserCommand implements CommandInterface
 {

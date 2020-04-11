@@ -12,9 +12,9 @@
 
 namespace Tests\Issues\Domain\Model;
 
-use App\Issues\Domain\Model\Exception;
-use App\Issues\Domain\Model\ExceptionClass;
-use App\Issues\Domain\Model\ExceptionMessage;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use PHPUnit\Framework\TestCase;
 
 class ExceptionTest extends TestCase

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Application\Query;
 
-use App\Issues\Domain\Model\IssueId;
+use App\Issues\Domain\Model\Issue\IssueId;
 use App\Shared\Application\Query\QueryInterface;
 
 class GetIssueQuery implements QueryInterface

@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2020 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -12,8 +12,11 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model;
+namespace App\Issues\Domain\Model\Issue\Exception;
 
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileExcerpt;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileLine;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFilePath;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,7 +37,7 @@ class ExceptionFile
     private int $line;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\ExceptionFileExcerpt")
+     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileExcerpt")
      * @var ExceptionFileExcerpt
      */
     private ExceptionFileExcerpt $excerpt;

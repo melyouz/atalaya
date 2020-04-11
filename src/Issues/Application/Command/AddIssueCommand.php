@@ -12,11 +12,11 @@
 
 namespace App\Issues\Application\Command;
 
-use App\Issues\Domain\Model\Exception;
-use App\Issues\Domain\Model\IssueId;
-use App\Issues\Domain\Model\Request;
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectToken;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\IssueId;
+use App\Issues\Domain\Model\Issue\Request;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Shared\Application\Command\CommandInterface;
 
 class AddIssueCommand implements CommandInterface

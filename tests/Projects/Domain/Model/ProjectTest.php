@@ -13,11 +13,11 @@
 namespace Tests\Projects\Domain\Model;
 
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\ProjectId;
-use App\Projects\Domain\Model\ProjectName;
-use App\Projects\Domain\Model\ProjectToken;
-use App\Projects\Domain\Model\ProjectUrl;
-use App\Users\Domain\Model\UserId;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectToken;
+use App\Projects\Domain\Model\Project\ProjectUrl;
+use App\Users\Domain\Model\User\UserId;
 use PHPUnit\Framework\TestCase;
 
 class ProjectTest extends TestCase

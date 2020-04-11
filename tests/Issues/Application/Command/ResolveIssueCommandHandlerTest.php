@@ -17,16 +17,16 @@ namespace Tests\Issues\Application\Command;
 use App\Issues\Application\Command\ResolveIssueCommand;
 use App\Issues\Application\Command\ResolveIssueCommandHandler;
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
-use App\Issues\Domain\Model\Exception;
-use App\Issues\Domain\Model\ExceptionClass;
-use App\Issues\Domain\Model\ExceptionMessage;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Issues\Domain\Model\Issue;
-use App\Issues\Domain\Model\IssueId;
-use App\Issues\Domain\Model\Request;
-use App\Issues\Domain\Model\RequestMethod;
-use App\Issues\Domain\Model\RequestUrl;
+use App\Issues\Domain\Model\Issue\IssueId;
+use App\Issues\Domain\Model\Issue\Request;
+use App\Issues\Domain\Model\Issue\Request\RequestMethod;
+use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
-use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
 
 class ResolveIssueCommandHandlerTest extends TestCase

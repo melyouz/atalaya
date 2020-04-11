@@ -18,11 +18,11 @@ use App\Users\Application\Command\EditUserCommand;
 use App\Users\Application\Command\EditUserCommandHandler;
 use App\Users\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserConfirmationToken;
-use App\Users\Domain\Model\UserEmail;
-use App\Users\Domain\Model\UserEncodedPassword;
-use App\Users\Domain\Model\UserId;
-use App\Users\Domain\Model\UserName;
+use App\Users\Domain\Model\User\UserConfirmationToken;
+use App\Users\Domain\Model\User\UserEmail;
+use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserId;
+use App\Users\Domain\Model\User\UserName;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 

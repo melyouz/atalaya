@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Query;
 
-use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectId;
 use App\Shared\Application\Query\QueryInterface;
 
 class GetProjectQuery implements QueryInterface

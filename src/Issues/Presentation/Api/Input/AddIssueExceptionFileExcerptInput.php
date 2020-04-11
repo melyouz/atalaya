@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\ExceptionFileCodeLine;
-use App\Issues\Domain\Model\ExceptionFileExcerpt;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileCodeLine;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileExcerpt;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

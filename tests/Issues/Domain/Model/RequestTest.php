@@ -12,9 +12,9 @@
 
 namespace Tests\Issues\Domain\Model;
 
-use App\Issues\Domain\Model\Request;
-use App\Issues\Domain\Model\RequestMethod;
-use App\Issues\Domain\Model\RequestUrl;
+use App\Issues\Domain\Model\Issue\Request;
+use App\Issues\Domain\Model\Issue\Request\RequestMethod;
+use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase

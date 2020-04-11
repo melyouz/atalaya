@@ -16,7 +16,12 @@ namespace App\Projects\Domain\Model;
 
 use App\Projects\Domain\Exception\ProjectAlreadyArchivedException;
 use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
-use App\Users\Domain\Model\UserId;
+use App\Projects\Domain\Model\Project\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
+use App\Projects\Domain\Model\Project\ProjectToken;
+use App\Projects\Domain\Model\Project\ProjectUrl;
+use App\Users\Domain\Model\User\UserId;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;

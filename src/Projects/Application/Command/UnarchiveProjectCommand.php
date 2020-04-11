@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Projects\Application\Command;
 
-use App\Projects\Domain\Model\ProjectId;
+use App\Projects\Domain\Model\Project\ProjectId;
 use App\Shared\Application\Command\CommandInterface;
 
 class UnarchiveProjectCommand implements CommandInterface

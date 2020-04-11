@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Exception;
-use App\Issues\Domain\Model\ExceptionClass;
-use App\Issues\Domain\Model\ExceptionCode;
-use App\Issues\Domain\Model\ExceptionMessage;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 

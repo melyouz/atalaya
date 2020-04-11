@@ -16,9 +16,9 @@ namespace App\Users\Domain\Repository;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserConfirmationToken;
-use App\Users\Domain\Model\UserEmail;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserConfirmationToken;
+use App\Users\Domain\Model\User\UserEmail;
+use App\Users\Domain\Model\User\UserId;
 
 interface UserRepositoryInterface
 {

@@ -17,7 +17,13 @@ namespace App\Issues\Domain\Model;
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
 use App\Issues\Domain\Exception\TagNotFoundException;
-use App\Projects\Domain\Model\ProjectId;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\IssueId;
+use App\Issues\Domain\Model\Issue\Request;
+use App\Issues\Domain\Model\Issue\Tag;
+use App\Issues\Domain\Model\Issue\Tag\TagName;
+use App\Issues\Domain\Model\Issue\Tag\TagValue;
+use App\Projects\Domain\Model\Project\ProjectId;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -46,19 +52,19 @@ class Issue
     private string $projectId;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Request")
+     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Request")
      * @var Request
      */
     private Request $request;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Exception")
+     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception")
      * @var Exception
      */
     private Exception $exception;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Tag", mappedBy="issue", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
      * @var Collection
      */
     private Collection $tags;

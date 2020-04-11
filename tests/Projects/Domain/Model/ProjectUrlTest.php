@@ -12,7 +12,7 @@
 
 namespace Tests\Projects\Domain\Model;
 
-use App\Projects\Domain\Model\ProjectUrl;
+use App\Projects\Domain\Model\Project\ProjectUrl;
 use Assert\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

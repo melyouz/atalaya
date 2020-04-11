@@ -84,6 +84,8 @@
                         this.activeProjects = response.data.filter(project => !project.archived);
                         if (this.activeProjects.length) {
                             this.selectedProject = this.activeProjects[0].id;
+                        } else {
+                            this.$router.push({name: 'projects-list'});
                         }
                     })
                     .catch(error => {

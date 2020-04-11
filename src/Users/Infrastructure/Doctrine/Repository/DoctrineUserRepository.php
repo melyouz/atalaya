@@ -14,9 +14,9 @@ namespace App\Users\Infrastructure\Doctrine\Repository;
 
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\UserConfirmationToken;
-use App\Users\Domain\Model\UserEmail;
-use App\Users\Domain\Model\UserId;
+use App\Users\Domain\Model\User\UserConfirmationToken;
+use App\Users\Domain\Model\User\UserEmail;
+use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
