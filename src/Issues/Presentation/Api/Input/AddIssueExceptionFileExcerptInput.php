@@ -14,8 +14,8 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileCodeLine;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileExcerpt;
+use App\Issues\Domain\Model\Issue\Exception\File\FileCodeLine;
+use App\Issues\Domain\Model\Issue\Exception\File\FileExcerpt;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,12 +37,12 @@ class AddIssueExceptionFileExcerptInput implements InputDtoInterface
      */
     public array $lines;
 
-    public function toDomainObject(): ExceptionFileExcerpt
+    public function toDomainObject(): FileExcerpt
     {
         $codeLines = array_map(function(AddIssueExceptionFileExcerptCodeLineInput $line) {
             return $line->toDomainObject();
         }, $this->lines);
 
-        return ExceptionFileExcerpt::create($this->lang, $codeLines);
+        return FileExcerpt::create($this->lang, $codeLines);
     }
 }

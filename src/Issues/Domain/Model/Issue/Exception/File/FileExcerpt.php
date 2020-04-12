@@ -12,15 +12,15 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+namespace App\Issues\Domain\Model\Issue\Exception\File;
 
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileCodeLine;
+use App\Issues\Domain\Model\Issue\Exception\File\FileCodeLine;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Embeddable()
  */
-class ExceptionFileExcerpt
+class FileExcerpt
 {
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,7 +30,7 @@ class ExceptionFileExcerpt
 
     /**
      * @ORM\Column(type="array")
-     * @var ExceptionFileCodeLine[]
+     * @var FileCodeLine[]
      */
     private array $lines;
 
@@ -42,7 +42,7 @@ class ExceptionFileExcerpt
 
     /**
      * @param string $lang
-     * @param ExceptionFileCodeLine[] $lines
+     * @param FileCodeLine[] $lines
      * @return static
      */
     public static function create(string $lang, array $lines): self
@@ -59,7 +59,7 @@ class ExceptionFileExcerpt
     }
 
     /**
-     * @return ExceptionFileCodeLine[]
+     * @return FileCodeLine[]
      */
     public function getLines(): array
     {

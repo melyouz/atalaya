@@ -12,12 +12,12 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+namespace App\Issues\Domain\Model\Issue\Exception\File;
 
 use App\Shared\Domain\Model\AbstractIntegerValueObject;
 use Assert\Assertion;
 
-class ExceptionFileLine extends AbstractIntegerValueObject
+class FileLine extends AbstractIntegerValueObject
 {
     public static function fromInteger(int $value): self
     {

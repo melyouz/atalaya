@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\ExceptionFileCodeLine;
+use App\Issues\Domain\Model\Issue\Exception\File\FileCodeLine;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,8 +41,8 @@ class AddIssueExceptionFileExcerptCodeLineInput implements InputDtoInterface
      */
     public bool $selected;
 
-    public function toDomainObject(): ExceptionFileCodeLine
+    public function toDomainObject(): FileCodeLine
     {
-        return ExceptionFileCodeLine::create($this->line, $this->content, $this->selected);
+        return FileCodeLine::create($this->line, $this->content, $this->selected);
     }
 }

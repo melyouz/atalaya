@@ -12,12 +12,12 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+namespace App\Issues\Domain\Model\Issue\Exception\File;
 
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class ExceptionFilePath extends AbstractStringValueObject
+class FilePath extends AbstractStringValueObject
 {
     public static function fromString(string $value): self
     {

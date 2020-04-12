@@ -12,11 +12,11 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+namespace App\Issues\Domain\Model\Issue\Exception\File;
 
 use Serializable;
 
-class ExceptionFileCodeLine implements Serializable
+class FileCodeLine implements Serializable
 {
     /**
      * @var int

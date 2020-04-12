@@ -16,7 +16,7 @@ namespace App\Issues\Domain\Model\Issue;
 
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+use App\Issues\Domain\Model\Issue\Exception\File;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,12 +44,12 @@ class Exception
     private string $message;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\ExceptionFile")
-     * @var ExceptionFile
+     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\File")
+     * @var File
      */
-    private ExceptionFile $file;
+    private File $file;
 
-    private function __construct(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, ExceptionFile $file)
+    private function __construct(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
     {
         $this->code = $code->value();
         $this->class = $class->value();
@@ -57,7 +57,7 @@ class Exception
         $this->file = $file;
     }
 
-    public static function create(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, ExceptionFile $file)
+    public static function create(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
     {
         return new self($code, $class, $message, $file);
     }
@@ -67,7 +67,7 @@ class Exception
         return ExceptionCode::fromString($this->code);
     }
 
-    public function getFile(): ExceptionFile
+    public function getFile(): File
     {
         return $this->file;
     }
