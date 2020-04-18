@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Issue\Exception\File;
-use App\Issues\Domain\Model\Issue\Exception\File\FileExcerpt;
-use App\Issues\Domain\Model\Issue\Exception\File\FileLine;
-use App\Issues\Domain\Model\Issue\Exception\File\FilePath;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\FileExcerpt;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\FileLine;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\FilePath;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -45,8 +45,8 @@ class AddIssueExceptionFileInput implements InputDtoInterface
      */
     public AddIssueExceptionFileExcerptInput $excerpt;
 
-    public function toDomainObject(): File
+    public function toDomainObject(): ExceptionFile
     {
-        return File::create(FilePath::fromString($this->path), FileLine::fromInteger($this->line), $this->excerpt->toDomainObject());
+        return ExceptionFile::create(FilePath::fromString($this->path), FileLine::fromInteger($this->line), $this->excerpt->toDomainObject());
     }
 }

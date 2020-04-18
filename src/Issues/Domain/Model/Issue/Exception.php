@@ -16,15 +16,24 @@ namespace App\Issues\Domain\Model\Issue;
 
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
-use App\Issues\Domain\Model\Issue\Exception\File;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Embeddable()
+ * @ORM\Entity()
+ * @ORM\Table("app_issue_exception")
  */
 class Exception
 {
+    /**
+     * @ORM\Id()
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @var string
+     */
+    private string $issueId;
+
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
@@ -43,33 +52,22 @@ class Exception
      */
     private string $message;
 
-    /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\File")
-     * @var File
-     */
-    private File $file;
-
-    private function __construct(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
+    private function __construct(IssueId $issueId, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
     {
+        $this->issueId = $issueId->value();
         $this->code = $code->value();
         $this->class = $class->value();
         $this->message = $message->value();
-        $this->file = $file;
     }
 
-    public static function create(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message, File $file)
+    public static function create(IssueId $issueId, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
     {
-        return new self($code, $class, $message, $file);
+        return new self($issueId, $code, $class, $message);
     }
 
     public function getCode(): ExceptionCode
     {
         return ExceptionCode::fromString($this->code);
-    }
-
-    public function getFile(): File
-    {
-        return $this->file;
     }
 
     public function getClass(): ExceptionClass

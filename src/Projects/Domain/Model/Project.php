@@ -28,6 +28,7 @@ use Exception;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table("app_project")
  */
 class Project
 {

@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table("app_user")
  */
 class User implements UserInterface
 {

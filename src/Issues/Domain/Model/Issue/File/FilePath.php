@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\File;
+namespace App\Issues\Domain\Model\Issue\File;
 
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;

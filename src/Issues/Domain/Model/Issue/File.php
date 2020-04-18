@@ -12,18 +12,26 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception;
+namespace App\Issues\Domain\Model\Issue;
 
-use App\Issues\Domain\Model\Issue\Exception\File\FileExcerpt;
-use App\Issues\Domain\Model\Issue\Exception\File\FileLine;
-use App\Issues\Domain\Model\Issue\Exception\File\FilePath;
+use App\Issues\Domain\Model\Issue\File\FileLine;
+use App\Issues\Domain\Model\Issue\File\FilePath;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Embeddable()
+ * @ORM\Entity()
+ * @ORM\Table("app_issue_file")
  */
 class File
 {
+    /**
+     * @ORM\Id()
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @var string
+     */
+    private string $issueId;
+
     /**
      * @ORM\Column(type="string", length=255)
      * @var string
@@ -36,22 +44,16 @@ class File
      */
     private int $line;
 
-    /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception\File\FileExcerpt")
-     * @var FileExcerpt
-     */
-    private FileExcerpt $excerpt;
-
-    private function __construct(FilePath $path, FileLine $line, FileExcerpt $excerpt)
+    private function __construct(IssueId $issueId, FilePath $path, FileLine $line)
     {
         $this->path = $path->value();
         $this->line = $line->value();
-        $this->excerpt = $excerpt;
+        $this->issueId = $issueId->value();
     }
 
-    public static function create(FilePath $path, FileLine $line, FileExcerpt $excerpt)
+    public static function create(IssueId $issueId, FilePath $path, FileLine $line)
     {
-        return new self($path, $line, $excerpt);
+        return new self($issueId, $path, $line);
     }
 
     public function getPath(): FilePath
@@ -62,10 +64,5 @@ class File
     public function getLine(): FileLine
     {
         return FileLine::fromInteger($this->line);
-    }
-
-    public function getExcerpt(): FileExcerpt
-    {
-        return $this->excerpt;
     }
 }

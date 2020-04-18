@@ -19,10 +19,19 @@ use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Embeddable()
+ * @ORM\Entity()
+ * @ORM\Table("app_issue_request")
  */
 class Request
 {
+    /**
+     * @ORM\Id()
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
+     * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @var string
+     */
+    private string $issueId;
+
     /**
      * @ORM\Column(type="string", length=6)
      * @var string
@@ -41,26 +50,17 @@ class Request
      */
     private array $headers = [];
 
-    private function __construct(RequestMethod $method, RequestUrl $url)
+    private function __construct(IssueId $issueId, RequestMethod $method, RequestUrl $url, array $headers = [])
     {
+        $this->issueId = $issueId->value();
         $this->method = $method->value();
         $this->url = $url->value();
+        $this->headers = $headers;
     }
 
-    public static function create(RequestMethod $method, RequestUrl $url, array $headers = [])
+    public static function create(IssueId $issueId, RequestMethod $method, RequestUrl $url, array $headers = [])
     {
-        $request = new self($method, $url);
-
-        if (!empty($headers)) {
-            $request->addHeadersFromArray($headers);
-        }
-
-        return $request;
-    }
-
-    private function addHeadersFromArray(array $headers)
-    {
-        $this->headers = array_merge($this->headers, $headers);
+        return new self($issueId, $method, $url, $headers);
     }
 
     public function getMethod(): RequestMethod

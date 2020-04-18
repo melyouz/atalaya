@@ -17,9 +17,20 @@ namespace App\Issues\Domain\Model;
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
 use App\Issues\Domain\Exception\TagNotFoundException;
+use App\Issues\Domain\Model\Issue\CodeExcerpt;
+use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
+use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptLanguage;
 use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
+use App\Issues\Domain\Model\Issue\File;
+use App\Issues\Domain\Model\Issue\File\FileLine;
+use App\Issues\Domain\Model\Issue\File\FilePath;
 use App\Issues\Domain\Model\Issue\IssueId;
 use App\Issues\Domain\Model\Issue\Request;
+use App\Issues\Domain\Model\Issue\Request\RequestMethod;
+use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Model\Issue\Tag;
 use App\Issues\Domain\Model\Issue\Tag\TagName;
 use App\Issues\Domain\Model\Issue\Tag\TagValue;
@@ -31,6 +42,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity()
+ * @ORM\Table("app_issue")
  */
 class Issue
 {
@@ -52,19 +64,31 @@ class Issue
     private string $projectId;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Request")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issueId")
      * @var Request
      */
     private Request $request;
 
     /**
-     * @ORM\Embedded(class="App\Issues\Domain\Model\Issue\Exception")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Exception", mappedBy="issueId")
      * @var Exception
      */
     private Exception $exception;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\File", mappedBy="issueId")
+     * @var File
+     */
+    private File $file;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issueId")
+     * @var CodeExcerpt
+     */
+    private CodeExcerpt $codeExcerpt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issueId", cascade={"persist", "remove"})
      * @var Collection
      */
     private Collection $tags;
@@ -81,7 +105,7 @@ class Issue
      */
     private ?DateTimeImmutable $resolvedAt;
 
-    private function __construct(IssueId $id, ProjectId $projectId, Request $request, Exception $exception)
+    private function __construct(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = [])
     {
         $this->id = $id->value();
         $this->projectId = $projectId->value();
@@ -89,23 +113,42 @@ class Issue
         $this->exception = $exception;
         $this->tags = new ArrayCollection();
         $this->seenAt = new DateTimeImmutable();
+        $this->addTagsFromArray($tags);
     }
 
     public static function create(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = []): self
     {
-        $newIssue = new self($id, $projectId, $request, $exception);
+        return new self($id, $projectId, $request, $exception, $tags);
+    }
 
-        if (!empty($tags)) {
-            $newIssue->addTagsFromArray($tags);
-        }
+    public function addRequest(RequestMethod $method, RequestUrl $url, array $headers = []): void
+    {
+        $this->request = Request::create($this->getId(), $method, $url, $headers);
+    }
 
-        return $newIssue;
+    public function addException(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message): void
+    {
+        $this->exception = Exception::create($this->getId(), $code, $class, $message);
+    }
+
+    public function addFile(FilePath $path, FileLine $line, CodeExcerpt $excerpt): void
+    {
+        $this->file = File::create($this->getId(), $path, $line, $excerpt);
+    }
+
+    public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $codeLines): void
+    {
+        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this->getId(), $lang, $codeLines);
     }
 
     private function addTagsFromArray(array $tags): void
     {
+        if (empty($tags)) {
+            return;
+        }
+
         foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+            $this->addTag(Tag::create($this->getId(), TagName::fromString($tagName), TagValue::fromString($tagValue)));
         }
     }
 

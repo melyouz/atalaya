@@ -12,17 +12,17 @@
 
 declare(strict_types=1);
 
-namespace App\Issues\Domain\Model\Issue\Exception\File;
+namespace App\Issues\Domain\Model\Issue\CodeExcerpt;
 
-use App\Shared\Domain\Model\AbstractIntegerValueObject;
+use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class FileLine extends AbstractIntegerValueObject
+class CodeExcerptLanguage extends AbstractStringValueObject
 {
-    public static function fromInteger(int $value): self
+    public static function fromString(string $value): self
     {
         Assertion::notBlank($value);
-        Assertion::greaterOrEqualThan($value, 1);
+        Assertion::maxLength($value, self::MAX_LENGTH);
 
         return new self($value);
     }
