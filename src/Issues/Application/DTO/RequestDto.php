@@ -30,7 +30,8 @@ class RequestDto
      */
     public array $headers = [];
 
-    public function __construct(string $method, string $url, array $headers) {
+    public function __construct(string $method, string $url, array $headers)
+    {
         $this->method = $method;
         $this->url = $url;
         $this->headers = $headers;

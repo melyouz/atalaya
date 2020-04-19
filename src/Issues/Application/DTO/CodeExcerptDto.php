@@ -33,7 +33,7 @@ class CodeExcerptDto
 
     public function linesToArray(): array
     {
-       return array_map(function(CodeLineDto $lineDto) {
+        return array_map(function (CodeLineDto $lineDto) {
             return [
                 'line' => $lineDto->line,
                 'content' => $lineDto->content,

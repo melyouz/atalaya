@@ -127,6 +127,24 @@ class Issue
         $this->addTagsFromArray($tags);
     }
 
+    private function addTagsFromArray(array $tags): void
+    {
+        if (empty($tags)) {
+            return;
+        }
+
+        foreach ($tags as $tagName => $tagValue) {
+            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+        }
+    }
+
+    private function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+    }
+
     public static function create(IssueId $id, ProjectId $projectId, array $tags = []): self
     {
         return new self($id, $projectId, $tags);
@@ -150,29 +168,6 @@ class Issue
     public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $rawCodeLines): void
     {
         $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this, $lang, $rawCodeLines);
-    }
-
-    private function addTagsFromArray(array $tags): void
-    {
-        if (empty($tags)) {
-            return;
-        }
-
-        foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
-        }
-    }
-
-    private function addTag(Tag $tag): void
-    {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
-        }
-    }
-
-    public function isDraft(): bool
-    {
-        return $this->status === IssueStatus::DRAFT;
     }
 
     public function isOpen(): bool
@@ -203,6 +198,11 @@ class Issue
         }
 
         $this->status = IssueStatus::OPEN;
+    }
+
+    public function isDraft(): bool
+    {
+        return $this->status === IssueStatus::DRAFT;
     }
 
     public function resolve(): void

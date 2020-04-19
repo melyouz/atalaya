@@ -61,7 +61,7 @@ class CodeExcerpt
         $this->lang = $lang->value();
         $this->lines = new ArrayCollection();
 
-        foreach($rawCodeLines as $rawCodeLine) {
+        foreach ($rawCodeLines as $rawCodeLine) {
             $this->lines->add(CodeExcerptCodeLine::create($this, $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']));
         }
     }

@@ -15,11 +15,11 @@ namespace App\Issues\Infrastructure\Doctrine\Repository;
 use App\Issues\Domain\Exception\IssueNotFoundException;
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\IssueId;
+use App\Issues\Domain\Model\Issue\IssueStatus;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Projects\Domain\Model\Project\ProjectId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use App\Issues\Domain\Model\Issue\IssueStatus;
 
 class DoctrineIssueRepository implements IssueRepositoryInterface
 {

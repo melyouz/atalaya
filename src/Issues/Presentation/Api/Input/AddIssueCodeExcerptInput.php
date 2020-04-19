@@ -38,7 +38,7 @@ class AddIssueCodeExcerptInput implements InputDtoInterface
 
     public function toDto(): CodeExcerptDto
     {
-        $lines = array_map(function(AddIssueCodeExcerptCodeLineInput $codeLine) {
+        $lines = array_map(function (AddIssueCodeExcerptCodeLineInput $codeLine) {
             return $codeLine->toDto();
         }, $this->lines);
 

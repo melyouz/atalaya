@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue\CodeExcerpt;
 
-use App\Shared\Domain\Model\AbstractStringValueObject;
 use App\Shared\Domain\Model\Uuid;
-use Assert\Assertion;
 
 class CodeExcerptId extends Uuid
 {
