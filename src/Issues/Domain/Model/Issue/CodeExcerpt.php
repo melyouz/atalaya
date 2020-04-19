@@ -14,9 +14,12 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptCodeLine;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptLanguage;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,9 +38,9 @@ class CodeExcerpt
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var Issue
      */
-    private string $issueId;
+    private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -46,32 +49,33 @@ class CodeExcerpt
     private string $lang;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptCodeLine", mappedBy="codeExcerptId")
-     * @var CodeExcerptCodeLine[]
+     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptCodeLine", mappedBy="codeExcerpt", cascade={"persist", "remove"})
+     * @var CodeExcerptCodeLine[]|Collection
      */
-    private array $lines;
+    private Collection $lines;
 
-    private function __construct(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang, array $rawCodeLines)
+    private function __construct(CodeExcerptId $id, Issue $issue, CodeExcerptLanguage $lang, array $rawCodeLines)
     {
         $this->id = $id->value();
-        $this->issueId = $issueId->value();
+        $this->issue = $issue;
         $this->lang = $lang->value();
+        $this->lines = new ArrayCollection();
 
-        $this->lines = array_map(function($rawCodeLine) {
-            return CodeExcerptCodeLine::create($this->getId(), $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']);
-        }, $rawCodeLines);
+        foreach($rawCodeLines as $rawCodeLine) {
+            $this->lines->add(CodeExcerptCodeLine::create($this, $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']));
+        }
     }
 
     /**
      * @param CodeExcerptId $id
-     * @param IssueId $issueId
+     * @param Issue $issue
      * @param CodeExcerptLanguage $lang
      * @param array $rawCodeLines
      * @return static
      */
-    public static function create(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang, array $rawCodeLines): self
+    public static function create(CodeExcerptId $id, Issue $issue, CodeExcerptLanguage $lang, array $rawCodeLines): self
     {
-        return new self($id, $issueId, $lang, $rawCodeLines);
+        return new self($id, $issue, $lang, $rawCodeLines);
     }
 
     /**

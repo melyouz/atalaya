@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Issue\Request;
-use App\Issues\Domain\Model\Issue\Request\RequestMethod;
-use App\Issues\Domain\Model\Issue\Request\RequestUrl;
+use App\Issues\Application\DTO\RequestDto;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -42,8 +40,8 @@ class AddIssueRequestInput implements InputDtoInterface
      */
     public array $headers = [];
 
-    public function toDomainObject(): Request
+    public function toDto(): RequestDto
     {
-        return Request::create(RequestMethod::fromString($this->method), RequestUrl::fromString($this->url), $this->headers);
+        return new RequestDto($this->method, $this->url, $this->headers);
     }
 }

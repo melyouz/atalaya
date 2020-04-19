@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue\CodeExcerpt;
 
+use App\Issues\Domain\Model\Issue\CodeExcerpt;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,9 +27,9 @@ class CodeExcerptCodeLine
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", inversedBy="lines")
      * @ORM\JoinColumn(name="code_excerpt_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var CodeExcerpt
      */
-    private string $codeExcerptId;
+    private CodeExcerpt $codeExcerpt;
 
     /**
      * @ORM\Id()
@@ -49,17 +50,17 @@ class CodeExcerptCodeLine
      */
     private bool $selected;
 
-    private function __construct(CodeExcerptId $codeExcerptId, int $line, string $content, bool $selected)
+    private function __construct(CodeExcerpt $codeExcerpt, int $line, string $content, bool $selected)
     {
-        $this->codeExcerptId = $codeExcerptId->value();
+        $this->codeExcerpt = $codeExcerpt;
         $this->line = $line;
         $this->content = $content;
         $this->selected = $selected;
     }
 
-    public static function create(CodeExcerptId $codeExcerptId, int $line, string $content, bool $selected): self
+    public static function create(CodeExcerpt $codeExcerpt, int $line, string $content, bool $selected): self
     {
-        return new self($codeExcerptId, $line, $content, $selected);
+        return new self($codeExcerpt, $line, $content, $selected);
     }
 
     /**

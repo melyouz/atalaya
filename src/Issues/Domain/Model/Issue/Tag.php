@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\Tag\TagName;
 use App\Issues\Domain\Model\Issue\Tag\TagValue;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,9 +29,9 @@ class Tag
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue", inversedBy="tags")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var Issue
      */
-    private string $issueId;
+    private Issue $issue;
 
     /**
      * @ORM\Id()
@@ -45,16 +46,16 @@ class Tag
      */
     private string $value;
 
-    private function __construct(IssueId $issueId, TagName $name, TagValue $value)
+    private function __construct(Issue $issue, TagName $name, TagValue $value)
     {
-        $this->issueId = $issueId->value();
+        $this->issue = $issue;
         $this->name = $name->value();
         $this->value = $value->value();
     }
 
-    public static function create(IssueId $issueId, TagName $name, TagValue $value)
+    public static function create(Issue $issue, TagName $name, TagValue $value)
     {
-        return new self($issueId, $name, $value);
+        return new self($issue, $name, $value);
     }
 
     public function getName(): TagName

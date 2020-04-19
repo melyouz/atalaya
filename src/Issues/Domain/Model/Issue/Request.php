@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\Request\RequestMethod;
 use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,9 +29,9 @@ class Request
      * @ORM\Id()
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var Issue
      */
-    private string $issueId;
+    private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=6)
@@ -50,17 +51,17 @@ class Request
      */
     private array $headers = [];
 
-    private function __construct(IssueId $issueId, RequestMethod $method, RequestUrl $url, array $headers = [])
+    private function __construct(Issue $issue, RequestMethod $method, RequestUrl $url, array $headers = [])
     {
-        $this->issueId = $issueId->value();
+        $this->issue = $issue;
         $this->method = $method->value();
         $this->url = $url->value();
         $this->headers = $headers;
     }
 
-    public static function create(IssueId $issueId, RequestMethod $method, RequestUrl $url, array $headers = [])
+    public static function create(Issue $issue, RequestMethod $method, RequestUrl $url, array $headers = [])
     {
-        return new self($issueId, $method, $url, $headers);
+        return new self($issue, $method, $url, $headers);
     }
 
     public function getMethod(): RequestMethod

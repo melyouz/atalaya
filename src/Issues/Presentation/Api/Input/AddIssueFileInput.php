@@ -14,34 +14,29 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Application\DTO\ExceptionDto;
+use App\Issues\Application\DTO\FileDto;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AddIssueExceptionInput implements InputDtoInterface
+class AddIssueFileInput implements InputDtoInterface
 {
     /**
-     * @Assert\Length(max="255")
-     * @var string
-     */
-    public string $code;
-
-    /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
      * @var string
      */
-    public string $class;
+    public string $path;
 
     /**
      * @Assert\NotBlank()
-     * @Assert\Length(max="255")
-     * @var string
+     * @Assert\Type("int")
+     * @Assert\Positive()
+     * @var int
      */
-    public string $message;
+    public int $line;
 
-    public function toDto(): ExceptionDto
+    public function toDto(): FileDto
     {
-        return new ExceptionDto($this->code, $this->class, $this->message);
+        return new FileDto($this->path, $this->line);
     }
 }

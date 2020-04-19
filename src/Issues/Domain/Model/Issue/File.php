@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\File\FileLine;
 use App\Issues\Domain\Model\Issue\File\FilePath;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,9 +29,9 @@ class File
      * @ORM\Id()
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var Issue
      */
-    private string $issueId;
+    private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -44,16 +45,16 @@ class File
      */
     private int $line;
 
-    private function __construct(IssueId $issueId, FilePath $path, FileLine $line)
+    private function __construct(Issue $issue, FilePath $path, FileLine $line)
     {
+        $this->issue = $issue;
         $this->path = $path->value();
         $this->line = $line->value();
-        $this->issueId = $issueId->value();
     }
 
-    public static function create(IssueId $issueId, FilePath $path, FileLine $line)
+    public static function create(Issue $issue, FilePath $path, FileLine $line)
     {
-        return new self($issueId, $path, $line);
+        return new self($issue, $path, $line);
     }
 
     public function getPath(): FilePath

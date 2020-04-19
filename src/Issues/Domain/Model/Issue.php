@@ -88,71 +88,68 @@ class Issue
     private string $status;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issueId")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issue", cascade={"persist", "remove"})
      * @var Request
      */
     private Request $request;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Exception", mappedBy="issueId")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Exception", mappedBy="issue", cascade={"persist", "remove"})
      * @var Exception
      */
     private Exception $exception;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\File", mappedBy="issueId")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\File", mappedBy="issue", cascade={"persist", "remove"})
      * @var File
      */
     private File $file;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issueId")
+     * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issue", cascade={"persist", "remove"})
      * @var CodeExcerpt
      */
     private CodeExcerpt $codeExcerpt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issueId", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
      * @var Collection
      */
     private Collection $tags;
 
-    private function __construct(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = [])
+    private function __construct(IssueId $id, ProjectId $projectId, array $tags = [])
     {
         $this->id = $id->value();
         $this->projectId = $projectId->value();
         $this->seenAt = new DateTimeImmutable();
         $this->status = IssueStatus::DRAFT;
-
-        $this->request = $request;
-        $this->exception = $exception;
         $this->tags = new ArrayCollection();
         $this->addTagsFromArray($tags);
     }
 
-    public static function create(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = []): self
+    public static function create(IssueId $id, ProjectId $projectId, array $tags = []): self
     {
-        return new self($id, $projectId, $request, $exception, $tags);
+        return new self($id, $projectId, $tags);
     }
 
     public function addRequest(RequestMethod $method, RequestUrl $url, array $headers = []): void
     {
-        $this->request = Request::create($this->getId(), $method, $url, $headers);
+        $this->request = Request::create($this, $method, $url, $headers);
     }
 
     public function addException(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message): void
     {
-        $this->exception = Exception::create($this->getId(), $code, $class, $message);
+        $this->exception = Exception::create($this, $code, $class, $message);
     }
 
-    public function addFile(FilePath $path, FileLine $line, CodeExcerpt $excerpt): void
+    public function addFile(FilePath $path, FileLine $line): void
     {
-        $this->file = File::create($this->getId(), $path, $line);
+        $this->file = File::create($this, $path, $line);
     }
 
     public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $rawCodeLines): void
     {
-        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this->getId(), $lang, $rawCodeLines);
+        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this, $lang, $rawCodeLines);
     }
 
     private function addTagsFromArray(array $tags): void
@@ -162,7 +159,7 @@ class Issue
         }
 
         foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this->getId(), TagName::fromString($tagName), TagValue::fromString($tagValue)));
+            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
         }
     }
 

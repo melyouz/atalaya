@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
+use App\Issues\Application\DTO\IssueDto;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,8 +37,29 @@ class AddIssueInput implements InputDtoInterface
     public AddIssueExceptionInput $exception;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueFileInput")
+     * @Assert\Valid()
+     * @var AddIssueFileInput
+     */
+    public AddIssueFileInput $file;
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueCodeExcerptInput")
+     * @Assert\Valid()
+     * @var AddIssueCodeExcerptInput
+     */
+    public AddIssueCodeExcerptInput $codeExcerpt;
+
+    /**
      * @Assert\Collection()
      * @var array
      */
     public array $tags = [];
+
+    public function toDto(): IssueDto
+    {
+        return new IssueDto($this->request->toDto(), $this->exception->toDto(), $this->file->toDto(), $this->codeExcerpt->toDto(), $this->tags);
+    }
 }

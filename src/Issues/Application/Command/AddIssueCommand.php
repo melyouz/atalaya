@@ -12,9 +12,8 @@
 
 namespace App\Issues\Application\Command;
 
-use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Application\DTO\IssueDto;
 use App\Issues\Domain\Model\Issue\IssueId;
-use App\Issues\Domain\Model\Issue\Request;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Shared\Application\Command\CommandInterface;
@@ -25,35 +24,28 @@ class AddIssueCommand implements CommandInterface
      * @var IssueId
      */
     private IssueId $id;
+
     /**
      * @var ProjectId
      */
     private ProjectId $projectId;
+
     /**
      * @var ProjectToken
      */
     private ProjectToken $projectToken;
-    /**
-     * @var Request
-     */
-    private Request $request;
-    /**
-     * @var Exception
-     */
-    private Exception $exception;
-    /**
-     * @var array
-     */
-    private array $tags;
 
-    public function __construct(string $id, string $projectId, string $projectToken, Exception $exception, Request $request, array $tags)
+    /**
+     * @var IssueDto
+     */
+    private IssueDto $issueDto;
+
+    public function __construct(string $id, string $projectId, string $projectToken, IssueDto $issueDto)
     {
         $this->id = IssueId::fromString($id);
         $this->projectId = ProjectId::fromString($projectId);
         $this->projectToken = ProjectToken::fromString($projectToken);
-        $this->exception = $exception;
-        $this->request = $request;
-        $this->tags = $tags;
+        $this->issueDto = $issueDto;
     }
 
     /**
@@ -81,26 +73,10 @@ class AddIssueCommand implements CommandInterface
     }
 
     /**
-     * @return Request
+     * @return IssueDto
      */
-    public function getRequest(): Request
+    public function getIssueDto(): IssueDto
     {
-        return $this->request;
-    }
-
-    /**
-     * @return Exception
-     */
-    public function getException(): Exception
-    {
-        return $this->exception;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTags(): array
-    {
-        return $this->tags;
+        return $this->issueDto;
     }
 }

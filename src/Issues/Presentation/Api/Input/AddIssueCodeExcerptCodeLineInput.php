@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace App\Issues\Presentation\Api\Input;
 
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile\FileCodeLine;
+use App\Issues\Application\DTO\CodeLineDto;
 use App\Shared\Presentation\Api\Validation\InputDtoInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class AddIssueExceptionFileExcerptCodeLineInput implements InputDtoInterface
+class AddIssueCodeExcerptCodeLineInput implements InputDtoInterface
 {
     /**
      * @Assert\NotBlank()
@@ -41,8 +41,8 @@ class AddIssueExceptionFileExcerptCodeLineInput implements InputDtoInterface
      */
     public bool $selected;
 
-    public function toDomainObject(): FileCodeLine
+    public function toDto(): CodeLineDto
     {
-        return FileCodeLine::create($this->line, $this->content, $this->selected);
+        return new CodeLineDto($this->line, $this->content, $this->selected);
     }
 }

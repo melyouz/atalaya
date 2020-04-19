@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model\Issue;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
@@ -29,9 +30,9 @@ class Exception
      * @ORM\Id()
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var string
+     * @var Issue
      */
-    private string $issueId;
+    private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -51,17 +52,17 @@ class Exception
      */
     private string $message;
 
-    private function __construct(IssueId $issueId, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
+    private function __construct(Issue $issue, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
     {
-        $this->issueId = $issueId->value();
+        $this->issue = $issue;
         $this->code = $code->value();
         $this->class = $class->value();
         $this->message = $message->value();
     }
 
-    public static function create(IssueId $issueId, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
+    public static function create(Issue $issue, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
     {
-        return new self($issueId, $code, $class, $message);
+        return new self($issue, $code, $class, $message);
     }
 
     public function getCode(): ExceptionCode
