@@ -170,11 +170,6 @@ class Issue
         $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this, $lang, $rawCodeLines);
     }
 
-    public function isOpen(): bool
-    {
-        return $this->status === IssueStatus::OPEN;
-    }
-
     public function open(): void
     {
         if (!$this->isDraft()) {
@@ -253,6 +248,16 @@ class Issue
     public function getException(): Exception
     {
         return $this->exception;
+    }
+
+    public function getFile(): File
+    {
+        return $this->file;
+    }
+
+    public function getCodeExcerpt(): CodeExcerpt
+    {
+        return $this->codeExcerpt;
     }
 
     public function getTags(): array

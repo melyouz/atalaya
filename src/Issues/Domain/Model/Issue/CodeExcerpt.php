@@ -99,6 +99,6 @@ class CodeExcerpt
      */
     public function getLines(): array
     {
-        return $this->lines;
+        return $this->lines->toArray();
     }
 }
