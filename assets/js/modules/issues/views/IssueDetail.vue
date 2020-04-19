@@ -64,12 +64,12 @@
                 <div>
                     <div>
                         <v-icon class="pb-1">mdi-chevron-right</v-icon>
-                        in {{ issue.exception.file.path }} (line {{ issue.exception.file.line }})
+                        in {{ issue.file.path }} (line {{ issue.file.line }})
                     </div>
                     <div class="body-2 overflow-auto">
                         <v-list disabled>
                             <v-list-item-group color="warning">
-                                <v-list-item v-for="(line, i) in issue.exception.file.excerpt.lines" :key="i" class="list-item-code" v-bind:class="{'v-item--active v-list-item--active': line.selected}">
+                                <v-list-item v-for="(line, i) in issue.codeExcerpt.lines" :key="i" class="list-item-code" v-bind:class="{'v-item--active v-list-item--active': line.selected}">
                                     <v-list-item-content class="py-1 ma-0 overflow-visible">
                                         <pre>{{ line.line }}. {{ line.content }}</pre>
                                     </v-list-item-content>
