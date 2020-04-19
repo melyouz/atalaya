@@ -16,7 +16,6 @@ namespace App\Issues\Domain\Model\Issue;
 
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionFile;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use Doctrine\ORM\Mapping as ORM;
 

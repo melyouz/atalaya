@@ -51,29 +51,27 @@ class CodeExcerpt
      */
     private array $lines;
 
-    private function __construct(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang)
+    private function __construct(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang, array $rawCodeLines)
     {
         $this->id = $id->value();
         $this->issueId = $issueId->value();
         $this->lang = $lang->value();
+
+        $this->lines = array_map(function($rawCodeLine) {
+            return CodeExcerptCodeLine::create($this->getId(), $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']);
+        }, $rawCodeLines);
     }
 
     /**
      * @param CodeExcerptId $id
      * @param IssueId $issueId
      * @param CodeExcerptLanguage $lang
+     * @param array $rawCodeLines
      * @return static
      */
-    public static function create(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang): self
+    public static function create(CodeExcerptId $id, IssueId $issueId, CodeExcerptLanguage $lang, array $rawCodeLines): self
     {
-        return new self($id, $issueId, $lang);
-    }
-
-    public function addLinesFromArray(array $codeLines): void
-    {
-        $this->lines = array_map(function($codeLine) {
-            return CodeExcerptCodeLine::create($this->getId(), $codeLine['line'], $codeLine['content'], $codeLine['selected']);
-        }, $codeLines);
+        return new self($id, $issueId, $lang, $rawCodeLines);
     }
 
     /**

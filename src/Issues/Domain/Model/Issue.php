@@ -15,7 +15,12 @@ declare(strict_types=1);
 namespace App\Issues\Domain\Model;
 
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
+use App\Issues\Domain\Exception\IssueCodeExcerptRequired;
+use App\Issues\Domain\Exception\IssueExceptionRequired;
+use App\Issues\Domain\Exception\IssueFileRequired;
+use App\Issues\Domain\Exception\IssueMustBeDraft;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
+use App\Issues\Domain\Exception\IssueRequestRequired;
 use App\Issues\Domain\Exception\TagNotFoundException;
 use App\Issues\Domain\Model\Issue\CodeExcerpt;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
@@ -28,6 +33,7 @@ use App\Issues\Domain\Model\Issue\File;
 use App\Issues\Domain\Model\Issue\File\FileLine;
 use App\Issues\Domain\Model\Issue\File\FilePath;
 use App\Issues\Domain\Model\Issue\IssueId;
+use App\Issues\Domain\Model\Issue\IssueStatus;
 use App\Issues\Domain\Model\Issue\Request;
 use App\Issues\Domain\Model\Issue\Request\RequestMethod;
 use App\Issues\Domain\Model\Issue\Request\RequestUrl;
@@ -64,6 +70,24 @@ class Issue
     private string $projectId;
 
     /**
+     * @ORM\Column(type="datetime_immutable", nullable=false)
+     * @var DateTimeImmutable
+     */
+    private DateTimeImmutable $seenAt;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     * @var DateTimeImmutable
+     */
+    private ?DateTimeImmutable $resolvedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @var string
+     */
+    private string $status;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issueId")
      * @var Request
      */
@@ -93,26 +117,16 @@ class Issue
      */
     private Collection $tags;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
-     */
-    private DateTimeImmutable $seenAt;
-
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     * @var DateTimeImmutable
-     */
-    private ?DateTimeImmutable $resolvedAt;
-
     private function __construct(IssueId $id, ProjectId $projectId, Request $request, Exception $exception, array $tags = [])
     {
         $this->id = $id->value();
         $this->projectId = $projectId->value();
+        $this->seenAt = new DateTimeImmutable();
+        $this->status = IssueStatus::DRAFT;
+
         $this->request = $request;
         $this->exception = $exception;
         $this->tags = new ArrayCollection();
-        $this->seenAt = new DateTimeImmutable();
         $this->addTagsFromArray($tags);
     }
 
@@ -133,12 +147,12 @@ class Issue
 
     public function addFile(FilePath $path, FileLine $line, CodeExcerpt $excerpt): void
     {
-        $this->file = File::create($this->getId(), $path, $line, $excerpt);
+        $this->file = File::create($this->getId(), $path, $line);
     }
 
-    public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $codeLines): void
+    public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $rawCodeLines): void
     {
-        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this->getId(), $lang, $codeLines);
+        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this->getId(), $lang, $rawCodeLines);
     }
 
     private function addTagsFromArray(array $tags): void
@@ -159,18 +173,54 @@ class Issue
         }
     }
 
+    public function isDraft(): bool
+    {
+        return $this->status === IssueStatus::DRAFT;
+    }
+
+    public function isOpen(): bool
+    {
+        return $this->status === IssueStatus::OPEN;
+    }
+
+    public function open(): void
+    {
+        if (!$this->isDraft()) {
+            throw new IssueMustBeDraft();
+        }
+
+        if (!$this->request) {
+            throw new IssueRequestRequired();
+        }
+
+        if (!$this->exception) {
+            throw new IssueExceptionRequired();
+        }
+
+        if (!$this->file) {
+            throw new IssueFileRequired();
+        }
+
+        if (!$this->codeExcerpt) {
+            throw new IssueCodeExcerptRequired();
+        }
+
+        $this->status = IssueStatus::OPEN;
+    }
+
     public function resolve(): void
     {
         if ($this->isResolved()) {
             throw new IssueAlreadyResolvedException();
         }
 
+        $this->status = IssueStatus::RESOLVED;
         $this->resolvedAt = new DateTimeImmutable();
     }
 
     public function isResolved(): bool
     {
-        return !empty($this->resolvedAt);
+        return $this->status === IssueStatus::RESOLVED;
     }
 
     public function unresolve(): void
@@ -179,6 +229,7 @@ class Issue
             throw new IssueNotResolvedYetException();
         }
 
+        $this->status = IssueStatus::OPEN;
         $this->resolvedAt = null;
     }
 
@@ -190,6 +241,11 @@ class Issue
     public function getProjectId(): ProjectId
     {
         return ProjectId::fromString($this->projectId);
+    }
+
+    public function getStatus(): IssueStatus
+    {
+        return IssueStatus::fromString($this->status);
     }
 
     public function getRequest(): Request

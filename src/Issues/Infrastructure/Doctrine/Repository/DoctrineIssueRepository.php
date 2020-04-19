@@ -19,6 +19,7 @@ use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Projects\Domain\Model\Project\ProjectId;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
+use App\Issues\Domain\Model\Issue\IssueStatus;
 
 class DoctrineIssueRepository implements IssueRepositoryInterface
 {
@@ -51,7 +52,12 @@ class DoctrineIssueRepository implements IssueRepositoryInterface
      */
     public function findAllByProjectId(ProjectId $projectId): array
     {
-        return $this->repo->findBy(['projectId' => $projectId->value()], ['seenAt' => 'desc']);
+        return $this->repo->findBy([
+            'projectId' => $projectId->value(),
+            'status' => [IssueStatus::OPEN, IssueStatus::RESOLVED]
+        ], [
+            'seenAt' => 'desc',
+        ]);
     }
 
     /**
