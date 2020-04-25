@@ -4,10 +4,8 @@ namespace App\Users\Infrastructure\Doctrine\DataFixtures;
 
 use App\Security\Infrastructure\Provider\SymfonyUserProvider;
 use App\Shared\Application\Bus\CommandBusInterface;
-use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Users\Application\Command\ConfirmUserCommand;
 use App\Users\Application\Command\RegisterUserCommand;
-use App\Users\Domain\Repository\UserRepositoryInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

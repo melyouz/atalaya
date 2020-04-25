@@ -54,7 +54,7 @@ class CodeExcerpt
      */
     private Collection $lines;
 
-    private function __construct(CodeExcerptId $id, Issue $issue, CodeExcerptLanguage $lang, array $rawCodeLines)
+    public function __construct(CodeExcerptId $id, Issue $issue, CodeExcerptLanguage $lang, array $rawCodeLines)
     {
         $this->id = $id->value();
         $this->issue = $issue;
@@ -62,20 +62,8 @@ class CodeExcerpt
         $this->lines = new ArrayCollection();
 
         foreach ($rawCodeLines as $rawCodeLine) {
-            $this->lines->add(CodeExcerptCodeLine::create($this, $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']));
+            $this->lines->add(new CodeExcerptCodeLine($this, $rawCodeLine['line'], $rawCodeLine['content'], $rawCodeLine['selected']));
         }
-    }
-
-    /**
-     * @param CodeExcerptId $id
-     * @param Issue $issue
-     * @param CodeExcerptLanguage $lang
-     * @param array $rawCodeLines
-     * @return static
-     */
-    public static function create(CodeExcerptId $id, Issue $issue, CodeExcerptLanguage $lang, array $rawCodeLines): self
-    {
-        return new self($id, $issue, $lang, $rawCodeLines);
     }
 
     /**

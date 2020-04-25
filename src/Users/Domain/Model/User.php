@@ -93,24 +93,12 @@ class User implements UserInterface
      * @param UserEmail $email
      * @param UserConfirmationToken $confirmationToken
      */
-    private function __construct(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken)
+    public function __construct(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken)
     {
         $this->id = $id->value();
         $this->name = $name->value();
         $this->email = $email->value();
         $this->confirmationToken = $confirmationToken->value();
-    }
-
-    /**
-     * @param UserId $id
-     * @param UserName $name
-     * @param UserEmail $email
-     * @param UserConfirmationToken $confirmationToken
-     * @return $this
-     */
-    public static function register(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken): self
-    {
-        return new self($id, $name, $email, $confirmationToken);
     }
 
     /**

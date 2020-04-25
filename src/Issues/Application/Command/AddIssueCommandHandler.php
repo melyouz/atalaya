@@ -57,13 +57,15 @@ class AddIssueCommandHandler implements CommandHandlerInterface
         $excerptDto = $issueDto->codeExcerpt;
         $excerptId = uuid_create(UUID_TYPE_RANDOM);
 
-        $issue = Issue::create($issueId, $projectId, $issueDto->tags);
+        $issue = new Issue($issueId, $projectId, $issueDto->tags);
         $issue->addRequest(RequestMethod::fromString($requestDto->method), RequestUrl::fromString($requestDto->url), $requestDto->headers);
         $issue->addException(ExceptionCode::fromString($exceptionDto->code), ExceptionClass::fromString($exceptionDto->class), ExceptionMessage::fromString($exceptionDto->message));
         $issue->addFile(FilePath::fromString($fileDto->path), FileLine::fromInteger($fileDto->line));
         $issue->addCodeExcerpt(CodeExcerptId::fromString($excerptId), CodeExcerptLanguage::fromString($excerptDto->lang), $excerptDto->linesToArray());
         $issue->open();
 
-        $this->issueRepo->save($issue);
+        if (!$issue->isDraft()) {
+            $this->issueRepo->save($issue);
+        }
     }
 }

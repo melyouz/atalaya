@@ -45,16 +45,11 @@ class File
      */
     private int $line;
 
-    private function __construct(Issue $issue, FilePath $path, FileLine $line)
+    public function __construct(Issue $issue, FilePath $path, FileLine $line)
     {
         $this->issue = $issue;
         $this->path = $path->value();
         $this->line = $line->value();
-    }
-
-    public static function create(Issue $issue, FilePath $path, FileLine $line)
-    {
-        return new self($issue, $path, $line);
     }
 
     public function getPath(): FilePath

@@ -24,7 +24,6 @@ use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Users\Domain\Model\User\UserId;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 
 /**
  * @ORM\Entity()
@@ -87,17 +86,7 @@ class Project
      */
     private string $userId;
 
-    /**
-     * Project constructor.
-     * @param ProjectId $id
-     * @param ProjectName $name
-     * @param ProjectUrl $url
-     * @param ProjectToken $token
-     * @param ProjectPlatform $platform
-     * @param UserId $userId
-     * @throws Exception
-     */
-    private function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId)
+    public function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId)
     {
         $this->id = $id->value();
         $this->name = $name->value();
@@ -106,11 +95,6 @@ class Project
         $this->platform = $platform->value();
         $this->userId = $userId->value();
         $this->createdAt = new DateTimeImmutable();
-    }
-
-    public static function create(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId): self
-    {
-        return new self($id, $name, $url, $token, $platform, $userId);
     }
 
     public function archive(): void

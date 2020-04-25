@@ -52,17 +52,12 @@ class Exception
      */
     private string $message;
 
-    private function __construct(Issue $issue, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
+    public function __construct(Issue $issue, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
     {
         $this->issue = $issue;
         $this->code = $code->value();
         $this->class = $class->value();
         $this->message = $message->value();
-    }
-
-    public static function create(Issue $issue, ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message)
-    {
-        return new self($issue, $code, $class, $message);
     }
 
     public function getCode(): ExceptionCode

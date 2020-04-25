@@ -46,16 +46,11 @@ class Tag
      */
     private string $value;
 
-    private function __construct(Issue $issue, TagName $name, TagValue $value)
+    public function __construct(Issue $issue, TagName $name, TagValue $value)
     {
         $this->issue = $issue;
         $this->name = $name->value();
         $this->value = $value->value();
-    }
-
-    public static function create(Issue $issue, TagName $name, TagValue $value)
-    {
-        return new self($issue, $name, $value);
     }
 
     public function getName(): TagName

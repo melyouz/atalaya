@@ -50,17 +50,12 @@ class CodeExcerptCodeLine
      */
     private bool $selected;
 
-    private function __construct(CodeExcerpt $codeExcerpt, int $line, string $content, bool $selected)
+    public function __construct(CodeExcerpt $codeExcerpt, int $line, string $content, bool $selected)
     {
         $this->codeExcerpt = $codeExcerpt;
         $this->line = $line;
         $this->content = $content;
         $this->selected = $selected;
-    }
-
-    public static function create(CodeExcerpt $codeExcerpt, int $line, string $content, bool $selected): self
-    {
-        return new self($codeExcerpt, $line, $content, $selected);
     }
 
     /**

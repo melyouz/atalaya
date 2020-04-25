@@ -51,17 +51,12 @@ class Request
      */
     private array $headers = [];
 
-    private function __construct(Issue $issue, RequestMethod $method, RequestUrl $url, array $headers = [])
+    public function __construct(Issue $issue, RequestMethod $method, RequestUrl $url, array $headers = [])
     {
         $this->issue = $issue;
         $this->method = $method->value();
         $this->url = $url->value();
         $this->headers = $headers;
-    }
-
-    public static function create(Issue $issue, RequestMethod $method, RequestUrl $url, array $headers = [])
-    {
-        return new self($issue, $method, $url, $headers);
     }
 
     public function getMethod(): RequestMethod

@@ -117,7 +117,7 @@ class Issue
      */
     private Collection $tags;
 
-    private function __construct(IssueId $id, ProjectId $projectId, array $tags = [])
+    public function __construct(IssueId $id, ProjectId $projectId, array $tags = [])
     {
         $this->id = $id->value();
         $this->projectId = $projectId->value();
@@ -134,7 +134,7 @@ class Issue
         }
 
         foreach ($tags as $tagName => $tagValue) {
-            $this->addTag(Tag::create($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
+            $this->addTag(new Tag($this, TagName::fromString($tagName), TagValue::fromString($tagValue)));
         }
     }
 
@@ -145,29 +145,24 @@ class Issue
         }
     }
 
-    public static function create(IssueId $id, ProjectId $projectId, array $tags = []): self
-    {
-        return new self($id, $projectId, $tags);
-    }
-
     public function addRequest(RequestMethod $method, RequestUrl $url, array $headers = []): void
     {
-        $this->request = Request::create($this, $method, $url, $headers);
+        $this->request = new Request($this, $method, $url, $headers);
     }
 
     public function addException(ExceptionCode $code, ExceptionClass $class, ExceptionMessage $message): void
     {
-        $this->exception = Exception::create($this, $code, $class, $message);
+        $this->exception = new Exception($this, $code, $class, $message);
     }
 
     public function addFile(FilePath $path, FileLine $line): void
     {
-        $this->file = File::create($this, $path, $line);
+        $this->file = new File($this, $path, $line);
     }
 
     public function addCodeExcerpt(CodeExcerptId $codeExcerptId, CodeExcerptLanguage $lang, array $rawCodeLines): void
     {
-        $this->codeExcerpt = CodeExcerpt::create($codeExcerptId, $this, $lang, $rawCodeLines);
+        $this->codeExcerpt = new CodeExcerpt($codeExcerptId, $this, $lang, $rawCodeLines);
     }
 
     public function open(): void

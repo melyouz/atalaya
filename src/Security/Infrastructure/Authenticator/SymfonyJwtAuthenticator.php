@@ -93,7 +93,7 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
 
         try {
             return $this->userProvider->loadUserById($userId);
-        } catch(UserNotFoundException $e) {
+        } catch (UserNotFoundException $e) {
             return null;
         }
     }

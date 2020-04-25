@@ -52,7 +52,7 @@ class RegisterUserCommandHandler implements CommandHandlerInterface
         }
 
         $confirmationToken = UserConfirmationToken::fromString($this->tokenGenerator->randomToken());
-        $user = User::register($command->getId(), $command->getName(), $command->getEmail(), $confirmationToken);
+        $user = new User($command->getId(), $command->getName(), $command->getEmail(), $confirmationToken);
         $encodedPassword = $this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword());
         $user->setPassword(UserEncodedPassword::fromString($encodedPassword));
 
