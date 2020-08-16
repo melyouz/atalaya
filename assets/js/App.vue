@@ -32,7 +32,7 @@
                     <v-divider/>
                     <v-list dense nav>
                         <v-list-item-group color="primary">
-                            <v-list-item :to="{ name: 'projects-list' }" link>
+                            <v-list-item :to="{ name: 'projects-list' }" link exact active-class="v-list-item--active" :class="$route.path.startsWith('/projects') && !$route.path.includes('issues') ? 'v-list-item--active' : ''">
                                 <v-list-item-action>
                                     <v-icon>mdi-folder-multiple</v-icon>
                                 </v-list-item-action>
@@ -40,7 +40,7 @@
                                     <v-list-item-title>Projects</v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
-                            <v-list-item :to="{ name: 'issues-list' }" link>
+                            <v-list-item :to="{ name: 'issues-list' }" link exact active-class="v-list-item--active" :class="$route.path.includes('issues') ? 'v-list-item--active' : ''">
                                 <v-list-item-action>
                                     <v-icon>mdi-bug-check</v-icon>
                                 </v-list-item-action>

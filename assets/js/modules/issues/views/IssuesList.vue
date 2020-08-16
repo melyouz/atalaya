@@ -66,15 +66,21 @@
             issues: [],
         }),
         created() {
-            this.fetchProjectsList();
+            const projectId = this.$route.params.projectId || null;
+            this.fetchProjectsList(projectId);
+            this.fetchIssuesList(projectId);
         },
         watch: {
             selectedProject: function (newProjectId) {
-                this.fetchIssuesList(newProjectId);
+                if (this.$route.params.projectId === newProjectId) {
+                    return;
+                }
+
+                this.$router.push({name: 'project-issues-list', params: {projectId: newProjectId}});
             },
         },
         methods: {
-            fetchProjectsList() {
+            fetchProjectsList(projectId) {
                 this.$store.dispatch('projects/fetchList')
                     .then(response => {
                         if (!response.data.length) {
@@ -82,11 +88,11 @@
                         }
 
                         this.activeProjects = response.data.filter(project => !project.archived);
-                        if (this.activeProjects.length) {
-                            this.selectedProject = this.activeProjects[0].id;
-                        } else {
+                        if (!this.activeProjects.length) {
                             this.$router.push({name: 'projects-list'});
                         }
+                        const filtered = this.activeProjects.filter((project) => project.id === projectId);
+                        this.selectedProject = (filtered.length ? filtered[0].id : this.activeProjects[0].id);
                     })
                     .catch(error => {
                         this.setSnackMessage({
@@ -99,6 +105,10 @@
                     });
             },
             fetchIssuesList(projectId) {
+                if (!projectId) {
+                    return;
+                }
+
                 this.loadingIssues = true;
 
                 this.$store.dispatch('issues/fetchList', projectId)

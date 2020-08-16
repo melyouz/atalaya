@@ -22,6 +22,14 @@ export default [
         }
     },
     {
+        path: '/projects/:projectId/issues',
+        name: 'project-issues-list',
+        component: IssuesList,
+        meta: {
+            authRequired: true
+        }
+    },
+    {
         path: '/issues/:id',
         name: 'issue-detail',
         component: IssueDetail,
