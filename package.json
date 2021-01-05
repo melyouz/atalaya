@@ -1,7 +1,7 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.28.3",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "case-sensitive-paths-webpack-plugin": "^2.3.0",
         "core-js": "^3.0.0",
         "deepmerge": "^4.2.2",
