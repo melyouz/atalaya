@@ -1,9 +1,8 @@
 doctrine_migrations:
-    dir_name: '%kernel.project_dir%/migrations'
-    namespace: DoctrineMigrations
-
-    # To be used in next Doctrine Migrations version
-    #migrations_paths:
-    #    'App\Users\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Users/Infrastructure/Doctrine/Migration'
-    #    'App\Projects\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Projects/Infrastructure/Doctrine/Migration'
-    #    'App\Issues\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Issues/Infrastructure/Doctrine/Migration'
+    migrations_paths:
+        # namespace is arbitrary but should be different from App\Migrations
+        # as migrations classes should NOT be autoloaded
+        'DoctrineMigrations': '%kernel.project_dir%/migrations'
+        #'App\Users\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Users/Infrastructure/Doctrine/Migration'
+        #'App\Projects\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Projects/Infrastructure/Doctrine/Migration'
+        #'App\Issues\Infrastructure\Doctrine\Migration': '%kernel.project_dir%/src/Issues/Infrastructure/Doctrine/Migration'
