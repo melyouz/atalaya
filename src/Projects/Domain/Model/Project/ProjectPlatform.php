@@ -20,9 +20,13 @@ use Assert\Assertion;
 class ProjectPlatform extends AbstractStringValueObject
 {
     const MAX_LENGTH = 30;
+
+    const PHP = 'PHP';
+    const SYMFONY = 'Symfony';
+
     const CHOICES = [
-        'PHP',
-        'Symfony',
+        self::PHP,
+        self::SYMFONY,
     ];
 
     public static function fromString(string $value): self

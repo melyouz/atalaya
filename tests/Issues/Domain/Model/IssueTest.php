@@ -12,11 +12,18 @@
 
 namespace Tests\Issues\Domain\Model;
 
+use App\Issues\Application\DTO\CodeExcerptDto;
+use App\Issues\Application\DTO\CodeLineDto;
 use App\Issues\Domain\Exception\TagNotFoundException;
+use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
+use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptLanguage;
 use App\Issues\Domain\Model\Issue\Exception;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Issues\Domain\Model\Issue;
+use App\Issues\Domain\Model\Issue\File\FileLine;
+use App\Issues\Domain\Model\Issue\File\FilePath;
 use App\Issues\Domain\Model\Issue\IssueId;
 use App\Issues\Domain\Model\Issue\Request;
 use App\Issues\Domain\Model\Issue\Request\RequestMethod;
@@ -33,8 +40,25 @@ class IssueTest extends TestCase
     {
         $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
         $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $exceptionCode = 'xx';
         $exceptionClass = 'App\Whatever\Class';
         $exceptionMessage = 'Error: Call to undefined function notExistingFunction()';
+        $filePath = 'C:\develop\projects\Atalaya\src\Shared\Presentation\Backoffice\Controller\IndexController.php';
+        $fileLine = 34;
+        $excerptLang = 'php';
+        $excerptLines = [
+            new CodeLineDto(29, '        $this->twig = $twig;', false),
+            new CodeLineDto(30, '    }', false),
+            new CodeLineDto(31, '', false),
+            new CodeLineDto(32, '    public function __invoke(): Response", ', false),
+            new CodeLineDto(33, '    {', false),
+            new CodeLineDto(34, "        throw new \\RuntimeException('test exception');", true),
+            new CodeLineDto(35, '', false),
+            new CodeLineDto(36, "        \$content = \$this->twig->render('Backoffice/index.html.twig');", false),
+            new CodeLineDto(37, '', false),
+            new CodeLineDto(38, '        return new Response($content);', false),
+            new CodeLineDto(39, '    }', false),
+        ];
         $requestMethod = 'GET';
         $requestUrl = 'https://whatever-project.dev/api/products/c74ddda3-82ed-431c-8109-980aa25e2232';
         $requestHeaders = [
@@ -65,12 +89,20 @@ class IssueTest extends TestCase
             'level' => 'error',
         ];
 
-        $this->issue = Issue::create(IssueId::fromString($id),
-            ProjectId::fromString($projectId),
-            Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders),
-            Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage))
-            , $tags
-        );
+
+        $issueId = IssueId::fromString($id);
+        $projectId = ProjectId::fromString($projectId);
+        $excerptId = uuid_create(UUID_TYPE_RANDOM);
+        $excerptDto = new CodeExcerptDto($excerptLang, $excerptLines);
+
+        $issue = new Issue($issueId, $projectId, $tags);
+        $issue->addRequest(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $issue->addException(ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $issue->addFile(FilePath::fromString($filePath), FileLine::fromInteger($fileLine));
+        $issue->addCodeExcerpt(CodeExcerptId::fromString($excerptId), CodeExcerptLanguage::fromString($excerptDto->lang), $excerptDto->linesToArray());
+        $issue->open();
+
+        $this->issue = $issue;
     }
 
     public function testHasId(): void

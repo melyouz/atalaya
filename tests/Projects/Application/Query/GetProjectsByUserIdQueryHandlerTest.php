@@ -20,6 +20,7 @@ use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
@@ -34,7 +35,14 @@ class GetProjectsByUserIdQueryHandlerTest extends TestCase
         $name = 'Cool project';
         $url = 'https://coolproject.dev';
         $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
-        $project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), UserId::fromString($userId));
+        $project = new Project(
+            ProjectId::fromString($id),
+            ProjectName::fromString($name),
+            ProjectUrl::fromString($url),
+            ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'),
+            ProjectPlatform::fromString(ProjectPlatform::PHP),
+            UserId::fromString($userId)
+        );
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
 
         $repoMock->expects($this->once())

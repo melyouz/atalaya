@@ -12,9 +12,12 @@
 
 namespace Tests\Issues\Domain\Model;
 
+use App\Issues\Domain\Model\Issue;
+use App\Issues\Domain\Model\Issue\IssueId;
 use App\Issues\Domain\Model\Issue\Request;
 use App\Issues\Domain\Model\Issue\Request\RequestMethod;
 use App\Issues\Domain\Model\Issue\Request\RequestUrl;
+use App\Projects\Domain\Model\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
@@ -26,6 +29,10 @@ class RequestTest extends TestCase
 
     protected function setUp(): void
     {
+        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
+        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
+
         $requestMethod = 'GET';
         $requestUrl = 'https://whatever-project.dev/api/products/c74ddda3-82ed-431c-8109-980aa25e2232';
         $requestHeaders = [
@@ -37,7 +44,7 @@ class RequestTest extends TestCase
             'Accept-Encoding' => 'gzip, deflate',
             'Connection' => 'keep-alive',
         ];
-        $this->request = Request::create(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->request = new Request($issue, RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
     }
 
     public function testHasMethod(): void

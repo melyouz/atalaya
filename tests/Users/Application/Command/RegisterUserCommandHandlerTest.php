@@ -12,12 +12,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Projects\Application\Command;
+namespace Tests\Users\Application\Command;
 
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
-use App\Users\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
@@ -38,7 +38,7 @@ class RegisterUserCommandHandlerTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $plainPassword = 'WhateverPlainPassword';
         $encodedPassword = 'WhateverEncodedPassword';
-        $userWithoutPassword = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $userWithoutPassword = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
 
         $command = new RegisterUserCommand($id, $name, $email, $plainPassword);
 
@@ -78,7 +78,7 @@ class RegisterUserCommandHandlerTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $plainPassword = 'WhateverPlainPassword';
         $encodedPassword = 'WhateverEncodedPassword';
-        $userWithoutPassword = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $userWithoutPassword = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
 
         $command = new RegisterUserCommand($id, $name, $email, $plainPassword);
         $repoMock = $this->createMock(UserRepositoryInterface::class);

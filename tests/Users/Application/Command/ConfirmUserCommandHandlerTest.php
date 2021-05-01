@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Projects\Application\Command;
+namespace Tests\Users\Application\Command;
 
 use App\Users\Application\Command\ConfirmUserCommand;
 use App\Users\Application\Command\ConfirmUserCommandHandler;
@@ -31,7 +31,7 @@ class ConfirmUserCommandHandlerTest extends TestCase
     private ConfirmUserCommand $command;
     private ConfirmUserCommandHandler $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
         $name = 'John Doe';
@@ -39,7 +39,7 @@ class ConfirmUserCommandHandlerTest extends TestCase
         $encodedPassword = 'WhateverEncodedPassword';
         $token = 'someRandomToken';
 
-        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString($token));
+        $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString($token));
         $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
         $this->command = new ConfirmUserCommand($token);
         $repoMock = $this->createMock(UserRepositoryInterface::class);

@@ -15,6 +15,7 @@ namespace Tests\Projects\Domain\Model;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Users\Domain\Model\User\UserId;
@@ -26,11 +27,24 @@ class ProjectTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->project = Project::create(
+        /*
+         * public function __construct(ProjectId $id, ProjectName $name, ProjectUrl $url, ProjectToken $token, ProjectPlatform $platform, UserId $userId)
+    {
+        $this->id = $id->value();
+        $this->name = $name->value();
+        $this->url = $url->value();
+        $this->token = $token->value();
+        $this->platform = $platform->value();
+        $this->userId = $userId->value();
+        $this->createdAt = new DateTimeImmutable();
+    }
+         */
+        $this->project = new Project(
             ProjectId::fromString('9f6150ab-29b0-4523-8421-644f42487e47'),
             ProjectName::fromString('Awesome project'),
             ProjectUrl::fromString('https://awesome-project.dev'),
             ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'),
+            ProjectPlatform::fromString(ProjectPlatform::PHP),
             UserId::fromString('3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f')
         );
     }

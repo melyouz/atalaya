@@ -12,9 +12,13 @@
 
 namespace Tests\Issues\Domain\Model;
 
+use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\Exception;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
+use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
 use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
+use App\Issues\Domain\Model\Issue\IssueId;
+use App\Projects\Domain\Model\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
 
 class ExceptionTest extends TestCase
@@ -26,9 +30,14 @@ class ExceptionTest extends TestCase
 
     protected function setUp(): void
     {
+        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
+        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
+
+        $exceptionCode = 'xx';
         $exceptionClass = 'App\Whatever\Class';
         $exceptionMessage = 'Error: Call to undefined function notExistingFunction()';
-        $this->exception = Exception::create(ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->exception = new Exception($issue, ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
     }
 
     public function testHasClass(): void

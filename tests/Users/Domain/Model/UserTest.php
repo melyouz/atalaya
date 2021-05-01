@@ -35,7 +35,7 @@ class UserTest extends TestCase
         $name = 'John Doe';
         $email = 'johndoe@awesome-project.dev';
         $password = 'WhateverEncodedPassword';
-        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
         $this->user->setPassword(UserEncodedPassword::fromString($password));
     }
 

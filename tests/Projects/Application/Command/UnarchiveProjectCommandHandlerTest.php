@@ -20,6 +20,7 @@ use App\Projects\Domain\Exception\ProjectNotArchivedYetException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
@@ -32,14 +33,14 @@ class UnarchiveProjectCommandHandlerTest extends TestCase
     private UnarchiveProjectCommand $command;
     private UnarchiveProjectCommandHandler $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $id = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
         $name = 'Cool project';
         $url = 'https://coolproject.dev';
         $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
 
-        $this->project = Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), UserId::fromString($userId));
+        $this->project = new Project(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), ProjectPlatform::fromString(ProjectPlatform::PHP),UserId::fromString($userId));
         $this->command = new UnarchiveProjectCommand($id);
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())

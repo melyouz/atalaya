@@ -14,11 +14,18 @@ declare(strict_types=1);
 
 namespace Tests\Projects\Application\Command;
 
+use App\Issues\Domain\Model\Issue;
+use App\Issues\Domain\Model\Issue\CodeExcerpt;
+use App\Issues\Domain\Model\Issue\Exception;
+use App\Issues\Domain\Model\Issue\File;
+use App\Issues\Domain\Model\Issue\IssueStatus;
+use App\Issues\Domain\Model\Issue\Request;
 use App\Projects\Application\Command\CreateProjectCommand;
 use App\Projects\Application\Command\CreateProjectCommandHandler;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectName;
+use App\Projects\Domain\Model\Project\ProjectPlatform;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
@@ -34,12 +41,21 @@ class CreateProjectCommandHandlerTest extends TestCase
         $name = 'Cool project';
         $url = 'https://coolproject.dev';
         $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
+        $platform = ProjectPlatform::SYMFONY;
 
-        $command = new CreateProjectCommand($id, $name, $url, $userId);
+        $command = new CreateProjectCommand($id, $name, $url, $platform, $userId);
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('save')
-            ->with(Project::create(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), UserId::fromString($userId)));
+            ->willReturnCallback(function(Project $project) use ($id, $name, $url, $platform, $userId) {
+                $this->assertEquals($id, $project->getId()->value());
+                $this->assertEquals($name, $project->getName()->value());
+                $this->assertEquals($url, $project->getUrl()->value());
+                $this->assertEquals($platform, $project->getPlatform()->value());
+                $this->assertTrue($project->isOwner(UserId::fromString($userId)));
+                $this->assertFalse($project->isArchived());
+                $this->assertEquals(32, strlen($project->getToken()->value()));
+            });
 
         $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
         $tokenGeneratorMock->expects($this->once())

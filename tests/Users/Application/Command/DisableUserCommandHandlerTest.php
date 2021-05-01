@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Projects\Application\Command;
+namespace Tests\Users\Application\Command;
 
 use App\Users\Application\Command\DisableUserCommand;
 use App\Users\Application\Command\DisableUserCommandHandler;
@@ -32,14 +32,14 @@ class DisableUserCommandHandlerTest extends TestCase
     private DisableUserCommand $command;
     private DisableUserCommandHandler $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
         $name = 'John Doe';
         $email = 'johndoe@awesome-project.dev';
         $encodedPassword = 'WhateverEncodedPassword';
 
-        $this->user = User::register(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
         $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
         $this->command = new DisableUserCommand($id);
         $repoMock = $this->createMock(UserRepositoryInterface::class);
