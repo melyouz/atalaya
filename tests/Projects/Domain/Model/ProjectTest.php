@@ -77,4 +77,9 @@ class ProjectTest extends TestCase
     {
         $this->assertFalse($this->project->isArchived());
     }
+
+    public function testProjectHasCreatedAt(): void
+    {
+        $this->assertInstanceOf(\DateTimeImmutable::class, $this->project->getCreatedAt());
+    }
 }
