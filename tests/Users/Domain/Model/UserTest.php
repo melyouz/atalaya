@@ -39,48 +39,48 @@ class UserTest extends TestCase
         $this->user->setPassword(UserEncodedPassword::fromString($password));
     }
 
-    public function testRegisteredUserHasId(): void
+    public function testHasId(): void
     {
         $this->assertInstanceOf(UserId::class, $this->user->getId());
         $this->assertEquals('3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f', $this->user->getId()->value());
     }
 
-    public function testRegisteredUserHasName(): void
+    public function testHasName(): void
     {
         $this->assertInstanceOf(UserName::class, $this->user->getName());
         $this->assertEquals('John Doe', $this->user->getName()->value());
     }
 
-    public function testRegisteredUserHasEmail(): void
+    public function testHasEmail(): void
     {
         $this->assertInstanceOf(UserEmail::class, $this->user->getEmail());
         $this->assertEquals('johndoe@awesome-project.dev', $this->user->getEmail()->value());
     }
 
-    public function testRegisteredUserHasUsername(): void
+    public function testHasUsername(): void
     {
         $this->assertEquals('johndoe@awesome-project.dev', $this->user->getUsername());
     }
 
-    public function testRegisteredUserHasPassword(): void
+    public function testHasPassword(): void
     {
         $this->assertInstanceOf(UserEncodedPassword::class, $this->user->getPassword());
         $this->assertEquals('WhateverEncodedPassword', $this->user->getPassword()->value());
     }
 
-    public function testRegisteredUserPasswordCannotBeSetTwice(): void
+    public function testPasswordCannotBeSetTwice(): void
     {
         $this->expectException(UserPasswordAlreadySetException::class);
         $this->user->setPassword(UserEncodedPassword::fromString('TestPassword'));
     }
 
-    public function testRegisteredUserHasDefaultRole(): void
+    public function testHasDefaultRole(): void
     {
         $this->assertCount(1, $this->user->getRoles());
         $this->assertTrue($this->user->hasRole('ROLE_USER'));
     }
 
-    public function testRegisteredUserIsNotAdmin(): void
+    public function testIsNotAdmin(): void
     {
         $this->assertFalse($this->user->isAdmin());
     }
@@ -122,5 +122,30 @@ class UserTest extends TestCase
         $this->user->eraseCredentials();
         $this->assertNotSame($oldUser, $this->user);
         $this->assertEquals($oldUser, $this->user);
+    }
+
+    public function testIsSame(): void
+    {
+        $other = clone $this->user;
+        $other->changeName(UserName::fromString('Jane Doe'));
+        $this->assertTrue($this->user->isSame($other->getId()));
+    }
+
+    public function testIsNotSame(): void
+    {
+        $id = 'ad1e8628-9d9d-41f8-80c2-df54d8735405';
+        $name = 'John Doe';
+        $email = 'johndoe@awesome-project.dev';
+        $password = 'WhateverEncodedPassword';
+        $other = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $other->setPassword(UserEncodedPassword::fromString($password));
+
+        $this->assertFalse($this->user->isSame($other->getId()));
+    }
+
+    public function testHasConfirmationToken(): void
+    {
+        $this->assertInstanceOf(UserConfirmationToken::class, $this->user->getConfirmationToken());
+        $this->assertEquals('someRandomToken', $this->user->getConfirmationToken()->value());
     }
 }
