@@ -1,7 +1,7 @@
 <?php
-/**
+/*
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2021 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -10,7 +10,7 @@
  *
  */
 
-namespace Tests\Issues\Domain\Model;
+namespace Tests\Issues\Domain\Model\Issue;
 
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\Exception;
@@ -40,10 +40,21 @@ class ExceptionTest extends TestCase
         $this->exception = new Exception($issue, ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
     }
 
+    public function testHasCode(): void
+    {
+        $this->assertInstanceOf(ExceptionCode::class, $this->exception->getCode());
+        $this->assertEquals('xx', $this->exception->getCode()->value());
+    }
+
     public function testHasClass(): void
     {
         $this->assertInstanceOf(ExceptionClass::class, $this->exception->getClass());
         $this->assertEquals('App\Whatever\Class', $this->exception->getClass()->value());
+    }
+
+    public function testClassName(): void
+    {
+        $this->assertEquals('Class', $this->exception->getClassName());
     }
 
     public function testHasMessage(): void
@@ -51,5 +62,4 @@ class ExceptionTest extends TestCase
         $this->assertInstanceOf(ExceptionMessage::class, $this->exception->getMessage());
         $this->assertEquals('Error: Call to undefined function notExistingFunction()', $this->exception->getMessage());
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
-/**
+/*
  *
- * @copyright 2019 Mohammadi El Youzghi. All rights reserved
+ * @copyright 2021 Mohammadi El Youzghi. All rights reserved
  * @author    Mohammadi El Youzghi (mo.elyouzghi@gmail.com)
  *
  * @link      https://github.com/ayrad
@@ -10,7 +10,7 @@
  *
  */
 
-namespace Tests\Issues\Domain\Model;
+namespace Tests\Issues\Domain\Model\Issue;
 
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\IssueId;
