@@ -14,6 +14,11 @@ namespace Tests\Issues\Domain\Model;
 
 use App\Issues\Application\DTO\CodeExcerptDto;
 use App\Issues\Application\DTO\CodeLineDto;
+use App\Issues\Domain\Exception\IssueCodeExcerptRequired;
+use App\Issues\Domain\Exception\IssueExceptionRequired;
+use App\Issues\Domain\Exception\IssueFileRequired;
+use App\Issues\Domain\Exception\IssueMustBeDraft;
+use App\Issues\Domain\Exception\IssueRequestRequired;
 use App\Issues\Domain\Exception\TagNotFoundException;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
 use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptLanguage;
@@ -35,6 +40,10 @@ use PHPUnit\Framework\TestCase;
 class IssueTest extends TestCase
 {
     private Issue $issue;
+    private Issue $issueWithoutRequest;
+    private Issue $issueWithoutException;
+    private Issue $issueWithoutFile;
+    private Issue $issueWithoutExcerpt;
 
     protected function setUp(): void
     {
@@ -103,6 +112,26 @@ class IssueTest extends TestCase
         $issue->open();
 
         $this->issue = $issue;
+
+        $this->issueWithoutRequest =  new Issue($issueId, $projectId, $tags);
+        $this->issueWithoutRequest->addException(ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->issueWithoutRequest->addFile(FilePath::fromString($filePath), FileLine::fromInteger($fileLine));
+        $this->issueWithoutRequest->addCodeExcerpt(CodeExcerptId::fromString($excerptId), CodeExcerptLanguage::fromString($excerptDto->lang), $excerptDto->linesToArray());
+
+        $this->issueWithoutException = new Issue($issueId, $projectId, $tags);
+        $this->issueWithoutException->addRequest(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->issueWithoutException->addFile(FilePath::fromString($filePath), FileLine::fromInteger($fileLine));
+        $this->issueWithoutException->addCodeExcerpt(CodeExcerptId::fromString($excerptId), CodeExcerptLanguage::fromString($excerptDto->lang), $excerptDto->linesToArray());
+
+        $this->issueWithoutFile = new Issue($issueId, $projectId, $tags);$this->issueWithoutException->addRequest(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->issueWithoutFile->addRequest(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->issueWithoutFile->addException(ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->issueWithoutFile->addCodeExcerpt(CodeExcerptId::fromString($excerptId), CodeExcerptLanguage::fromString($excerptDto->lang), $excerptDto->linesToArray());
+
+        $this->issueWithoutExcerpt = new Issue($issueId, $projectId, $tags);
+        $this->issueWithoutExcerpt->addRequest(RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
+        $this->issueWithoutExcerpt->addException(ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
+        $this->issueWithoutExcerpt->addFile(FilePath::fromString($filePath), FileLine::fromInteger($fileLine));
     }
 
     public function testHasId(): void
@@ -141,5 +170,40 @@ class IssueTest extends TestCase
     {
         $this->expectException(TagNotFoundException::class);
         $this->issue->getTagValue(TagName::fromString('nonExistingTag'));
+    }
+
+    public function testHasSeenAt(): void
+    {
+        $this->assertInstanceOf(\DateTimeImmutable::class, $this->issue->getSeenAt());
+    }
+
+    public function testCannotOpenNonDraftIssue(): void
+    {
+        $this->expectException(IssueMustBeDraft::class);
+        $this->issue->open();
+    }
+
+    public function testCannotOpenIssueWithoutRequest(): void
+    {
+        $this->expectException(IssueRequestRequired::class);
+        $this->issueWithoutRequest->open();
+    }
+
+    public function testCannotOpenIssueWithoutException(): void
+    {
+        $this->expectException(IssueExceptionRequired::class);
+        $this->issueWithoutException->open();
+    }
+
+    public function testCannotOpenIssueWithoutFile(): void
+    {
+        $this->expectException(IssueFileRequired::class);
+        $this->issueWithoutFile->open();
+    }
+
+    public function testCannotOpenIssueWithoutCodeExcerpt(): void
+    {
+        $this->expectException(IssueCodeExcerptRequired::class);
+        $this->issueWithoutExcerpt->open();
     }
 }

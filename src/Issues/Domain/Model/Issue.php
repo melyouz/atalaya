@@ -89,27 +89,27 @@ class Issue
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issue", cascade={"persist", "remove"})
-     * @var Request
+     * @var Request|null
      */
-    private Request $request;
+    private ?Request $request = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Exception", mappedBy="issue", cascade={"persist", "remove"})
-     * @var Exception
+     * @var Exception|null
      */
-    private Exception $exception;
+    private ?Exception $exception = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\File", mappedBy="issue", cascade={"persist", "remove"})
      * @var File
      */
-    private File $file;
+    private ?File $file = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issue", cascade={"persist", "remove"})
-     * @var CodeExcerpt
+     * @var CodeExcerpt|null
      */
-    private CodeExcerpt $codeExcerpt;
+    private ?CodeExcerpt $codeExcerpt=null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
