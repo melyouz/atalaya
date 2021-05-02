@@ -50,7 +50,7 @@ class EditProjectCommandHandlerTest extends TestCase
         $repoMock->expects($this->once())
             ->method('get')
             ->with(ProjectId::fromString($id))
-            ->willReturn($expectedProject);
+            ->willReturn($project);
 
         $repoMock->expects($this->once())
             ->method('save')
