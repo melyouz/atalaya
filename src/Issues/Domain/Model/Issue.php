@@ -109,7 +109,7 @@ class Issue
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issue", cascade={"persist", "remove"})
      * @var CodeExcerpt|null
      */
-    private ?CodeExcerpt $codeExcerpt=null;
+    private ?CodeExcerpt $codeExcerpt = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
