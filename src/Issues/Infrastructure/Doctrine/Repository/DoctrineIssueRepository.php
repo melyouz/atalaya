@@ -56,6 +56,7 @@ class DoctrineIssueRepository implements IssueRepositoryInterface
             'projectId' => $projectId->value(),
             'status' => [IssueStatus::OPEN, IssueStatus::RESOLVED]
         ], [
+            'pinned' => 'desc',
             'seenAt' => 'desc',
         ]);
     }

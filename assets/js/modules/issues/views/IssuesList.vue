@@ -25,9 +25,6 @@
         <v-data-table :footer-props="{itemsPerPageOptions: [10, 50, 100, 200, -1]}" :headers="issuesHeaders" :items="issues"
                       :items-per-page="100" :loading="loadingIssues"
                       @click:row="handleClick" class="elevation-1">
-            <template v-slot:item.resolved="{ item }">
-                <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
-            </template>
             <template v-slot:item.seenAt="{ item }">{{ item.seenAt|timeago }}</template>
             <template v-slot:item.exception.className="{ item }">
                 <v-tooltip top>
@@ -40,6 +37,12 @@
             <template v-slot:item.exception.message="{ item }">
                 <template v-if="item.exception.code">(code: {{ item.exception.code }})</template>
                 {{ item.exception.message }}
+            </template>
+            <template v-slot:item.resolved="{ item }">
+                <v-simple-checkbox disabled v-model="item.resolved"></v-simple-checkbox>
+            </template>
+            <template v-slot:item.pinned="{ item }">
+                <v-icon v-if="item.pinned" class="mr-1" small>mdi-pin</v-icon>
             </template>
         </v-data-table>
     </v-container>
@@ -56,6 +59,7 @@
             activeProjects: [],
             selectedProject: null,
             issuesHeaders: [
+                {text: '', value: 'pinned'},
                 {text: 'Seen At', value: 'seenAt'},
                 {text: 'Request Method', value: 'request.method'},
                 {text: 'Request URL', value: 'request.url'},

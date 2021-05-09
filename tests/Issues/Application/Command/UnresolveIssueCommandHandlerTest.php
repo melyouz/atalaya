@@ -32,6 +32,7 @@ class UnresolveIssueCommandHandlerTest extends TestCase
     public function testUnresolveIssue()
     {
         $this->issue->resolve();
+        $this->assertTrue($this->issue->isResolved());
         $this->handler->__invoke($this->command);
         $this->assertFalse($this->issue->isResolved());
     }

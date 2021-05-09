@@ -25,14 +25,20 @@
             </div>
 
             <div class="mt-4">
-                <v-btn :loading="loading" @click="resolve()" color="primary" depressed outlined small
-                       v-if="!issue.resolved">
-                    <v-icon class="mr-1" small>mdi-check-outline</v-icon>
-                    Resolve
+                <!-- Pin / Unpin -->
+                <v-btn :loading="loading" @click="pin()" color="primary" depressed outlined small v-if="!issue.pinned">
+                    <v-icon class="mr-1" small>mdi-pin-outline</v-icon> Pin
+                </v-btn>
+                <v-btn :loading="loading" @click="unpin()" color="primary" depressed small v-if="issue.pinned">
+                    <v-icon class="mr-1" small>mdi-pin</v-icon> Pinned
+                </v-btn>
+
+                <!-- Resolve / Unresolve -->
+                <v-btn :loading="loading" @click="resolve()" color="primary" depressed outlined small v-if="!issue.resolved">
+                    <v-icon class="mr-1" small>mdi-check-outline</v-icon> Resolve
                 </v-btn>
                 <v-btn :loading="loading" @click="unresolve()" color="primary" depressed small v-if="issue.resolved">
-                    <v-icon class="mr-1" small>mdi-check-bold</v-icon>
-                    Resolved
+                    <v-icon class="mr-1" small>mdi-check-bold</v-icon> Resolved
                 </v-btn>
             </div>
 
@@ -55,7 +61,7 @@
                 </v-btn-toggle>
             </div>
 
-            <h3 class="d-block pt-4">{{issue.exception.class}}</h3>
+            <h3 class="d-block pt-4">{{ issue.exception.class }}</h3>
             <div>
                 <div>
                     <template v-if="issue.exception.code">(code: {{ issue.exception.code }})</template>
@@ -69,7 +75,9 @@
                     <div class="body-2 overflow-auto">
                         <v-list disabled>
                             <v-list-item-group color="warning">
-                                <v-list-item v-for="(line, i) in issue.codeExcerpt.lines" :key="i" class="list-item-code" v-bind:class="{'v-item--active v-list-item--active': line.selected}">
+                                <v-list-item v-for="(line, i) in issue.codeExcerpt.lines" :key="i"
+                                             class="list-item-code"
+                                             v-bind:class="{'v-item--active v-list-item--active': line.selected}">
                                     <v-list-item-content class="py-1 ma-0 overflow-visible">
                                         <pre>{{ line.line }}. {{ line.content }}</pre>
                                     </v-list-item-content>
@@ -85,81 +93,113 @@
 </template>
 
 <script>
-    import {mapMutations} from 'vuex';
+import {mapMutations} from 'vuex';
 
-    export default {
-        name: "IssueDetail",
-        data: () => ({
-            loading: false,
-            issue: null,
-        }),
-        created() {
-            const id = this.$route.params.id;
-            this.fetchIssue(id);
+export default {
+    name: "IssueDetail",
+    data: () => ({
+        loading: false,
+        issue: null,
+    }),
+    created() {
+        const id = this.$route.params.id;
+        this.fetchIssue(id);
+    },
+    methods: {
+        fetchIssue(id) {
+            this.loading = true;
+
+            this.$store.dispatch('issues/fetch', id)
+                .then(response => {
+                    this.issue = response.data;
+                })
+                .catch(error => {
+                    this.setSnackMessage({
+                        message: "Unexpected error occurred. Please, try again.",
+                        color: "error"
+                    });
+                })
+                .then(() => {
+                    this.loading = false;
+                });
         },
-        methods: {
-            fetchIssue(id) {
-                this.loading = true;
-
-                this.$store.dispatch('issues/fetch', id)
-                    .then(response => {
-                        this.issue = response.data;
-                    })
-                    .catch(error => {
-                        this.setSnackMessage({
-                            message: "Unexpected error occurred. Please, try again.",
-                            color: "error"
-                        });
-                    })
-                    .then(() => {
-                        this.loading = false;
+        pin() {
+            this.loading = true;
+            this.$store.dispatch('issues/pin', this.issue.id)
+                .then(response => {
+                    this.issue.pinned = true;
+                })
+                .catch(error => {
+                    this.setSnackMessage({
+                        message: "Unexpected error occurred. Please, try again.",
+                        color: "error"
                     });
-            },
-            resolve() {
-                this.loading = true;
-                this.$store.dispatch('issues/resolve', this.issue.id)
-                    .then(response => {
-                        this.issue.resolved = true;
-                    })
-                    .catch(error => {
-                        this.setSnackMessage({
-                            message: "Unexpected error occurred. Please, try again.",
-                            color: "error"
-                        });
-                    })
-                    .finally(() => {
-                        this.loading = false;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        unpin() {
+            this.loading = true;
+            this.$store.dispatch('issues/unpin', this.issue.id)
+                .then(response => {
+                    this.issue.pinned = false;
+                })
+                .catch(error => {
+                    this.setSnackMessage({
+                        message: "Unexpected error occurred. Please, try again.",
+                        color: "error"
                     });
-            },
-            unresolve() {
-                this.loading = true;
-                this.$store.dispatch('issues/unresolve', this.issue.id)
-                    .then(response => {
-                        this.issue.resolved = false;
-                    })
-                    .catch(error => {
-                        this.setSnackMessage({
-                            message: "Unexpected error occurred. Please, try again.",
-                            color: "error"
-                        });
-                    })
-                    .finally(() => {
-                        this.loading = false;
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        resolve() {
+            this.loading = true;
+            this.$store.dispatch('issues/resolve', this.issue.id)
+                .then(response => {
+                    this.issue.resolved = true;
+                })
+                .catch(error => {
+                    this.setSnackMessage({
+                        message: "Unexpected error occurred. Please, try again.",
+                        color: "error"
                     });
-            },
-            ...mapMutations({
-                setSnackMessage: 'setSnackMessage'
-            })
-        }
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        unresolve() {
+            this.loading = true;
+            this.$store.dispatch('issues/unresolve', this.issue.id)
+                .then(response => {
+                    this.issue.resolved = false;
+                })
+                .catch(error => {
+                    this.setSnackMessage({
+                        message: "Unexpected error occurred. Please, try again.",
+                        color: "error"
+                    });
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        ...mapMutations({
+            setSnackMessage: 'setSnackMessage'
+        })
     }
+}
 </script>
 
 <style scoped>
-    .disable-events {
-        pointer-events: none
-    }
+.disable-events {
+    pointer-events: none
+}
 
-    .list-item-code {
-        min-height: 20px;
-    }
+.list-item-code {
+    min-height: 20px;
+}
 </style>

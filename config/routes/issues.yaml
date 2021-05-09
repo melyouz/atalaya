@@ -13,6 +13,16 @@ app_issues_unresolve:
     controller: App\Issues\Presentation\Api\Controller\UnresolveIssueController
     methods:  [PATCH]
 
+app_issues_pin:
+    path: /api/issues/{id}/pin
+    controller: App\Issues\Presentation\Api\Controller\PinIssueController
+    methods:  [PATCH]
+
+app_issues_unpin:
+    path: /api/issues/{id}/unpin
+    controller: App\Issues\Presentation\Api\Controller\UnpinIssueController
+    methods:  [PATCH]
+
 app_issues_get_item:
     path: /api/issues/{id}
     controller: App\Issues\Presentation\Api\Controller\GetIssueController

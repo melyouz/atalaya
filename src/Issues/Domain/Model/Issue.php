@@ -14,11 +14,13 @@ declare(strict_types=1);
 
 namespace App\Issues\Domain\Model;
 
+use App\Issues\Domain\Exception\IssueAlreadyPinnedException;
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
 use App\Issues\Domain\Exception\IssueCodeExcerptRequired;
 use App\Issues\Domain\Exception\IssueExceptionRequired;
 use App\Issues\Domain\Exception\IssueFileRequired;
 use App\Issues\Domain\Exception\IssueMustBeDraft;
+use App\Issues\Domain\Exception\IssueNotPinnedYetException;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
 use App\Issues\Domain\Exception\IssueRequestRequired;
 use App\Issues\Domain\Exception\TagNotFoundException;
@@ -88,6 +90,11 @@ class Issue
     private string $status;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $pinned;
+
+    /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issue", cascade={"persist", "remove"})
      * @var Request|null
      */
@@ -123,6 +130,7 @@ class Issue
         $this->projectId = $projectId->value();
         $this->seenAt = new DateTimeImmutable();
         $this->status = IssueStatus::DRAFT;
+        $this->pinned = false;
         $this->tags = new ArrayCollection();
         $this->addTagsFromArray($tags);
     }
@@ -218,6 +226,29 @@ class Issue
 
         $this->status = IssueStatus::OPEN;
         $this->resolvedAt = null;
+    }
+
+    public function pin(): void
+    {
+        if ($this->isPinned()) {
+            throw new IssueAlreadyPinnedException();
+        }
+
+        $this->pinned = true;
+    }
+
+    public function isPinned(): bool
+    {
+        return $this->pinned;
+    }
+
+    public function unpin(): void
+    {
+        if (!$this->isPinned()) {
+            throw new IssueNotPinnedYetException();
+        }
+
+        $this->pinned = false;
     }
 
     public function getId(): IssueId
