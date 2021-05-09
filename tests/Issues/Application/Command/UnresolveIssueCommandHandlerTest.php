@@ -17,14 +17,8 @@ namespace Tests\Issues\Application\Command;
 use App\Issues\Application\Command\UnresolveIssueCommand;
 use App\Issues\Application\Command\UnresolveIssueCommandHandler;
 use App\Issues\Domain\Exception\IssueNotResolvedYetException;
-use App\Issues\Domain\Model\Issue\Exception;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\IssueId;
-use App\Issues\Domain\Model\Issue\Request;
-use App\Issues\Domain\Model\Issue\Request\RequestMethod;
-use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Projects\Domain\Model\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
@@ -34,6 +28,19 @@ class UnresolveIssueCommandHandlerTest extends TestCase
     private Issue $issue;
     private UnresolveIssueCommand $command;
     private UnresolveIssueCommandHandler $handler;
+
+    public function testUnresolveIssue()
+    {
+        $this->issue->resolve();
+        $this->handler->__invoke($this->command);
+        $this->assertFalse($this->issue->isResolved());
+    }
+
+    public function testIssueCannotBeUnresolvedWhenNotResolved()
+    {
+        $this->expectException(IssueNotResolvedYetException::class);
+        $this->handler->__invoke($this->command);
+    }
 
     protected function setUp(): void
     {
@@ -49,18 +56,5 @@ class UnresolveIssueCommandHandlerTest extends TestCase
             ->willReturn($this->issue);
 
         $this->handler = new UnresolveIssueCommandHandler($repoMock);
-    }
-
-    public function testUnresolveIssue()
-    {
-        $this->issue->resolve();
-        $this->handler->__invoke($this->command);
-        $this->assertFalse($this->issue->isResolved());
-    }
-
-    public function testIssueCannotBeUnresolvedWhenNotResolved()
-    {
-        $this->expectException(IssueNotResolvedYetException::class);
-        $this->handler->__invoke($this->command);
     }
 }

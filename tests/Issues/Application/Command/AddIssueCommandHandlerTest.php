@@ -22,24 +22,13 @@ use App\Issues\Application\DTO\ExceptionDto;
 use App\Issues\Application\DTO\FileDto;
 use App\Issues\Application\DTO\IssueDto;
 use App\Issues\Application\DTO\RequestDto;
-use App\Issues\Domain\Model\Issue\CodeExcerpt;
-use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptId;
-use App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptLanguage;
-use App\Issues\Domain\Model\Issue\Exception;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionCode;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Issues\Domain\Model\Issue;
+use App\Issues\Domain\Model\Issue\CodeExcerpt;
+use App\Issues\Domain\Model\Issue\Exception;
 use App\Issues\Domain\Model\Issue\File;
-use App\Issues\Domain\Model\Issue\File\FileLine;
-use App\Issues\Domain\Model\Issue\File\FilePath;
-use App\Issues\Domain\Model\Issue\IssueId;
 use App\Issues\Domain\Model\Issue\IssueStatus;
 use App\Issues\Domain\Model\Issue\Request;
-use App\Issues\Domain\Model\Issue\Request\RequestMethod;
-use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
-use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -109,7 +98,7 @@ class AddIssueCommandHandlerTest extends TestCase
         $issueRepoMock = $this->createMock(IssueRepositoryInterface::class);
         $issueRepoMock->expects($this->once())
             ->method('save')
-            ->willReturnCallback(function(Issue $issue) use ($id, $projectId) {
+            ->willReturnCallback(function (Issue $issue) use ($id, $projectId) {
                 $this->assertEquals($id, $issue->getId()->value());
                 $this->assertEquals($projectId, $issue->getProjectId()->value());
                 $this->assertInstanceOf(Request::class, $issue->getRequest());

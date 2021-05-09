@@ -17,14 +17,8 @@ namespace Tests\Issues\Application\Command;
 use App\Issues\Application\Command\ResolveIssueCommand;
 use App\Issues\Application\Command\ResolveIssueCommandHandler;
 use App\Issues\Domain\Exception\IssueAlreadyResolvedException;
-use App\Issues\Domain\Model\Issue\Exception;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionClass;
-use App\Issues\Domain\Model\Issue\Exception\ExceptionMessage;
 use App\Issues\Domain\Model\Issue;
 use App\Issues\Domain\Model\Issue\IssueId;
-use App\Issues\Domain\Model\Issue\Request;
-use App\Issues\Domain\Model\Issue\Request\RequestMethod;
-use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Repository\IssueRepositoryInterface;
 use App\Projects\Domain\Model\Project\ProjectId;
 use PHPUnit\Framework\TestCase;
@@ -34,6 +28,19 @@ class ResolveIssueCommandHandlerTest extends TestCase
     private Issue $issue;
     private ResolveIssueCommand $command;
     private ResolveIssueCommandHandler $handler;
+
+    public function testResolveIssue()
+    {
+        $this->handler->__invoke($this->command);
+        $this->assertTrue($this->issue->isResolved());
+    }
+
+    public function testIssueCannotBeResolvedTwice()
+    {
+        $this->issue->resolve();
+        $this->expectException(IssueAlreadyResolvedException::class);
+        $this->handler->__invoke($this->command);
+    }
 
     protected function setUp(): void
     {
@@ -49,18 +56,5 @@ class ResolveIssueCommandHandlerTest extends TestCase
             ->willReturn($this->issue);
 
         $this->handler = new ResolveIssueCommandHandler($repoMock);
-    }
-
-    public function testResolveIssue()
-    {
-        $this->handler->__invoke($this->command);
-        $this->assertTrue($this->issue->isResolved());
-    }
-
-    public function testIssueCannotBeResolvedTwice()
-    {
-        $this->issue->resolve();
-        $this->expectException(IssueAlreadyResolvedException::class);
-        $this->handler->__invoke($this->command);
     }
 }

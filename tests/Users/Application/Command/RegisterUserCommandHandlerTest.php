@@ -14,12 +14,11 @@ declare(strict_types=1);
 
 namespace Tests\Users\Application\Command;
 
+use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Exception\EmailTakenException;
-use App\Users\Domain\Exception\UserNotFoundException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;

@@ -29,16 +29,6 @@ class UserTest extends TestCase
 {
     private User $user;
 
-    protected function setUp(): void
-    {
-        $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
-        $name = 'John Doe';
-        $email = 'johndoe@awesome-project.dev';
-        $password = 'WhateverEncodedPassword';
-        $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
-        $this->user->setPassword(UserEncodedPassword::fromString($password));
-    }
-
     public function testHasId(): void
     {
         $this->assertInstanceOf(UserId::class, $this->user->getId());
@@ -147,5 +137,15 @@ class UserTest extends TestCase
     {
         $this->assertInstanceOf(UserConfirmationToken::class, $this->user->getConfirmationToken());
         $this->assertEquals('someRandomToken', $this->user->getConfirmationToken()->value());
+    }
+
+    protected function setUp(): void
+    {
+        $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
+        $name = 'John Doe';
+        $email = 'johndoe@awesome-project.dev';
+        $password = 'WhateverEncodedPassword';
+        $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
+        $this->user->setPassword(UserEncodedPassword::fromString($password));
     }
 }

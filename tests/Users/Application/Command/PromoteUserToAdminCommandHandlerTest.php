@@ -32,6 +32,19 @@ class PromoteUserToAdminCommandHandlerTest extends TestCase
     private PromoteUserToAdminCommand $command;
     private PromoteUserToAdminCommandHandler $handler;
 
+    public function testPromoteUser()
+    {
+        $this->handler->__invoke($this->command);
+        $this->assertTrue($this->user->isAdmin());
+    }
+
+    public function testUserCannotBePromotedTwice()
+    {
+        $this->user->promoteToAdmin();
+        $this->expectException(UserRoleAlreadyAssignedException::class);
+        $this->handler->__invoke($this->command);
+    }
+
     protected function setUp(): void
     {
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
@@ -49,18 +62,5 @@ class PromoteUserToAdminCommandHandlerTest extends TestCase
             ->willReturn($this->user);
 
         $this->handler = new PromoteUserToAdminCommandHandler($repoMock);
-    }
-
-    public function testPromoteUser()
-    {
-        $this->handler->__invoke($this->command);
-        $this->assertTrue($this->user->isAdmin());
-    }
-
-    public function testUserCannotBePromotedTwice()
-    {
-        $this->user->promoteToAdmin();
-        $this->expectException(UserRoleAlreadyAssignedException::class);
-        $this->handler->__invoke($this->command);
     }
 }

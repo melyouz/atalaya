@@ -32,6 +32,19 @@ class EnableUserCommandHandlerTest extends TestCase
     private EnableUserCommand $command;
     private EnableUserCommandHandler $handler;
 
+    public function testEnableUser()
+    {
+        $this->user->disable();
+        $this->handler->__invoke($this->command);
+        $this->assertFalse($this->user->isDisabled());
+    }
+
+    public function testUserCannotBeEnabledTwice()
+    {
+        $this->expectException(UserNotDisabledYetException::class);
+        $this->handler->__invoke($this->command);
+    }
+
     protected function setUp(): void
     {
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
@@ -49,18 +62,5 @@ class EnableUserCommandHandlerTest extends TestCase
             ->willReturn($this->user);
 
         $this->handler = new EnableUserCommandHandler($repoMock);
-    }
-
-    public function testEnableUser()
-    {
-        $this->user->disable();
-        $this->handler->__invoke($this->command);
-        $this->assertFalse($this->user->isDisabled());
-    }
-
-    public function testUserCannotBeEnabledTwice()
-    {
-        $this->expectException(UserNotDisabledYetException::class);
-        $this->handler->__invoke($this->command);
     }
 }

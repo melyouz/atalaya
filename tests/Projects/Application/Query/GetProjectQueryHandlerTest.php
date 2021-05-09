@@ -14,7 +14,6 @@ namespace Tests\Projects\Application\Query;
 
 use App\Projects\Application\Query\GetProjectQuery;
 use App\Projects\Application\Query\GetProjectQueryHandler;
-use App\Projects\Domain\Exception\ProjectNotFoundException;
 use App\Projects\Domain\Model\Project;
 use App\Projects\Domain\Model\Project\ProjectId;
 use App\Projects\Domain\Model\Project\ProjectName;

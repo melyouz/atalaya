@@ -27,26 +27,6 @@ class RequestTest extends TestCase
      */
     private Request $request;
 
-    protected function setUp(): void
-    {
-        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
-        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
-        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
-
-        $requestMethod = 'GET';
-        $requestUrl = 'https://whatever-project.dev/api/products/c74ddda3-82ed-431c-8109-980aa25e2232';
-        $requestHeaders = [
-            'Content-Type' => 'application/json',
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
-            'Accept' => '*/*',
-            'Cache-Control' => 'no-cache',
-            'Host' => 'whatever-project.dev',
-            'Accept-Encoding' => 'gzip, deflate',
-            'Connection' => 'keep-alive',
-        ];
-        $this->request = new Request($issue, RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
-    }
-
     public function testHasMethod(): void
     {
         $this->assertInstanceOf(RequestMethod::class, $this->request->getMethod());
@@ -70,5 +50,25 @@ class RequestTest extends TestCase
             'Accept-Encoding' => 'gzip, deflate',
             'Connection' => 'keep-alive',
         ], $this->request->getHeaders());
+    }
+
+    protected function setUp(): void
+    {
+        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
+        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
+
+        $requestMethod = 'GET';
+        $requestUrl = 'https://whatever-project.dev/api/products/c74ddda3-82ed-431c-8109-980aa25e2232';
+        $requestHeaders = [
+            'Content-Type' => 'application/json',
+            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
+            'Accept' => '*/*',
+            'Cache-Control' => 'no-cache',
+            'Host' => 'whatever-project.dev',
+            'Accept-Encoding' => 'gzip, deflate',
+            'Connection' => 'keep-alive',
+        ];
+        $this->request = new Request($issue, RequestMethod::fromString($requestMethod), RequestUrl::fromString($requestUrl), $requestHeaders);
     }
 }

@@ -14,20 +14,10 @@ declare(strict_types=1);
 
 namespace Tests\Projects\Application\Command;
 
-use App\Issues\Domain\Model\Issue;
-use App\Issues\Domain\Model\Issue\CodeExcerpt;
-use App\Issues\Domain\Model\Issue\Exception;
-use App\Issues\Domain\Model\Issue\File;
-use App\Issues\Domain\Model\Issue\IssueStatus;
-use App\Issues\Domain\Model\Issue\Request;
 use App\Projects\Application\Command\CreateProjectCommand;
 use App\Projects\Application\Command\CreateProjectCommandHandler;
 use App\Projects\Domain\Model\Project;
-use App\Projects\Domain\Model\Project\ProjectId;
-use App\Projects\Domain\Model\Project\ProjectName;
 use App\Projects\Domain\Model\Project\ProjectPlatform;
-use App\Projects\Domain\Model\Project\ProjectToken;
-use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Projects\Domain\Repository\ProjectRepositoryInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Domain\Model\User\UserId;
@@ -47,7 +37,7 @@ class CreateProjectCommandHandlerTest extends TestCase
         $repoMock = $this->createMock(ProjectRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('save')
-            ->willReturnCallback(function(Project $project) use ($id, $name, $url, $platform, $userId) {
+            ->willReturnCallback(function (Project $project) use ($id, $name, $url, $platform, $userId) {
                 $this->assertEquals($id, $project->getId()->value());
                 $this->assertEquals($name, $project->getName()->value());
                 $this->assertEquals($url, $project->getUrl()->value());

@@ -33,24 +33,6 @@ class UnarchiveProjectCommandHandlerTest extends TestCase
     private UnarchiveProjectCommand $command;
     private UnarchiveProjectCommandHandler $handler;
 
-    protected function setUp(): void
-    {
-        $id = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
-        $name = 'Cool project';
-        $url = 'https://coolproject.dev';
-        $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
-
-        $this->project = new Project(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), ProjectPlatform::fromString(ProjectPlatform::PHP),UserId::fromString($userId));
-        $this->command = new UnarchiveProjectCommand($id);
-        $repoMock = $this->createMock(ProjectRepositoryInterface::class);
-        $repoMock->expects($this->once())
-            ->method('get')
-            ->with(ProjectId::fromString($id))
-            ->willReturn($this->project);
-
-        $this->handler = new UnarchiveProjectCommandHandler($repoMock);
-    }
-
     public function testUnarchiveProject()
     {
         $this->project->archive();
@@ -62,5 +44,23 @@ class UnarchiveProjectCommandHandlerTest extends TestCase
     {
         $this->expectException(ProjectNotArchivedYetException::class);
         $this->handler->__invoke($this->command);
+    }
+
+    protected function setUp(): void
+    {
+        $id = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $name = 'Cool project';
+        $url = 'https://coolproject.dev';
+        $userId = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
+
+        $this->project = new Project(ProjectId::fromString($id), ProjectName::fromString($name), ProjectUrl::fromString($url), ProjectToken::fromString('d15e6e18cd0a8ef2672e0f392368cc56'), ProjectPlatform::fromString(ProjectPlatform::PHP), UserId::fromString($userId));
+        $this->command = new UnarchiveProjectCommand($id);
+        $repoMock = $this->createMock(ProjectRepositoryInterface::class);
+        $repoMock->expects($this->once())
+            ->method('get')
+            ->with(ProjectId::fromString($id))
+            ->willReturn($this->project);
+
+        $this->handler = new UnarchiveProjectCommandHandler($repoMock);
     }
 }

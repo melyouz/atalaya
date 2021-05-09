@@ -19,10 +19,8 @@ use App\Shared\Application\Command\CommandInterface;
 use App\Shared\Application\Query\QueryInterface;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class AbstractControllerTest extends TestCase
 {

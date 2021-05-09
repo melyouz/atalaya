@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Tests\Users\Application\Command;
 
+use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Application\Command\EditUserCommand;
 use App\Users\Application\Command\EditUserCommandHandler;
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;

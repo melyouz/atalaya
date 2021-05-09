@@ -28,18 +28,6 @@ class ExceptionTest extends TestCase
      */
     private Exception $exception;
 
-    protected function setUp(): void
-    {
-        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
-        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
-        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
-
-        $exceptionCode = 'xx';
-        $exceptionClass = 'App\Whatever\Class';
-        $exceptionMessage = 'Error: Call to undefined function notExistingFunction()';
-        $this->exception = new Exception($issue, ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
-    }
-
     public function testHasCode(): void
     {
         $this->assertInstanceOf(ExceptionCode::class, $this->exception->getCode());
@@ -61,5 +49,17 @@ class ExceptionTest extends TestCase
     {
         $this->assertInstanceOf(ExceptionMessage::class, $this->exception->getMessage());
         $this->assertEquals('Error: Call to undefined function notExistingFunction()', $this->exception->getMessage());
+    }
+
+    protected function setUp(): void
+    {
+        $id = 'c308946c-8d78-484f-bc03-c5ee31510766';
+        $projectId = '70ffba47-a7e5-40bf-90fc-0542ff44d891';
+        $issue = new Issue(IssueId::fromString($id), ProjectId::fromString($projectId));
+
+        $exceptionCode = 'xx';
+        $exceptionClass = 'App\Whatever\Class';
+        $exceptionMessage = 'Error: Call to undefined function notExistingFunction()';
+        $this->exception = new Exception($issue, ExceptionCode::fromString($exceptionCode), ExceptionClass::fromString($exceptionClass), ExceptionMessage::fromString($exceptionMessage));
     }
 }

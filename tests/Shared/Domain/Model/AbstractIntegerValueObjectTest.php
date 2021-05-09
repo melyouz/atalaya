@@ -14,7 +14,6 @@ namespace Tests\Shared\Domain\Model;
 
 
 use App\Shared\Domain\Model\AbstractIntegerValueObject;
-use App\Shared\Domain\Model\AbstractStringValueObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractIntegerValueObjectTest extends TestCase

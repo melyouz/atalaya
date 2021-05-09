@@ -31,6 +31,12 @@ class ConfirmUserCommandHandlerTest extends TestCase
     private ConfirmUserCommand $command;
     private ConfirmUserCommandHandler $handler;
 
+    public function testConfirmUser()
+    {
+        $this->handler->__invoke($this->command);
+        $this->assertTrue($this->user->isConfirmed());
+    }
+
     protected function setUp(): void
     {
         $id = '3c9ec32a-9c3a-4be1-b64d-0a0bb6ddf28f';
@@ -49,11 +55,5 @@ class ConfirmUserCommandHandlerTest extends TestCase
             ->willReturn($this->user);
 
         $this->handler = new ConfirmUserCommandHandler($repoMock);
-    }
-
-    public function testConfirmUser()
-    {
-        $this->handler->__invoke($this->command);
-        $this->assertTrue($this->user->isConfirmed());
     }
 }

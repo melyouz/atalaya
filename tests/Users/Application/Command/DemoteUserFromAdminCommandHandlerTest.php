@@ -16,7 +16,6 @@ namespace Tests\Users\Application\Command;
 
 use App\Users\Application\Command\DemoteUserFromAdminCommand;
 use App\Users\Application\Command\DemoteUserFromAdminCommandHandler;
-use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
@@ -32,6 +31,19 @@ class DemoteUserFromAdminCommandHandlerTest extends TestCase
     private User $user;
     private DemoteUserFromAdminCommand $command;
     private DemoteUserFromAdminCommandHandler $handler;
+
+    public function testDemoteUser()
+    {
+        $this->user->promoteToAdmin();
+        $this->handler->__invoke($this->command);
+        $this->assertFalse($this->user->isAdmin());
+    }
+
+    public function testUserCannotBeDemotedTwice()
+    {
+        $this->expectException(UserRoleNotAssignedException::class);
+        $this->handler->__invoke($this->command);
+    }
 
     protected function setUp(): void
     {
@@ -50,18 +62,5 @@ class DemoteUserFromAdminCommandHandlerTest extends TestCase
             ->willReturn($this->user);
 
         $this->handler = new DemoteUserFromAdminCommandHandler($repoMock);
-    }
-
-    public function testDemoteUser()
-    {
-        $this->user->promoteToAdmin();
-        $this->handler->__invoke($this->command);
-        $this->assertFalse($this->user->isAdmin());
-    }
-
-    public function testUserCannotBeDemotedTwice()
-    {
-        $this->expectException(UserRoleNotAssignedException::class);
-        $this->handler->__invoke($this->command);
     }
 }

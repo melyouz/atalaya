@@ -23,11 +23,6 @@ class TokenGeneratorTest extends TestCase
      */
     private TokenGenerator $tokenGenerator;
 
-    protected function setUp(): void
-    {
-        $this->tokenGenerator = new TokenGenerator();
-    }
-
     public function testRandomToken()
     {
         $a = $this->tokenGenerator->randomToken(64);
@@ -44,5 +39,10 @@ class TokenGeneratorTest extends TestCase
         $this->assertEquals(32, strlen($a));
         $this->assertEquals(32, strlen($b));
         $this->assertNotEquals($a, $b);
+    }
+
+    protected function setUp(): void
+    {
+        $this->tokenGenerator = new TokenGenerator();
     }
 }
