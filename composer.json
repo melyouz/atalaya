@@ -15,6 +15,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "beberlei/assert": "^3.2",
+        "jdorn/sql-formatter": "^1.2",
         "lcobucci/jwt": "^3.3",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/console": "*",
