@@ -12,9 +12,9 @@
 
 namespace App\Users\Application\Command;
 
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\Hasher\UserPasswordHasherInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class EditUserCommandHandler implements CommandHandlerInterface
@@ -25,14 +25,14 @@ class EditUserCommandHandler implements CommandHandlerInterface
     private UserRepositoryInterface $userRepo;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
-    public function __construct(UserRepositoryInterface $userRepo, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function __construct(UserRepositoryInterface $userRepo, UserPasswordHasherInterface $userPasswordHasher)
     {
         $this->userRepo = $userRepo;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
     }
 
     public function __invoke(EditUserCommand $command): void
@@ -48,9 +48,9 @@ class EditUserCommandHandler implements CommandHandlerInterface
         }
 
         if ($command->getPlainPassword()) {
-            $encodedPassword = UserEncodedPassword::fromString($this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword()));
+            $encodedPassword = UserHashedPassword::fromString($this->userPasswordHasher->hashPassword($user, $command->getPlainPassword()));
 
-            if (!$user->getPassword()->sameValueAs($encodedPassword)) {
+            if ($user->getPassword() != $encodedPassword) {
                 $user->changePassword($encodedPassword);
             }
         }

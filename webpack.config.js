@@ -33,9 +33,6 @@ Encore
     })
     .enableSassLoader(options => {
         options.implementation = require('sass')
-        options.sassOptions = {
-            fiber: require('fibers'),
-        }
     })
     .enableIntegrityHashes(Encore.isProduction())
     .enableVueLoader()

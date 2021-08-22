@@ -14,45 +14,43 @@ declare(strict_types=1);
 
 namespace App\Security\Infrastructure\Authenticator;
 
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
 use App\Security\Application\JwtGeneratorInterface;
 use App\Users\Domain\Model\User;
-use App\Users\Domain\Model\User\UserPlainPassword;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
+class SymfonyUsernamePasswordAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     const ROUTE_JWT_TOKEN = 'app_security_jwt_token';
     const PARAM_USERNAME = 'username';
     const PARAM_PASSWORD = 'password';
 
-    /**
-     * @var UserProviderInterface
-     */
+    private JwtGeneratorInterface $jwtGenerator;
     private UserProviderInterface $userProvider;
 
-    /**
-     * @var UserPasswordEncoderInterface
-     */
-    private UserPasswordEncoderInterface $userPasswordEncoder;
-
-    /**
-     * @var JwtGeneratorInterface
-     */
-    private JwtGeneratorInterface $jwtGenerator;
-
-    public function __construct(UserProviderInterface $userProvider, UserPasswordEncoderInterface $userPasswordEncoder, JwtGeneratorInterface $jwtGenerator)
+    public function __construct(UserProviderInterface $userProvider, JwtGeneratorInterface $jwtGenerator)
     {
-        $this->userProvider = $userProvider;
-        $this->userPasswordEncoder = $userPasswordEncoder;
         $this->jwtGenerator = $jwtGenerator;
+        $this->userProvider = $userProvider;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function supports(Request $request): ?bool
+    {
+        return $request->get('_route') === self::ROUTE_JWT_TOKEN && $request->getMethod() === Request::METHOD_POST;
     }
 
     /**
@@ -63,66 +61,29 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
         return new Response('Login required.', Response::HTTP_UNAUTHORIZED);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function supports(Request $request)
+    public function authenticate(Request $request): PassportInterface
     {
-        return $request->get('_route') === self::ROUTE_JWT_TOKEN && $request->getMethod() === Request::METHOD_POST;
-    }
+        $username = $request->request->get(self::PARAM_USERNAME, null);
+        $password = $request->request->get(self::PARAM_PASSWORD, null);
 
-    /**
-     * @inheritDoc
-     */
-    public function getCredentials(Request $request)
-    {
-        return [
-            self::PARAM_USERNAME => $request->request->get(self::PARAM_USERNAME, null),
-            self::PARAM_PASSWORD => $request->request->get(self::PARAM_PASSWORD, null),
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        $username = $credentials[self::PARAM_USERNAME];
-        $password = $credentials[self::PARAM_PASSWORD];
-
-        if (empty($username) || empty($password)) {
-            return;
+        if (!$user = $this->userProvider->loadUserByIdentifier($username)) {
+            throw new UnauthorizedHttpException('Bearer');
         }
-
-        return $this->userProvider->loadUserByUsername($username);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        $password = $credentials[self::PARAM_PASSWORD];
 
         $isUserConfirmed = $user->isConfirmed();
         $isUserActive = !$user->isDisabled();
-        $isPasswordValid = $this->userPasswordEncoder->isPasswordValid($user, UserPlainPassword::fromString($password));
 
-        return $isUserConfirmed && $isUserActive && $isPasswordValid;
+        if (!$isUserConfirmed || !$isUserActive) {
+            throw new UnauthorizedHttpException('Bearer');
+        }
+
+        return new Passport(new UserBadge($username), new PasswordCredentials($password));
     }
 
     /**
      * @inheritDoc
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        return new Response('', Response::HTTP_UNAUTHORIZED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         /** @var User $user */
         $user = $token->getUser();
@@ -133,8 +94,8 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function supportsRememberMe()
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return false;
+        return new Response('', Response::HTTP_UNAUTHORIZED);
     }
 }

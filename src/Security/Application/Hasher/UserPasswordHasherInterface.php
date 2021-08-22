@@ -12,12 +12,12 @@
 
 declare(strict_types=1);
 
-namespace App\Security\Application\Encoder;
+namespace App\Security\Application\Hasher;
 
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserPlainPassword;
 
-interface UserPasswordEncoderInterface
+interface UserPasswordHasherInterface
 {
     /**
      * @param User $user
@@ -25,7 +25,7 @@ interface UserPasswordEncoderInterface
      *
      * @return string
      */
-    public function encodePassword(User $user, UserPlainPassword $plainPassword): string;
+    public function hashPassword(User $user, UserPlainPassword $plainPassword): string;
 
     /**
      * @param User $user

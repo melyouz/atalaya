@@ -67,8 +67,8 @@ class AbstractControllerTest extends TestCase
         $uuid1 = $controller->uuid();
         $uuid2 = $controller->uuid();
 
-        $this->assertRegExp($uuidRegex, $uuid1);
-        $this->assertRegExp($uuidRegex, $uuid2);
+        $this->assertMatchesRegularExpression($uuidRegex, $uuid1);
+        $this->assertMatchesRegularExpression($uuidRegex, $uuid2);
         $this->assertNotEquals($uuid1, $uuid2);
     }
 

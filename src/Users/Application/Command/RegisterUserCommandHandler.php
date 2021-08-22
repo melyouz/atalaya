@@ -12,13 +12,13 @@
 
 namespace App\Users\Application\Command;
 
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\Hasher\UserPasswordHasherInterface;
 use App\Shared\Application\Command\CommandHandlerInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class RegisterUserCommandHandler implements CommandHandlerInterface
@@ -29,19 +29,19 @@ class RegisterUserCommandHandler implements CommandHandlerInterface
     private UserRepositoryInterface $userRepo;
 
     /**
-     * @var UserPasswordEncoderInterface
+     * @var UserPasswordHasherInterface
      */
-    private UserPasswordEncoderInterface $userPasswordEncoder;
+    private UserPasswordHasherInterface $userPasswordHasher;
 
     /**
      * @var TokenGenerator
      */
     private TokenGenerator $tokenGenerator;
 
-    public function __construct(UserRepositoryInterface $userRepo, UserPasswordEncoderInterface $userPasswordEncoder, TokenGenerator $tokenGenerator)
+    public function __construct(UserRepositoryInterface $userRepo, UserPasswordHasherInterface $userPasswordHasher, TokenGenerator $tokenGenerator)
     {
         $this->userRepo = $userRepo;
-        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->userPasswordHasher = $userPasswordHasher;
         $this->tokenGenerator = $tokenGenerator;
     }
 
@@ -53,8 +53,8 @@ class RegisterUserCommandHandler implements CommandHandlerInterface
 
         $confirmationToken = UserConfirmationToken::fromString($this->tokenGenerator->randomToken());
         $user = new User($command->getId(), $command->getName(), $command->getEmail(), $confirmationToken);
-        $encodedPassword = $this->userPasswordEncoder->encodePassword($user, $command->getPlainPassword());
-        $user->setPassword(UserEncodedPassword::fromString($encodedPassword));
+        $encodedPassword = $this->userPasswordHasher->hashPassword($user, $command->getPlainPassword());
+        $user->setPassword(UserHashedPassword::fromString($encodedPassword));
 
         $this->userRepo->save($user);
     }

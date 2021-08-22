@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace Tests\Users\Application\Command;
 
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\Hasher\UserPasswordHasherInterface;
 use App\Users\Application\Command\EditUserCommand;
 use App\Users\Application\Command\EditUserCommandHandler;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use App\Users\Domain\Repository\UserRepositoryInterface;
@@ -40,16 +40,16 @@ class EditUserCommandHandlerTest extends TestCase
         $newEncodedPassword = '-_-WhateverEncodedPassword-_-';
 
         $user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
-        $user->setPassword(UserEncodedPassword::fromString($encodedPassword));
+        $user->setPassword(UserHashedPassword::fromString($encodedPassword));
 
         $newUser = new User(UserId::fromString($id), UserName::fromString($newName), UserEmail::fromString($newEmail), UserConfirmationToken::fromString('someRandomToken'));
-        $newUser->setPassword(UserEncodedPassword::fromString($newEncodedPassword));
+        $newUser->setPassword(UserHashedPassword::fromString($newEncodedPassword));
 
         $command = new EditUserCommand($id, $newName, $newEmail, $newPlainPassword);
 
-        $userPasswordEncoderMock = $this->createMock(UserPasswordEncoderInterface::class);
+        $userPasswordEncoderMock = $this->createMock(UserPasswordHasherInterface::class);
         $userPasswordEncoderMock->expects($this->once())
-            ->method('encodePassword')
+            ->method('hashPassword')
             ->with($user, $newPlainPassword)
             ->willReturn($newEncodedPassword);
 

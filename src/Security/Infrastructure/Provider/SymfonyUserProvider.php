@@ -39,7 +39,15 @@ class SymfonyUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername(string $username)
     {
-        return $this->userRepo->getByEmail(UserEmail::fromString($username));
+        return $this->loadUserByIdentifier($username);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function loadUserByIdentifier(string $identifier)
+    {
+        return $this->userRepo->getByEmail(UserEmail::fromString($identifier));
     }
 
     /**

@@ -6,7 +6,6 @@
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "core-js": "^3.0.0",
         "deepmerge": "^4.2.2",
-        "fibers": "^4.0.2",
         "file-loader": "^6.2.0",
         "lodash": "^4.17.21",
         "moment": "^2.24.0",

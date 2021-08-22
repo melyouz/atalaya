@@ -36,7 +36,10 @@
     "require-dev": {
         "dg/bypass-finals": "^1.1",
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "symfony/phpunit-bridge": "^5.0"
+        "phpunit/phpunit": "^9.5",
+        "symfony/phpunit-bridge": "*",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/test-pack": "^1.0"
     },
     "config": {
         "preferred-install": {
@@ -81,7 +84,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.2.*"
+            "require": "5.3.*"
         }
     }
 }

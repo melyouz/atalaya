@@ -1,9 +1,10 @@
 security:
+    enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         app_user_provider:
             id: App\Security\Infrastructure\Provider\SymfonyUserProvider
-    encoders:
+    password_hashers:
         App\Users\Domain\Model\User:
             algorithm: auto
     firewalls:
@@ -11,16 +12,14 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
-                    - App\Security\Infrastructure\Authenticator\SymfonyJwtAuthenticator
-                entry_point: App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
+            custom_authenticators:
+                - App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
+                - App\Security\Infrastructure\Authenticator\SymfonyJwtAuthenticator
+            entry_point: App\Security\Infrastructure\Authenticator\SymfonyUsernamePasswordAuthenticator
         api:
-            anonymous: lazy
+            lazy: true
             stateless: true
             pattern: ^/api
 
@@ -33,7 +32,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/users$, methods: [POST], roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/.*/confirm$, methods: [PATCH], roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/jwt/token$, methods: [POST], roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users$, methods: [POST], roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/.*/confirm$, methods: [PATCH], roles: PUBLIC_ACCESS }
+        - { path: ^/api/jwt/token$, methods: [POST], roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: ROLE_USER }

@@ -15,24 +15,26 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure\Authenticator;
 
 use App\Security\Application\JwtValidatorInterface;
-use App\Users\Domain\Exception\UserNotFoundException;
+use App\Security\Infrastructure\Provider\SymfonyUserProvider;
 use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Token;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
+class SymfonyJwtAuthenticator extends AbstractAuthenticator
 {
     const HEADER_AUTHORIZATION = 'Authorization';
     const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
 
     /**
-     * @var UserProviderInterface
+     * @var UserProviderInterface|SymfonyUserProvider
      */
     private UserProviderInterface $userProvider;
 
@@ -50,15 +52,7 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        return new Response('Login required.', Response::HTTP_UNAUTHORIZED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function supports(Request $request)
+    public function supports(Request $request): ?bool
     {
         $headers = $request->headers;
         $authorizationHeader = $headers->get(self::HEADER_AUTHORIZATION);
@@ -69,70 +63,40 @@ class SymfonyJwtAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): PassportInterface
     {
         $token = $request->headers->get(self::HEADER_AUTHORIZATION);
         $token = (new Parser())->parse(str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $token));
+        $userId = $token->claims()->get('sub', '');
 
-        return [
-            'token' => $token,
-        ];
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        /** @var Token $token */
-        $token = $credentials['token'];
-
-        if (!$userId = $token->getClaim('sub', '')) {
-            return null;
+        if (!$userId || !$user = $this->userProvider->loadUserById($userId)) {
+            throw new UnauthorizedHttpException('Bearer');
         }
-
-        try {
-            return $this->userProvider->loadUserById($userId);
-        } catch (UserNotFoundException $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function checkCredentials($credentials, UserInterface $user)
-    {
-        /** @var Token $token */
-        $token = $credentials['token'];
 
         $isTokenValid = $this->jwtValidator->fromToken($token);
         $isUserActive = !$user->isDisabled();
 
-        return $isUserActive && $isTokenValid;
+        if (!$isTokenValid || !$isUserActive) {
+            throw new UnauthorizedHttpException('Bearer');
+        }
+
+        return new SelfValidatingPassport(new UserBadge($user->getUserIdentifier()));
     }
 
     /**
      * @inheritDoc
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
-    {
-        return new Response('', Response::HTTP_UNAUTHORIZED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): ?Response
     {
         return null;
     }
 
+
     /**
      * @inheritDoc
      */
-    public function supportsRememberMe()
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return false;
+        return new Response('', Response::HTTP_UNAUTHORIZED);
     }
 }

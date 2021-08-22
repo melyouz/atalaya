@@ -17,7 +17,7 @@ namespace App\Users\Domain\Model\User;
 use App\Shared\Domain\Model\AbstractStringValueObject;
 use Assert\Assertion;
 
-class UserEncodedPassword extends AbstractStringValueObject
+class UserHashedPassword extends AbstractStringValueObject
 {
     public static function fromString(string $value): self
     {

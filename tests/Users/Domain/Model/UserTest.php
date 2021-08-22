@@ -20,7 +20,7 @@ use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use PHPUnit\Framework\TestCase;
@@ -52,16 +52,20 @@ class UserTest extends TestCase
         $this->assertEquals('johndoe@awesome-project.dev', $this->user->getUsername());
     }
 
+    public function testHasAuthIdentifier(): void
+    {
+        $this->assertEquals('johndoe@awesome-project.dev', $this->user->getUserIdentifier());
+    }
+
     public function testHasPassword(): void
     {
-        $this->assertInstanceOf(UserEncodedPassword::class, $this->user->getPassword());
-        $this->assertEquals('WhateverEncodedPassword', $this->user->getPassword()->value());
+        $this->assertEquals('WhateverEncodedPassword', $this->user->getPassword());
     }
 
     public function testPasswordCannotBeSetTwice(): void
     {
         $this->expectException(UserPasswordAlreadySetException::class);
-        $this->user->setPassword(UserEncodedPassword::fromString('TestPassword'));
+        $this->user->setPassword(UserHashedPassword::fromString('TestPassword'));
     }
 
     public function testHasDefaultRole(): void
@@ -128,7 +132,7 @@ class UserTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $password = 'WhateverEncodedPassword';
         $other = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
-        $other->setPassword(UserEncodedPassword::fromString($password));
+        $other->setPassword(UserHashedPassword::fromString($password));
 
         $this->assertFalse($this->user->isSame($other->getId()));
     }
@@ -146,6 +150,6 @@ class UserTest extends TestCase
         $email = 'johndoe@awesome-project.dev';
         $password = 'WhateverEncodedPassword';
         $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
-        $this->user->setPassword(UserEncodedPassword::fromString($password));
+        $this->user->setPassword(UserHashedPassword::fromString($password));
     }
 }

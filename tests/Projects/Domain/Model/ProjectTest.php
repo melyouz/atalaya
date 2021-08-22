@@ -19,6 +19,7 @@ use App\Projects\Domain\Model\Project\ProjectPlatform;
 use App\Projects\Domain\Model\Project\ProjectToken;
 use App\Projects\Domain\Model\Project\ProjectUrl;
 use App\Users\Domain\Model\User\UserId;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class ProjectTest extends TestCase
@@ -56,7 +57,7 @@ class ProjectTest extends TestCase
 
     public function testProjectHasCreatedAt(): void
     {
-        $this->assertInstanceOf(\DateTimeImmutable::class, $this->project->getCreatedAt());
+        $this->assertInstanceOf(DateTimeImmutable::class, $this->project->getCreatedAt());
     }
 
     protected function setUp(): void

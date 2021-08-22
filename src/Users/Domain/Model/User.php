@@ -21,18 +21,19 @@ use App\Users\Domain\Exception\UserRoleAlreadyAssignedException;
 use App\Users\Domain\Exception\UserRoleNotAssignedException;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
  * @ORM\Table("app_user")
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -118,9 +119,9 @@ class User implements UserInterface
     }
 
     /**
-     * @param UserEncodedPassword $password
+     * @param UserHashedPassword $password
      */
-    public function changePassword(UserEncodedPassword $password): void
+    public function changePassword(UserHashedPassword $password): void
     {
         $this->password = $password->value();
     }
@@ -224,19 +225,16 @@ class User implements UserInterface
         return UserName::fromString($this->name);
     }
 
-    /**
-     * @return UserEncodedPassword
-     */
-    public function getPassword(): UserEncodedPassword
+    public function getPassword(): ?string
     {
-        return UserEncodedPassword::fromString($this->password);
+        return $this->password;
     }
 
     /**
-     * @param UserEncodedPassword $password
+     * @param UserHashedPassword $password
      * @throws UserPasswordAlreadySetException
      */
-    public function setPassword(UserEncodedPassword $password): void
+    public function setPassword(UserHashedPassword $password): void
     {
         if (!empty($this->password)) {
             throw new UserPasswordAlreadySetException(sprintf('User password already set. Use User::changePassword() to change it.'));
@@ -272,6 +270,14 @@ class User implements UserInterface
      * @inheritDoc
      */
     public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUserIdentifier(): string
     {
         return $this->getEmail()->value();
     }

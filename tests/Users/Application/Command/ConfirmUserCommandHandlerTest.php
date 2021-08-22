@@ -19,7 +19,7 @@ use App\Users\Application\Command\ConfirmUserCommandHandler;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use App\Users\Domain\Repository\UserRepositoryInterface;
@@ -46,7 +46,7 @@ class ConfirmUserCommandHandlerTest extends TestCase
         $token = 'someRandomToken';
 
         $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString($token));
-        $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
+        $this->user->setPassword(UserHashedPassword::fromString($encodedPassword));
         $this->command = new ConfirmUserCommand($token);
         $repoMock = $this->createMock(UserRepositoryInterface::class);
         $repoMock->expects($this->once())

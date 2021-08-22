@@ -43,13 +43,14 @@ class InputParamConverterTest extends TestCase
         $validatorMock = $this->createMock(ValidatorInterface::class);
         $actionMock = $this->createMock(InputDtoInterface::class);
 
-        $validatorMock->expects($this->at(0))
-            ->method('validate')
-            ->willReturn([]);
+        $validatorResults = [
+            [],
+            [new ConstraintViolation('Awesome descriptive message', '', [], 'original value', 'name', 'original value')],
+        ];
 
-        $validatorMock->expects($this->at(1))
+        $validatorMock->expects($this->any())
             ->method('validate')
-            ->willReturn([new ConstraintViolation('Awesome descriptive message', '', [], 'original value', 'name', 'original value')]);
+            ->willReturnOnConsecutiveCalls(...$validatorResults);
 
         $paramConverter = new InputParamConverter($serializerMock, $validatorMock);
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Tests\Users\Application\Command;
 
-use App\Security\Application\Encoder\UserPasswordEncoderInterface;
+use App\Security\Application\Hasher\UserPasswordHasherInterface;
 use App\Shared\Application\Util\TokenGenerator;
 use App\Users\Application\Command\RegisterUserCommand;
 use App\Users\Application\Command\RegisterUserCommandHandler;
@@ -22,7 +22,7 @@ use App\Users\Domain\Exception\EmailTakenException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use App\Users\Domain\Repository\UserRepositoryInterface;
@@ -41,14 +41,14 @@ class RegisterUserCommandHandlerTest extends TestCase
 
         $command = new RegisterUserCommand($id, $name, $email, $plainPassword);
 
-        $userPasswordEncoderMock = $this->createMock(UserPasswordEncoderInterface::class);
+        $userPasswordEncoderMock = $this->createMock(UserPasswordHasherInterface::class);
         $userPasswordEncoderMock->expects($this->once())
-            ->method('encodePassword')
+            ->method('hashPassword')
             ->with($userWithoutPassword, $plainPassword)
             ->willReturn($encodedPassword);
 
         $userWithPassword = clone $userWithoutPassword;
-        $userWithPassword->setPassword(UserEncodedPassword::fromString($encodedPassword));
+        $userWithPassword->setPassword(UserHashedPassword::fromString($encodedPassword));
         $repoMock = $this->createMock(UserRepositoryInterface::class);
         $repoMock->expects($this->once())
             ->method('save')
@@ -87,7 +87,7 @@ class RegisterUserCommandHandlerTest extends TestCase
             ->with(UserEmail::fromString($email))
             ->willReturn(true);
 
-        $userPasswordEncoderMock = $this->createMock(UserPasswordEncoderInterface::class);
+        $userPasswordEncoderMock = $this->createMock(UserPasswordHasherInterface::class);
         $tokenGeneratorMock = $this->createMock(TokenGenerator::class);
 
         $handler = new RegisterUserCommandHandler($repoMock, $userPasswordEncoderMock, $tokenGeneratorMock);

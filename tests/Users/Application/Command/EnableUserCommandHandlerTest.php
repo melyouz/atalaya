@@ -20,7 +20,7 @@ use App\Users\Domain\Exception\UserNotDisabledYetException;
 use App\Users\Domain\Model\User;
 use App\Users\Domain\Model\User\UserConfirmationToken;
 use App\Users\Domain\Model\User\UserEmail;
-use App\Users\Domain\Model\User\UserEncodedPassword;
+use App\Users\Domain\Model\User\UserHashedPassword;
 use App\Users\Domain\Model\User\UserId;
 use App\Users\Domain\Model\User\UserName;
 use App\Users\Domain\Repository\UserRepositoryInterface;
@@ -53,7 +53,7 @@ class EnableUserCommandHandlerTest extends TestCase
         $encodedPassword = 'WhateverEncodedPassword';
 
         $this->user = new User(UserId::fromString($id), UserName::fromString($name), UserEmail::fromString($email), UserConfirmationToken::fromString('someRandomToken'));
-        $this->user->setPassword(UserEncodedPassword::fromString($encodedPassword));
+        $this->user->setPassword(UserHashedPassword::fromString($encodedPassword));
         $this->command = new EnableUserCommand($id);
         $repoMock = $this->createMock(UserRepositoryInterface::class);
         $repoMock->expects($this->once())

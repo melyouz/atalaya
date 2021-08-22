@@ -35,6 +35,7 @@ use App\Issues\Domain\Model\Issue\Request\RequestMethod;
 use App\Issues\Domain\Model\Issue\Request\RequestUrl;
 use App\Issues\Domain\Model\Issue\Tag\TagName;
 use App\Projects\Domain\Model\Project\ProjectId;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class IssueTest extends TestCase
@@ -85,7 +86,7 @@ class IssueTest extends TestCase
 
     public function testHasSeenAt(): void
     {
-        $this->assertInstanceOf(\DateTimeImmutable::class, $this->issue->getSeenAt());
+        $this->assertInstanceOf(DateTimeImmutable::class, $this->issue->getSeenAt());
     }
 
     public function testCannotOpenNonDraftIssue(): void
