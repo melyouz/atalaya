@@ -20,7 +20,6 @@ class UuidTest extends TestCase
 {
     /**
      * @dataProvider nonUuidProvider
-     * @param string $fakeUuid
      */
     public function testNonUuidProjectIdShouldFail(string $fakeUuid): void
     {
@@ -30,7 +29,6 @@ class UuidTest extends TestCase
 
     /**
      * @dataProvider uuidProvider
-     * @param string $uuid
      */
     public function testUuidProjectIdShouldPass(string $uuid): void
     {

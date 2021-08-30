@@ -23,19 +23,10 @@ use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class RegisterUserCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
     private UserRepositoryInterface $userRepo;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     private UserPasswordHasherInterface $userPasswordHasher;
 
-    /**
-     * @var TokenGenerator
-     */
     private TokenGenerator $tokenGenerator;
 
     public function __construct(UserRepositoryInterface $userRepo, UserPasswordHasherInterface $userPasswordHasher, TokenGenerator $tokenGenerator)

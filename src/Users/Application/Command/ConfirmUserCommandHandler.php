@@ -17,9 +17,6 @@ use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class ConfirmUserCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
     private UserRepositoryInterface $userRepo;
 
     public function __construct(UserRepositoryInterface $userRepo)

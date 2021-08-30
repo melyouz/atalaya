@@ -21,10 +21,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface as Symfo
 
 class SymfonyUserPasswordHasher implements UserPasswordHasherInterface
 {
-
-    /**
-     * @var SymfonyUserPasswordHasherInterface
-     */
     private SymfonyUserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(SymfonyUserPasswordHasherInterface $userPasswordHasher)

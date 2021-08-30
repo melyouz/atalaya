@@ -54,7 +54,7 @@ class DoctrineIssueRepository implements IssueRepositoryInterface
     {
         return $this->repo->findBy([
             'projectId' => $projectId->value(),
-            'status' => [IssueStatus::OPEN, IssueStatus::RESOLVED]
+            'status' => [IssueStatus::OPEN, IssueStatus::RESOLVED],
         ], [
             'pinned' => 'desc',
             'seenAt' => 'desc',

@@ -20,7 +20,6 @@ class ProjectNameTest extends TestCase
 {
     /**
      * @dataProvider validNamesProvider
-     * @param string $name
      */
     public function testNameUpTo80CharsShouldPass(string $name): void
     {
@@ -30,7 +29,6 @@ class ProjectNameTest extends TestCase
 
     /**
      * @dataProvider invalidNamesProvider
-     * @param string $invalidName
      */
     public function testNameOver80CharsShouldFail(string $invalidName): void
     {

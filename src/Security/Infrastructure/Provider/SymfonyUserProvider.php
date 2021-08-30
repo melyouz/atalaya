@@ -24,9 +24,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class SymfonyUserProvider implements UserProviderInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
     private UserRepositoryInterface $userRepo;
 
     public function __construct(UserRepositoryInterface $userRepo)
@@ -51,8 +48,8 @@ class SymfonyUserProvider implements UserProviderInterface
     }
 
     /**
-     * @param string $id
      * @return User
+     *
      * @throws UserNotFoundException
      */
     public function loadUserById(string $id)

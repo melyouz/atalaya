@@ -12,7 +12,6 @@
 
 namespace Tests\Shared\Domain\Model;
 
-
 use App\Shared\Domain\Model\AbstractIntegerValueObject;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +24,7 @@ class AbstractIntegerValueObjectTest extends TestCase
             ->method('value')
             ->willReturn(1337);
 
-        $this->assertEquals('1337', (string)$valueObjectMock);
+        $this->assertEquals('1337', (string) $valueObjectMock);
     }
 
     public function testSameValueAs(): void

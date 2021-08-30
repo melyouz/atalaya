@@ -31,58 +31,52 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Project
 {
-    const VIEW = 'view';
-    const LIST_ISSUES = 'list_issues';
-    const EDIT = 'edit';
-    const ARCHIVE = 'archive';
-    const UNARCHIVE = 'unarchive';
+    public const VIEW = 'view';
+    public const LIST_ISSUES = 'list_issues';
+    public const EDIT = 'edit';
+    public const ARCHIVE = 'archive';
+    public const UNARCHIVE = 'unarchive';
 
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $id;
 
     /**
      * @ORM\Column(type="string", length=80)
-     * @var string
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=80)
-     * @var string
      */
     private string $url;
 
     /**
      * @ORM\Column(type="string", length=32)
-     * @var string
      */
     private string $token;
 
     /**
      * @ORM\Column(type="string", length=30)
-     * @var string
      */
     private string $platform;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     *
      * @var DateTimeImmutable
      */
     private ?DateTimeImmutable $archivedAt = null;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
      */
     private DateTimeImmutable $createdAt;
 
     /**
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $userId;
 

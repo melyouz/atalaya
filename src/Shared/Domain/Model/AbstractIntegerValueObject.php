@@ -25,7 +25,7 @@ abstract class AbstractIntegerValueObject implements ValueObjectInterface, JsonS
         $this->value = $value;
     }
 
-    public abstract static function fromInteger(int $value): self;
+    abstract public static function fromInteger(int $value): self;
 
     public function sameValueAs(ValueObjectInterface $other): bool
     {
@@ -44,6 +44,6 @@ abstract class AbstractIntegerValueObject implements ValueObjectInterface, JsonS
 
     public function __toString(): string
     {
-        return (string)$this->value();
+        return (string) $this->value();
     }
 }

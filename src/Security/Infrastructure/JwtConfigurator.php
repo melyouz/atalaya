@@ -35,8 +35,8 @@ class JwtConfigurator implements JwtConfiguratorInterface
 
     public function __construct(ParameterBagInterface $parameterBag)
     {
-        $privateKeyPath = (string)$parameterBag->get('app_jwt_private_key');
-        $publicKeyPath = (string)$parameterBag->get('app_jwt_public_key');
+        $privateKeyPath = (string) $parameterBag->get('app_jwt_private_key');
+        $publicKeyPath = (string) $parameterBag->get('app_jwt_public_key');
 
         $signer = new Sha256();
         $privateKey = InMemory::file($privateKeyPath);

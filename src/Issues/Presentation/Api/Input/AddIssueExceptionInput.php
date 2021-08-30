@@ -22,21 +22,18 @@ class AddIssueExceptionInput implements InputDtoInterface
 {
     /**
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $code;
 
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $class;
 
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $message;
 

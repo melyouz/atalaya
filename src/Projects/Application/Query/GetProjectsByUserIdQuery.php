@@ -19,9 +19,6 @@ use App\Users\Domain\Model\User\UserId;
 
 class GetProjectsByUserIdQuery implements QueryInterface
 {
-    /**
-     * @var UserId
-     */
     private UserId $userId;
 
     public function __construct(string $userId)
@@ -29,9 +26,6 @@ class GetProjectsByUserIdQuery implements QueryInterface
         $this->userId = UserId::fromString($userId);
     }
 
-    /**
-     * @return UserId
-     */
     public function getUserId(): UserId
     {
         return $this->userId;

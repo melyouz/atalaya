@@ -22,20 +22,11 @@ use App\Projects\Domain\Model\Project\ProjectId;
 interface IssueRepositoryInterface
 {
     /**
-     * @param IssueId $id
-     * @return Issue
      * @throws IssueNotFoundException
      */
     public function get(IssueId $id): Issue;
 
-    /**
-     * @param ProjectId $projectId
-     * @return array
-     */
     public function findAllByProjectId(ProjectId $projectId): array;
 
-    /**
-     * @param Issue $issue
-     */
     public function save(Issue $issue): void;
 }

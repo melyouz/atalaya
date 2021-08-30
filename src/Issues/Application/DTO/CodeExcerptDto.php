@@ -12,12 +12,8 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class CodeExcerptDto
 {
-    /**
-     * @var string
-     */
     public string $lang;
 
     /**

@@ -19,7 +19,7 @@ use Assert\Assertion;
 
 class RequestMethod extends AbstractStringValueObject
 {
-    const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
+    public const AVAILABLE_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'];
 
     public static function fromString(string $value): self
     {

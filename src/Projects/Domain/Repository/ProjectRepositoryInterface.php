@@ -23,27 +23,13 @@ use App\Users\Domain\Model\User\UserId;
 interface ProjectRepositoryInterface
 {
     /**
-     * @param ProjectId $id
-     * @return Project
      * @throws ProjectNotFoundException
      */
     public function get(ProjectId $id): Project;
 
-    /**
-     * @param UserId $userId
-     * @return array
-     */
     public function findAllByUserId(UserId $userId): array;
 
-    /**
-     * @param ProjectId $id
-     * @param ProjectToken $token
-     * @return bool
-     */
     public function isProjectTokenValidOrThrow(ProjectId $id, ProjectToken $token): bool;
 
-    /**
-     * @param Project $project
-     */
     public function save(Project $project): void;
 }

@@ -12,17 +12,10 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class FileDto
 {
-    /**
-     * @var string
-     */
     public string $path;
 
-    /**
-     * @var int
-     */
     public int $line;
 
     public function __construct(string $path, int $line)

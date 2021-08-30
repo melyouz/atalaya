@@ -18,7 +18,7 @@ use JsonSerializable;
 
 abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSerializable
 {
-    const MAX_LENGTH = 255;
+    public const MAX_LENGTH = 255;
 
     protected string $value;
 
@@ -27,7 +27,7 @@ abstract class AbstractStringValueObject implements ValueObjectInterface, JsonSe
         $this->value = $value;
     }
 
-    public abstract static function fromString(string $value): self;
+    abstract public static function fromString(string $value): self;
 
     public function sameValueAs(ValueObjectInterface $other): bool
     {

@@ -12,32 +12,16 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class IssueDto
 {
-    /**
-     * @var RequestDto
-     */
     public RequestDto $request;
 
-    /**
-     * @var ExceptionDto
-     */
     public ExceptionDto $exception;
 
-    /**
-     * @var FileDto
-     */
     public FileDto $file;
 
-    /**
-     * @var CodeExcerptDto
-     */
     public CodeExcerptDto $codeExcerpt;
 
-    /**
-     * @var array
-     */
     public array $tags = [];
 
     public function __construct(RequestDto $request, ExceptionDto $exception, FileDto $file, CodeExcerptDto $codeExcerpt, array $tags)

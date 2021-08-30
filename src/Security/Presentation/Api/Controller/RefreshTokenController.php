@@ -16,7 +16,6 @@ namespace App\Security\Presentation\Api\Controller;
 
 use App\Security\Application\JwtGeneratorInterface;
 use App\Security\Application\JwtValidatorInterface;
-use App\Security\Presentation\Api\Input\RefreshTokenInput;
 use App\Shared\Presentation\Api\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RefreshTokenController extends AbstractController
 {
-    const HEADER_AUTHORIZATION = 'Authorization';
+    public const HEADER_AUTHORIZATION = 'Authorization';
 
     public function __invoke(Request $request, JwtGeneratorInterface $jwtGenerator, JwtValidatorInterface $jwtValidator)
     {

@@ -31,25 +31,23 @@ class CodeExcerpt
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $id;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var Issue
      */
     private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $lang;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt\CodeExcerptCodeLine", mappedBy="codeExcerpt", cascade={"persist", "remove"})
+     *
      * @var CodeExcerptCodeLine[]|Collection
      */
     private Collection $lines;
@@ -66,17 +64,11 @@ class CodeExcerpt
         }
     }
 
-    /**
-     * @return CodeExcerptId
-     */
     public function getId(): CodeExcerptId
     {
         return CodeExcerptId::fromString($this->id);
     }
 
-    /**
-     * @return CodeExcerptLanguage
-     */
     public function getLang(): CodeExcerptLanguage
     {
         return CodeExcerptLanguage::fromString($this->lang);

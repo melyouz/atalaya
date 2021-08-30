@@ -17,20 +17,14 @@ namespace App\Security\Infrastructure;
 use App\Security\Application\AuthServiceInterface;
 use App\Security\Domain\Exception\UserNotLoggedInException;
 use App\Users\Domain\Model\User;
+use function is_object;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use function is_object;
 
 class SymfonyAuthService implements AuthServiceInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
     private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @var AuthorizationCheckerInterface
-     */
     private AuthorizationCheckerInterface $authorizationChecker;
 
     public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker)

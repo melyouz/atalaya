@@ -17,9 +17,6 @@ use App\Users\Domain\Model\User\UserId;
 
 class DisableUserCommand implements CommandInterface
 {
-    /**
-     * @var UserId
-     */
     private UserId $id;
 
     public function __construct(string $id)
@@ -27,9 +24,6 @@ class DisableUserCommand implements CommandInterface
         $this->id = UserId::fromString($id);
     }
 
-    /**
-     * @return UserId
-     */
     public function getId(): UserId
     {
         return $this->id;

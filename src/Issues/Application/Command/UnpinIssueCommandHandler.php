@@ -17,9 +17,6 @@ use App\Shared\Application\Command\CommandHandlerInterface;
 
 class UnpinIssueCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var IssueRepositoryInterface
-     */
     private IssueRepositoryInterface $issueRepo;
 
     public function __construct(IssueRepositoryInterface $issueRepo)

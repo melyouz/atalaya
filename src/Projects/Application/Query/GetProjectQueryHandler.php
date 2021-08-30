@@ -20,9 +20,6 @@ use App\Shared\Application\Query\QueryHandlerInterface;
 
 class GetProjectQueryHandler implements QueryHandlerInterface
 {
-    /**
-     * @var ProjectRepositoryInterface
-     */
     private ProjectRepositoryInterface $projectRepo;
 
     public function __construct(ProjectRepositoryInterface $projectRepo)

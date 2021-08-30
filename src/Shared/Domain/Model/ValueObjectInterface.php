@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace App\Shared\Domain\Model;
 
-interface  ValueObjectInterface
+interface ValueObjectInterface
 {
     public function sameValueAs(ValueObjectInterface $other): bool;
 

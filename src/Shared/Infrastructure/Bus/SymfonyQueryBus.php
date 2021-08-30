@@ -22,14 +22,10 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 class SymfonyQueryBus implements QueryBusInterface
 {
-    /**
-     * @var MessageBusInterface
-     */
     private MessageBusInterface $queryBus;
 
     /**
      * SymfonyQueryBus constructor.
-     * @param MessageBusInterface $queryBus
      */
     public function __construct(MessageBusInterface $queryBus)
     {
@@ -37,8 +33,8 @@ class SymfonyQueryBus implements QueryBusInterface
     }
 
     /**
-     * @param QueryInterface $query
      * @return mixed
+     *
      * @throws Exception
      */
     public function query(QueryInterface $query)

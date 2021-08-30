@@ -30,13 +30,11 @@ class AddIssueRequestInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Url()
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $url;
 
     /**
      * @Assert\Collection()
-     * @var array
      */
     public array $headers = [];
 

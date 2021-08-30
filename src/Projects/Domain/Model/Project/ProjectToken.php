@@ -19,7 +19,7 @@ use Assert\Assertion;
 
 class ProjectToken extends AbstractStringValueObject
 {
-    const MAX_LENGTH = 32;
+    public const MAX_LENGTH = 32;
 
     public static function fromString(string $value): self
     {

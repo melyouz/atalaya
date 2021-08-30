@@ -19,9 +19,6 @@ use App\Shared\Application\Command\CommandInterface;
 
 class ArchiveProjectCommand implements CommandInterface
 {
-    /**
-     * @var ProjectId
-     */
     private ProjectId $id;
 
     public function __construct(string $id)
@@ -29,9 +26,6 @@ class ArchiveProjectCommand implements CommandInterface
         $this->id = ProjectId::fromString($id);
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getId(): ProjectId
     {
         return $this->id;

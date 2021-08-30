@@ -23,26 +23,14 @@ use App\Users\Domain\Model\User\UserId;
 
 class CreateProjectCommand implements CommandInterface
 {
-    /**
-     * @var ProjectId
-     */
     private ProjectId $id;
-    /**
-     * @var ProjectName
-     */
+
     private ProjectName $name;
-    /**
-     * @var ProjectUrl
-     */
+
     private ProjectUrl $url;
-    /**
-     * @var ProjectPlatform
-     */
+
     private ProjectPlatform $platform;
 
-    /**
-     * @var UserId
-     */
     private UserId $userId;
 
     public function __construct(string $id, string $name, string $url, string $platform, string $userId)
@@ -54,41 +42,26 @@ class CreateProjectCommand implements CommandInterface
         $this->userId = UserId::fromString($userId);
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getId(): ProjectId
     {
         return $this->id;
     }
 
-    /**
-     * @return ProjectName
-     */
     public function getName(): ProjectName
     {
         return $this->name;
     }
 
-    /**
-     * @return ProjectUrl
-     */
     public function getUrl(): ProjectUrl
     {
         return $this->url;
     }
 
-    /**
-     * @return ProjectPlatform
-     */
     public function getPlatform(): ProjectPlatform
     {
         return $this->platform;
     }
 
-    /**
-     * @return UserId
-     */
     public function getUserId(): UserId
     {
         return $this->userId;

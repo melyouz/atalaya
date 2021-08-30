@@ -47,7 +47,6 @@ abstract class AbstractController
     }
 
     /**
-     * @param QueryInterface $query
      * @return mixed
      */
     protected function query(QueryInterface $query)
@@ -67,7 +66,6 @@ abstract class AbstractController
 
     /**
      * @param array|object $data
-     * @return JsonResponse
      */
     protected function toJsonResponse($data): JsonResponse
     {
@@ -77,7 +75,6 @@ abstract class AbstractController
     }
 
     /**
-     * @return User
      * @throws UserNotLoggedInException
      */
     protected function getLoggedInUser(): User
@@ -88,7 +85,6 @@ abstract class AbstractController
     /**
      * @param $attributes
      * @param $subject
-     * @return bool
      */
     protected function isGranted($attributes, $subject): bool
     {

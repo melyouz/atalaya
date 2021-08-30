@@ -12,22 +12,12 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class ExceptionDto
 {
-    /**
-     * @var string
-     */
     public string $code;
 
-    /**
-     * @var string
-     */
     public string $class;
 
-    /**
-     * @var string
-     */
     public string $message;
 
     public function __construct(string $code, string $class, string $message)

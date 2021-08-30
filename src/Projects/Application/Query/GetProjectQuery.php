@@ -19,9 +19,6 @@ use App\Shared\Application\Query\QueryInterface;
 
 class GetProjectQuery implements QueryInterface
 {
-    /**
-     * @var ProjectId
-     */
     private ProjectId $id;
 
     public function __construct(string $id)
@@ -29,9 +26,6 @@ class GetProjectQuery implements QueryInterface
         $this->id = ProjectId::fromString($id);
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getId(): ProjectId
     {
         return $this->id;

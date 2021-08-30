@@ -19,9 +19,6 @@ use App\Shared\Application\Query\QueryInterface;
 
 class GetProjectIssuesQuery implements QueryInterface
 {
-    /**
-     * @var ProjectId
-     */
     private ProjectId $projectId;
 
     public function __construct(string $projectId)
@@ -29,9 +26,6 @@ class GetProjectIssuesQuery implements QueryInterface
         $this->projectId = ProjectId::fromString($projectId);
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getProjectId(): ProjectId
     {
         return $this->projectId;

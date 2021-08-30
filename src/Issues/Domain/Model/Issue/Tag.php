@@ -29,20 +29,17 @@ class Tag
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue", inversedBy="tags")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var Issue
      */
     private Issue $issue;
 
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $value;
 

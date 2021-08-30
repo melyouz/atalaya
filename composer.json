@@ -51,7 +51,8 @@
         "symfony/css-selector": "5.3.*",
         "symfony/phpunit-bridge": "*",
         "symfony/stopwatch": "5.3.*",
-        "symfony/web-profiler-bundle": "5.3.*"
+        "symfony/web-profiler-bundle": "5.3.*",
+        "symplify/easy-coding-standard": "^9.4"
     },
     "config": {
         "preferred-install": {

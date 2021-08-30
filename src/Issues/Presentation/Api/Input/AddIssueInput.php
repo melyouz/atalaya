@@ -24,7 +24,6 @@ class AddIssueInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueRequestInput")
      * @Assert\Valid()
-     * @var AddIssueRequestInput
      */
     public AddIssueRequestInput $request;
 
@@ -32,7 +31,6 @@ class AddIssueInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueExceptionInput")
      * @Assert\Valid()
-     * @var AddIssueExceptionInput
      */
     public AddIssueExceptionInput $exception;
 
@@ -40,7 +38,6 @@ class AddIssueInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueFileInput")
      * @Assert\Valid()
-     * @var AddIssueFileInput
      */
     public AddIssueFileInput $file;
 
@@ -48,13 +45,11 @@ class AddIssueInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueCodeExcerptInput")
      * @Assert\Valid()
-     * @var AddIssueCodeExcerptInput
      */
     public AddIssueCodeExcerptInput $codeExcerpt;
 
     /**
      * @Assert\Collection()
-     * @var array
      */
     public array $tags = [];
 

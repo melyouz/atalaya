@@ -23,7 +23,6 @@ class AddIssueFileInput implements InputDtoInterface
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $path;
 
@@ -31,7 +30,6 @@ class AddIssueFileInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("int")
      * @Assert\Positive()
-     * @var int
      */
     public int $line;
 

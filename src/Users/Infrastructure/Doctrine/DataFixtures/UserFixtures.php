@@ -21,13 +21,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
-    /**
-     * @var CommandBusInterface
-     */
     private CommandBusInterface $commandBus;
-    /**
-     * @var SymfonyUserProvider
-     */
+
     private SymfonyUserProvider $userProvider;
 
     public function __construct(CommandBusInterface $commandBus, SymfonyUserProvider $userProvider)

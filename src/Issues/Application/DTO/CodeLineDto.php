@@ -12,22 +12,12 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class CodeLineDto
 {
-    /**
-     * @var int
-     */
     public int $line;
 
-    /**
-     * @var string
-     */
     public string $content;
 
-    /**
-     * @var bool
-     */
     public bool $selected;
 
     public function __construct(int $line, string $content, bool $selected)

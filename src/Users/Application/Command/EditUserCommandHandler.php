@@ -19,14 +19,8 @@ use App\Users\Domain\Repository\UserRepositoryInterface;
 
 class EditUserCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var UserRepositoryInterface
-     */
     private UserRepositoryInterface $userRepo;
 
-    /**
-     * @var UserPasswordHasherInterface
-     */
     private UserPasswordHasherInterface $userPasswordHasher;
 
     public function __construct(UserRepositoryInterface $userRepo, UserPasswordHasherInterface $userPasswordHasher)

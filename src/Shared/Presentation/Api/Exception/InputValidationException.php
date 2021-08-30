@@ -18,9 +18,6 @@ use Exception;
 
 class InputValidationException extends Exception
 {
-    /**
-     * @var array
-     */
     private array $violations;
 
     public function __construct(array $violations)

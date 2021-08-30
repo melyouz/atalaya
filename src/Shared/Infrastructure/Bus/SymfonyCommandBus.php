@@ -20,9 +20,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class SymfonyCommandBus implements CommandBusInterface
 {
-    /**
-     * @var MessageBusInterface
-     */
     private MessageBusInterface $commandBus;
 
     public function __construct(MessageBusInterface $commandBus)

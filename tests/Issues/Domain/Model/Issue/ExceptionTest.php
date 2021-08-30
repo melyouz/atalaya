@@ -23,9 +23,6 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionTest extends TestCase
 {
-    /**
-     * @var Exception
-     */
     private Exception $exception;
 
     public function testHasCode(): void

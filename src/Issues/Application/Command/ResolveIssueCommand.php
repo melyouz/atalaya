@@ -17,9 +17,6 @@ use App\Shared\Application\Command\CommandInterface;
 
 class ResolveIssueCommand implements CommandInterface
 {
-    /**
-     * @var IssueId
-     */
     private IssueId $id;
 
     public function __construct(string $id)
@@ -27,9 +24,6 @@ class ResolveIssueCommand implements CommandInterface
         $this->id = IssueId::fromString($id);
     }
 
-    /**
-     * @return IssueId
-     */
     public function getId(): IssueId
     {
         return $this->id;

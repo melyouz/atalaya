@@ -17,10 +17,6 @@ use PHPUnit\Framework\TestCase;
 
 class TokenGeneratorTest extends TestCase
 {
-
-    /**
-     * @var TokenGenerator
-     */
     private TokenGenerator $tokenGenerator;
 
     public function testRandomToken()

@@ -20,9 +20,6 @@ use App\Shared\Application\Query\QueryHandlerInterface;
 
 class GetIssueQueryHandler implements QueryHandlerInterface
 {
-    /**
-     * @var IssueRepositoryInterface
-     */
     private IssueRepositoryInterface $issueRepo;
 
     public function __construct(IssueRepositoryInterface $issueRepo)

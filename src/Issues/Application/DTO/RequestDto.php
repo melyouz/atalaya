@@ -12,22 +12,12 @@
 
 namespace App\Issues\Application\DTO;
 
-
 class RequestDto
 {
-    /**
-     * @var string
-     */
     public string $method;
 
-    /**
-     * @var string
-     */
     public string $url;
 
-    /**
-     * @var array
-     */
     public array $headers = [];
 
     public function __construct(string $method, string $url, array $headers)

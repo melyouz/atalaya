@@ -35,64 +35,55 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const ROLE_DEFAULT = 'ROLE_USER';
-    const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_DEFAULT = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    const EDIT = 'edit';
-    const PROMOTE = 'promote';
-    const DEMOTE = 'demote';
-    const DISABLE = 'disable';
-    const ENABLE = 'enable';
+    public const EDIT = 'edit';
+    public const PROMOTE = 'promote';
+    public const DEMOTE = 'demote';
+    public const DISABLE = 'disable';
+    public const ENABLE = 'enable';
 
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-     * @var string
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $password;
 
     /**
      * @ORM\Column(type="array")
-     * @var array
      */
     private array $roles = [self::ROLE_DEFAULT];
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     *
      * @var DateTimeImmutable
      */
     private ?DateTimeImmutable $disabledAt = null;
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @var string|null
      */
     private ?string $confirmationToken;
 
     /**
      * User constructor.
-     * @param UserId $id
-     * @param UserName $name
-     * @param UserEmail $email
-     * @param UserConfirmationToken $confirmationToken
      */
     public function __construct(UserId $id, UserName $name, UserEmail $email, UserConfirmationToken $confirmationToken)
     {
@@ -102,25 +93,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->confirmationToken = $confirmationToken->value();
     }
 
-    /**
-     * @param UserName $name
-     */
     public function changeName(UserName $name): void
     {
         $this->name = $name->value();
     }
 
-    /**
-     * @param UserEmail $email
-     */
     public function changeEmail(UserEmail $email): void
     {
         $this->email = $email->value();
     }
 
-    /**
-     * @param UserHashedPassword $password
-     */
     public function changePassword(UserHashedPassword $password): void
     {
         $this->password = $password->value();
@@ -135,9 +117,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->disabledAt = new DateTimeImmutable();
     }
 
-    /**
-     * @return bool
-     */
     public function isDisabled(): bool
     {
         return !empty($this->disabledAt);
@@ -157,9 +136,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return UserConfirmationToken::fromString($this->confirmationToken);
     }
 
-    /**
-     * @return bool
-     */
     public function isConfirmed(): bool
     {
         return empty($this->confirmationToken);
@@ -187,10 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles[] = $roleToAdd;
     }
 
-    /**
-     * @param string $role
-     * @return bool
-     */
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->roles);
@@ -217,9 +189,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $newRoles;
     }
 
-    /**
-     * @return UserName
-     */
     public function getName(): UserName
     {
         return UserName::fromString($this->name);
@@ -231,7 +200,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param UserHashedPassword $password
      * @throws UserPasswordAlreadySetException
      */
     public function setPassword(UserHashedPassword $password): void
@@ -243,17 +211,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->password = $password->value();
     }
 
-    /**
-     * @return array
-     */
     public function getRoles(): array
     {
         return $this->roles;
     }
 
-    /**
-     * @return bool
-     */
     public function isAdmin(): bool
     {
         return $this->hasRole(self::ROLE_ADMIN);
@@ -282,9 +244,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->getEmail()->value();
     }
 
-    /**
-     * @return UserEmail
-     */
     public function getEmail(): UserEmail
     {
         return UserEmail::fromString($this->email);
@@ -302,9 +261,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $userId->sameValueAs($this->getId());
     }
 
-    /**
-     * @return UserId
-     */
     public function getId(): UserId
     {
         return UserId::fromString($this->id);

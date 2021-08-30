@@ -28,14 +28,8 @@ use App\Shared\Application\Command\CommandHandlerInterface;
 
 class AddIssueCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var IssueRepositoryInterface
-     */
     private IssueRepositoryInterface $issueRepo;
 
-    /**
-     * @var ProjectRepositoryInterface
-     */
     private ProjectRepositoryInterface $projectRepo;
 
     public function __construct(IssueRepositoryInterface $issueRepo, ProjectRepositoryInterface $projectRepo)

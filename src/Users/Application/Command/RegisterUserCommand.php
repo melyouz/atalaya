@@ -20,24 +20,12 @@ use App\Users\Domain\Model\User\UserPlainPassword;
 
 class RegisterUserCommand implements CommandInterface
 {
-    /**
-     * @var UserId
-     */
     private UserId $id;
 
-    /**
-     * @var UserName
-     */
     private UserName $name;
 
-    /**
-     * @var UserEmail
-     */
     private UserEmail $email;
 
-    /**
-     * @var UserPlainPassword
-     */
     private UserPlainPassword $plainPassword;
 
     public function __construct(string $id, string $name, string $email, string $plainPassword)
@@ -48,33 +36,21 @@ class RegisterUserCommand implements CommandInterface
         $this->plainPassword = UserPlainPassword::fromString($plainPassword);
     }
 
-    /**
-     * @return UserId
-     */
     public function getId(): UserId
     {
         return $this->id;
     }
 
-    /**
-     * @return UserName
-     */
     public function getName(): UserName
     {
         return $this->name;
     }
 
-    /**
-     * @return UserEmail
-     */
     public function getEmail(): UserEmail
     {
         return $this->email;
     }
 
-    /**
-     * @return UserPlainPassword
-     */
     public function getPlainPassword(): UserPlainPassword
     {
         return $this->plainPassword;

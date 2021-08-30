@@ -19,7 +19,7 @@ use Assert\Assertion;
 
 final class ProjectName extends AbstractStringValueObject
 {
-    const MAX_LENGTH = 80;
+    public const MAX_LENGTH = 80;
 
     public static function fromString(string $value): self
     {

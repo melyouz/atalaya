@@ -30,25 +30,21 @@ class Exception
      * @ORM\Id()
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue")
      * @ORM\JoinColumn(name="issue_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var Issue
      */
     private Issue $issue;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $code = '';
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $class;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $message;
 

@@ -23,9 +23,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class IssueVoter extends Voter
 {
-    /**
-     * @var ProjectRepositoryInterface
-     */
     private ProjectRepositoryInterface $projectRepo;
 
     public function __construct(ProjectRepositoryInterface $projectRepo)

@@ -17,9 +17,6 @@ use App\Users\Domain\Model\User\UserConfirmationToken;
 
 class ConfirmUserCommand implements CommandInterface
 {
-    /**
-     * @var UserConfirmationToken
-     */
     private UserConfirmationToken $token;
 
     public function __construct(string $token)
@@ -27,9 +24,6 @@ class ConfirmUserCommand implements CommandInterface
         $this->token = UserConfirmationToken::fromString($token);
     }
 
-    /**
-     * @return UserConfirmationToken
-     */
     public function getToken(): UserConfirmationToken
     {
         return $this->token;

@@ -54,38 +54,35 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Issue
 {
-    const VIEW = 'view';
-    const RESOLVE = 'resolve';
-    const UNRESOLVE = 'unresolve';
+    public const VIEW = 'view';
+    public const RESOLVE = 'resolve';
+    public const UNRESOLVE = 'unresolve';
 
     /**
      * @ORM\Id()
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $id;
 
     /**
      * @ORM\Column(type="string", length=36)
-     * @var string
      */
     private string $projectId;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=false)
-     * @var DateTimeImmutable
      */
     private DateTimeImmutable $seenAt;
 
     /**
      * @ORM\Column(type="datetime_immutable", nullable=true)
+     *
      * @var DateTimeImmutable
      */
     private ?DateTimeImmutable $resolvedAt;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @var string
      */
     private string $status;
 
@@ -96,31 +93,28 @@ class Issue
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Request", mappedBy="issue", cascade={"persist", "remove"})
-     * @var Request|null
      */
     private ?Request $request = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\Exception", mappedBy="issue", cascade={"persist", "remove"})
-     * @var Exception|null
      */
     private ?Exception $exception = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\File", mappedBy="issue", cascade={"persist", "remove"})
+     *
      * @var File
      */
     private ?File $file = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", mappedBy="issue", cascade={"persist", "remove"})
-     * @var CodeExcerpt|null
      */
     private ?CodeExcerpt $codeExcerpt = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Issues\Domain\Model\Issue\Tag", mappedBy="issue", cascade={"persist", "remove"})
-     * @var Collection
      */
     private Collection $tags;
 
@@ -200,7 +194,7 @@ class Issue
 
     public function isDraft(): bool
     {
-        return $this->status === IssueStatus::DRAFT;
+        return IssueStatus::DRAFT === $this->status;
     }
 
     public function resolve(): void
@@ -215,7 +209,7 @@ class Issue
 
     public function isResolved(): bool
     {
-        return $this->status === IssueStatus::RESOLVED;
+        return IssueStatus::RESOLVED === $this->status;
     }
 
     public function unresolve(): void
@@ -291,10 +285,6 @@ class Issue
         return $this->tags->toArray();
     }
 
-    /**
-     * @param TagName $tagName
-     * @return bool
-     */
     public function hasTag(TagName $tagName): bool
     {
         $result = array_filter($this->tags->toArray(), function (Tag $tag) use ($tagName) {
@@ -305,8 +295,6 @@ class Issue
     }
 
     /**
-     * @param TagName $tagName
-     * @return TagValue|null
      * @throws TagNotFoundException
      */
     public function getTagValue(TagName $tagName): ?TagValue

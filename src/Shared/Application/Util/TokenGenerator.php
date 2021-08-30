@@ -21,7 +21,6 @@ class TokenGenerator
     public const DEFAULT_LENGTH = 32;
 
     /**
-     * @return string
      * @throws Exception
      */
     public function md5RandomToken(): string
@@ -30,8 +29,6 @@ class TokenGenerator
     }
 
     /**
-     * @param int $length
-     * @return string
      * @throws Exception
      */
     public function randomToken(int $length = self::DEFAULT_LENGTH): string

@@ -23,7 +23,6 @@ class AddIssueCodeExcerptInput implements InputDtoInterface
     /**
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
-     * @var string
      */
     public string $lang;
 
@@ -32,6 +31,7 @@ class AddIssueCodeExcerptInput implements InputDtoInterface
      *      @Assert\Type("App\Issues\Presentation\Api\Input\AddIssueCodeExcerptCodeLineInput")
      * })
      * @Assert\Valid
+     *
      * @var AddIssueCodeExcerptCodeLineInput[]
      */
     public array $lines;

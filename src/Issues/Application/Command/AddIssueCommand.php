@@ -20,24 +20,12 @@ use App\Shared\Application\Command\CommandInterface;
 
 class AddIssueCommand implements CommandInterface
 {
-    /**
-     * @var IssueId
-     */
     private IssueId $id;
 
-    /**
-     * @var ProjectId
-     */
     private ProjectId $projectId;
 
-    /**
-     * @var ProjectToken
-     */
     private ProjectToken $projectToken;
 
-    /**
-     * @var IssueDto
-     */
     private IssueDto $issueDto;
 
     public function __construct(string $id, string $projectId, string $projectToken, IssueDto $issueDto)
@@ -48,33 +36,21 @@ class AddIssueCommand implements CommandInterface
         $this->issueDto = $issueDto;
     }
 
-    /**
-     * @return IssueId
-     */
     public function getId(): IssueId
     {
         return $this->id;
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getProjectId(): ProjectId
     {
         return $this->projectId;
     }
 
-    /**
-     * @return ProjectToken
-     */
     public function getProjectToken(): ProjectToken
     {
         return $this->projectToken;
     }
 
-    /**
-     * @return IssueDto
-     */
     public function getIssueDto(): IssueDto
     {
         return $this->issueDto;

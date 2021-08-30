@@ -19,18 +19,7 @@ use App\Users\Domain\Model\User\UserPlainPassword;
 
 interface UserPasswordHasherInterface
 {
-    /**
-     * @param User $user
-     * @param UserPlainPassword $plainPassword
-     *
-     * @return string
-     */
     public function hashPassword(User $user, UserPlainPassword $plainPassword): string;
 
-    /**
-     * @param User $user
-     * @param UserPlainPassword $plainPassword
-     * @return bool
-     */
     public function isPasswordValid(User $user, UserPlainPassword $plainPassword): bool;
 }

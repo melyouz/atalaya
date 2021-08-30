@@ -19,20 +19,11 @@ use Lcobucci\JWT\Token;
 interface JwtValidatorInterface
 {
     /**
-     * @param Token $token
      * @return mixed
      */
     public function fromToken(Token $token): bool;
 
-    /**
-     * @param string $token
-     * @return bool
-     */
     public function fromString(string $token): bool;
 
-    /**
-     * @param string $value
-     * @return bool
-     */
     public function fromBearerAuthorizationHeader(string $value): bool;
 }

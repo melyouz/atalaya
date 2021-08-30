@@ -25,8 +25,7 @@ class JwtGenerator implements JwtGeneratorInterface
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private JwtConfiguratorInterface $jwtConfigurator
-    )
-    {
+    ) {
     }
 
     /**
@@ -35,7 +34,7 @@ class JwtGenerator implements JwtGeneratorInterface
     public function forUser(User $user): string
     {
         $issuedAt = new DateTimeImmutable();
-        $expiresIn = (int)$this->parameterBag->get('app_jwt_expires_in');
+        $expiresIn = (int) $this->parameterBag->get('app_jwt_expires_in');
         $expiresAt = $issuedAt->add(new DateInterval(sprintf('PT%dH', $expiresIn)));
         $signer = $this->jwtConfigurator->signer();
         $privateKey = $this->jwtConfigurator->signingKey();

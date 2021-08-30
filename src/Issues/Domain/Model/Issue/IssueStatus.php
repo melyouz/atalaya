@@ -19,10 +19,10 @@ use Assert\Assertion;
 
 class IssueStatus extends AbstractStringValueObject
 {
-    const DRAFT = 'Draft';
-    const OPEN = 'Open';
-    const RESOLVED = 'Resolved';
-    const VALUES = [self::DRAFT, self::OPEN, self::RESOLVED];
+    public const DRAFT = 'Draft';
+    public const OPEN = 'Open';
+    public const RESOLVED = 'Resolved';
+    public const VALUES = [self::DRAFT, self::OPEN, self::RESOLVED];
 
     public static function fromString(string $value): self
     {

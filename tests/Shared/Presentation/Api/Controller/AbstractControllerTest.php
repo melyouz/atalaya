@@ -102,7 +102,7 @@ class AbstractControllerTest extends TestCase
             ->method('serialize')
             ->willReturn('{"name":"John Doe","age":27}');
 
-        $object = (object)['name' => 'John Doe', 'age' => 27];
+        $object = (object) ['name' => 'John Doe', 'age' => 27];
         $result = $controller->toJsonResponse($object);
 
         $this->assertEquals(json_encode($object), $result->getContent());

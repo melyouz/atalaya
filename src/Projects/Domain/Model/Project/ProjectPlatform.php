@@ -19,12 +19,12 @@ use Assert\Assertion;
 
 class ProjectPlatform extends AbstractStringValueObject
 {
-    const MAX_LENGTH = 30;
+    public const MAX_LENGTH = 30;
 
-    const PHP = 'PHP';
-    const SYMFONY = 'Symfony';
+    public const PHP = 'PHP';
+    public const SYMFONY = 'Symfony';
 
-    const CHOICES = [
+    public const CHOICES = [
         self::PHP,
         self::SYMFONY,
     ];

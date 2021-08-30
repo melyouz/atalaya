@@ -32,9 +32,9 @@ use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface
 
 class SymfonyUsernamePasswordAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
-    const ROUTE_JWT_TOKEN = 'app_security_jwt_token';
-    const PARAM_USERNAME = 'username';
-    const PARAM_PASSWORD = 'password';
+    public const ROUTE_JWT_TOKEN = 'app_security_jwt_token';
+    public const PARAM_USERNAME = 'username';
+    public const PARAM_PASSWORD = 'password';
 
     private JwtGeneratorInterface $jwtGenerator;
     private UserProviderInterface $userProvider;
@@ -50,7 +50,7 @@ class SymfonyUsernamePasswordAuthenticator extends AbstractAuthenticator impleme
      */
     public function supports(Request $request): ?bool
     {
-        return $request->get('_route') === self::ROUTE_JWT_TOKEN && $request->getMethod() === Request::METHOD_POST;
+        return self::ROUTE_JWT_TOKEN === $request->get('_route') && Request::METHOD_POST === $request->getMethod();
     }
 
     /**

@@ -172,7 +172,6 @@ class IssueTest extends TestCase
             'level' => 'error',
         ];
 
-
         $issueId = IssueId::fromString($id);
         $projectId = ProjectId::fromString($projectId);
         $excerptId = uuid_create(UUID_TYPE_RANDOM);

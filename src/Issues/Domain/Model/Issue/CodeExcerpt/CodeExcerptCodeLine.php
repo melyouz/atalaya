@@ -27,26 +27,22 @@ class CodeExcerptCodeLine
      * @ORM\Id()
      * @ORM\ManyToOne(targetEntity="App\Issues\Domain\Model\Issue\CodeExcerpt", inversedBy="lines")
      * @ORM\JoinColumn(name="code_excerpt_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
-     * @var CodeExcerpt
      */
     private CodeExcerpt $codeExcerpt;
 
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
-     * @var int
      */
     private int $line;
 
     /**
      * @ORM\Column(type="string", length=1024)
-     * @var string
      */
     private string $content;
 
     /**
      * @ORM\Column(type="boolean")
-     * @var bool
      */
     private bool $selected;
 
@@ -58,25 +54,16 @@ class CodeExcerptCodeLine
         $this->selected = $selected;
     }
 
-    /**
-     * @return int
-     */
     public function getLine(): int
     {
         return $this->line;
     }
 
-    /**
-     * @return string
-     */
     public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @return bool
-     */
     public function isSelected(): bool
     {
         return $this->selected;

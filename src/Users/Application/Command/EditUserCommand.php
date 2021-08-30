@@ -20,9 +20,6 @@ use App\Users\Domain\Model\User\UserPlainPassword;
 
 class EditUserCommand implements CommandInterface
 {
-    /**
-     * @var UserId
-     */
     private UserId $id;
 
     /**
@@ -48,9 +45,6 @@ class EditUserCommand implements CommandInterface
         $this->plainPassword = ($plainPassword ? UserPlainPassword::fromString($plainPassword) : null);
     }
 
-    /**
-     * @return UserId
-     */
     public function getId(): UserId
     {
         return $this->id;

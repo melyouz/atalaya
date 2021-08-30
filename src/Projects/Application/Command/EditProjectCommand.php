@@ -22,9 +22,6 @@ use App\Shared\Application\Command\CommandInterface;
 
 class EditProjectCommand implements CommandInterface
 {
-    /**
-     * @var ProjectId
-     */
     private ProjectId $id;
     /**
      * @var ProjectName
@@ -47,9 +44,6 @@ class EditProjectCommand implements CommandInterface
         $this->platform = ($platform ? ProjectPlatform::fromString($platform) : null);
     }
 
-    /**
-     * @return ProjectId
-     */
     public function getId(): ProjectId
     {
         return $this->id;

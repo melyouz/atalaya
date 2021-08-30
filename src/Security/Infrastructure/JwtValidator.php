@@ -19,12 +19,11 @@ use Lcobucci\JWT\Token;
 
 class JwtValidator implements JwtValidatorInterface
 {
-    const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
+    public const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
 
     public function __construct(
         private JwtConfiguratorInterface $jwtConfigurator,
-    )
-    {
+    ) {
     }
 
     public function fromBearerAuthorizationHeader(string $value): bool

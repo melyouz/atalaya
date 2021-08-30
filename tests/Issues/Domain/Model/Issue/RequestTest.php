@@ -22,9 +22,6 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
-    /**
-     * @var Request
-     */
     private Request $request;
 
     public function testHasMethod(): void

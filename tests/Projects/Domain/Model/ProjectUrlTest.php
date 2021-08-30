@@ -20,7 +20,6 @@ class ProjectUrlTest extends TestCase
 {
     /**
      * @dataProvider validUrlsProvider
-     * @param string $url
      */
     public function testUrlValidShouldPass(string $url): void
     {
@@ -30,7 +29,6 @@ class ProjectUrlTest extends TestCase
 
     /**
      * @dataProvider invalidUrlsProvider
-     * @param string $invalidUrl
      */
     public function testUrlIncorrectShouldFail(string $invalidUrl): void
     {
@@ -57,7 +55,7 @@ class ProjectUrlTest extends TestCase
     {
         return [
             ['whatever-awesome-project.dev'],
-            ['https://whatever-awesome-project-with-over-80-chars-url.lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-varius']
+            ['https://whatever-awesome-project-with-over-80-chars-url.lorem-ipsum-dolor-sit-amet-consectetur-adipiscing-elit-varius'],
         ];
     }
 }

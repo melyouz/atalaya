@@ -43,6 +43,7 @@ class DoctrineProjectRepository implements ProjectRepositoryInterface
 
     /**
      * @inheritDoc
+     *
      * @throws InvalidProjectTokenException
      * @throws ProjectNotFoundException
      */

@@ -24,9 +24,6 @@ class CreateProjectCommandHandler implements CommandHandlerInterface
 {
     private ProjectRepositoryInterface $projectRepo;
 
-    /**
-     * @var TokenGenerator
-     */
     private TokenGenerator $tokenGenerator;
 
     public function __construct(ProjectRepositoryInterface $projectRepo, TokenGenerator $tokenGenerator)

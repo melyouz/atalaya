@@ -24,20 +24,17 @@ class AddIssueCodeExcerptCodeLineInput implements InputDtoInterface
      * @Assert\NotBlank()
      * @Assert\Type("int")
      * @Assert\Positive()
-     * @var int
      */
     public int $line;
 
     /**
      * @Assert\Length(max="1024")
-     * @var string
      */
     public string $content;
 
     /**
      * @Assert\NotNull()
      * @Assert\Type("bool")
-     * @var bool
      */
     public bool $selected;
 

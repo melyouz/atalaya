@@ -29,15 +29,14 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 
 class SymfonyJwtAuthenticator extends AbstractAuthenticator
 {
-    const HEADER_AUTHORIZATION = 'Authorization';
-    const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
+    public const HEADER_AUTHORIZATION = 'Authorization';
+    public const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
 
     public function __construct(
         private UserProviderInterface $userProvider,
         private JwtValidatorInterface $jwtValidator,
         private JwtConfiguratorInterface $jwtConfigurator,
-    )
-    {
+    ) {
     }
 
     /**
@@ -82,7 +81,6 @@ class SymfonyJwtAuthenticator extends AbstractAuthenticator
     {
         return null;
     }
-
 
     /**
      * @inheritDoc

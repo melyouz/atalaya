@@ -47,4 +47,3 @@ class SymfonyQueryBusTest extends TestCase
         $this->assertEquals(1337, $result);
     }
 }
-

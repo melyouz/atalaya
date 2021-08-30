@@ -18,9 +18,5 @@ use App\Users\Domain\Model\User;
 
 interface JwtGeneratorInterface
 {
-    /**
-     * @param User $user
-     * @return string
-     */
     public function forUser(User $user): string;
 }

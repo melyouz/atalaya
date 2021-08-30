@@ -17,9 +17,6 @@ use App\Shared\Application\Command\CommandHandlerInterface;
 
 class UnresolveIssueCommandHandler implements CommandHandlerInterface
 {
-    /**
-     * @var IssueRepositoryInterface
-     */
     private IssueRepositoryInterface $issueRepo;
 
     public function __construct(IssueRepositoryInterface $issueRepo)

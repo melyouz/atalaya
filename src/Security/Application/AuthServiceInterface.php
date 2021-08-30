@@ -20,7 +20,6 @@ use App\Users\Domain\Model\User;
 interface AuthServiceInterface
 {
     /**
-     * @return User
      * @throws UserNotLoggedInException
      */
     public function getLoggedInUser(): User;
@@ -28,8 +27,6 @@ interface AuthServiceInterface
     /**
      * @param $attributes
      * @param $subject
-     *
-     * @return bool
      */
     public function isGranted($attributes, $subject): bool;
 }
