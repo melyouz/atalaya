@@ -4,8 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    app_jwt_private_key: '%kernel.project_dir%/%env(APP_JWT_PRIVATE_KEY)%'
-    app_jwt_public_key: '%kernel.project_dir%/%env(APP_JWT_PUBLIC_KEY)%'
+    app_project_dir: '%kernel.project_dir%'
+    app_jwt_private_key: '%app_project_dir%/%env(string:APP_JWT_PRIVATE_KEY)%'
+    app_jwt_public_key: '%app_project_dir%/%env(string:APP_JWT_PUBLIC_KEY)%'
+    app_jwt_expires_in: '%env(int:APP_JWT_EXPIRES_IN_HOURS)%'
 
 services:
     # default configuration for services in *this* file

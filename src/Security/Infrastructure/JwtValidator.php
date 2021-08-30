@@ -15,24 +15,16 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure;
 
 use App\Security\Application\JwtValidatorInterface;
-use Lcobucci\JWT\Parser;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class JwtValidator implements JwtValidatorInterface
 {
     const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
 
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(
+        private JwtConfiguratorInterface $jwtConfigurator,
+    )
     {
-        $this->parameterBag = $parameterBag;
     }
 
     public function fromBearerAuthorizationHeader(string $value): bool
@@ -44,7 +36,8 @@ class JwtValidator implements JwtValidatorInterface
 
     public function fromString(string $token): bool
     {
-        $token = (new Parser())->parse($token);
+        $parser = $this->jwtConfigurator->parser();
+        $token = $parser->parse($token);
 
         return $this->fromToken($token);
     }
@@ -54,12 +47,9 @@ class JwtValidator implements JwtValidatorInterface
      */
     public function fromToken(Token $token): bool
     {
-        $signer = new Sha256();
-        $publicKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_public_key')));
+        $validator = $this->jwtConfigurator->validator();
+        $validationConstraints = $this->jwtConfigurator->validationConstraints();
 
-        $isTokenValid = $token->verify($signer, $publicKey);
-        $isTokenNotExpired = !$token->isExpired();
-
-        return $isTokenValid && $isTokenNotExpired;
+        return $validator->validate($token, ...$validationConstraints);
     }
 }

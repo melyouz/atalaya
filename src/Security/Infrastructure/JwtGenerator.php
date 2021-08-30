@@ -16,21 +16,17 @@ namespace App\Security\Infrastructure;
 
 use App\Security\Application\JwtGeneratorInterface;
 use App\Users\Domain\Model\User;
-use Lcobucci\JWT\Builder;
-use Lcobucci\JWT\Signer\Key;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
+use DateInterval;
+use DateTimeImmutable;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class JwtGenerator implements JwtGeneratorInterface
 {
-    /**
-     * @var ParameterBagInterface
-     */
-    private ParameterBagInterface $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(
+        private ParameterBagInterface $parameterBag,
+        private JwtConfiguratorInterface $jwtConfigurator
+    )
     {
-        $this->parameterBag = $parameterBag;
     }
 
     /**
@@ -38,20 +34,22 @@ class JwtGenerator implements JwtGeneratorInterface
      */
     public function forUser(User $user): string
     {
-        $signer = new Sha256();
-        $privateKey = new Key(file_get_contents($this->parameterBag->get('app_jwt_private_key')));
-        $time = time();
+        $issuedAt = new DateTimeImmutable();
+        $expiresIn = (int)$this->parameterBag->get('app_jwt_expires_in');
+        $expiresAt = $issuedAt->add(new DateInterval(sprintf('PT%dH', $expiresIn)));
+        $signer = $this->jwtConfigurator->signer();
+        $privateKey = $this->jwtConfigurator->signingKey();
 
-        $builder = new Builder();
+        $builder = $this->jwtConfigurator->builder();
         $token = $builder
             ->relatedTo($user->getId()->value())
-            ->issuedAt($time)
-            ->expiresAt($time + 28800) // 8H
+            ->issuedAt($issuedAt)
+            ->expiresAt($expiresAt)
             ->withClaim('user_name', $user->getName())
             ->withClaim('user_email', $user->getEmail())
             ->withClaim('user_roles', $user->getRoles())
             ->getToken($signer, $privateKey);
 
-        return $token->__toString();
+        return $token->toString();
     }
 }

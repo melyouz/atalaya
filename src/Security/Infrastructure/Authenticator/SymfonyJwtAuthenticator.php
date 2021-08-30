@@ -15,8 +15,7 @@ declare(strict_types=1);
 namespace App\Security\Infrastructure\Authenticator;
 
 use App\Security\Application\JwtValidatorInterface;
-use App\Security\Infrastructure\Provider\SymfonyUserProvider;
-use Lcobucci\JWT\Parser;
+use App\Security\Infrastructure\JwtConfiguratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -33,20 +32,12 @@ class SymfonyJwtAuthenticator extends AbstractAuthenticator
     const HEADER_AUTHORIZATION = 'Authorization';
     const HEADER_AUTHORIZATION_BEARER = 'Bearer ';
 
-    /**
-     * @var UserProviderInterface|SymfonyUserProvider
-     */
-    private UserProviderInterface $userProvider;
-
-    /**
-     * @var JwtValidatorInterface
-     */
-    private JwtValidatorInterface $jwtValidator;
-
-    public function __construct(UserProviderInterface $userProvider, JwtValidatorInterface $jwtValidator)
+    public function __construct(
+        private UserProviderInterface $userProvider,
+        private JwtValidatorInterface $jwtValidator,
+        private JwtConfiguratorInterface $jwtConfigurator,
+    )
     {
-        $this->userProvider = $userProvider;
-        $this->jwtValidator = $jwtValidator;
     }
 
     /**
@@ -57,7 +48,7 @@ class SymfonyJwtAuthenticator extends AbstractAuthenticator
         $headers = $request->headers;
         $authorizationHeader = $headers->get(self::HEADER_AUTHORIZATION);
 
-        return !empty($authorizationHeader) && 0 === strpos($authorizationHeader, self::HEADER_AUTHORIZATION_BEARER);
+        return !empty($authorizationHeader) && str_starts_with($authorizationHeader, self::HEADER_AUTHORIZATION_BEARER);
     }
 
     /**
@@ -65,8 +56,9 @@ class SymfonyJwtAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): PassportInterface
     {
+        $parser = $this->jwtConfigurator->parser();
         $token = $request->headers->get(self::HEADER_AUTHORIZATION);
-        $token = (new Parser())->parse(str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $token));
+        $token = $parser->parse(str_replace(self::HEADER_AUTHORIZATION_BEARER, '', $token));
         $userId = $token->claims()->get('sub', '');
 
         if (!$userId || !$user = $this->userProvider->loadUserById($userId)) {
